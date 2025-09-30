@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Auto Documentation Update",
+  "description": "Automatically updates corresponding documentation files whenever any file in the project is saved",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A file has been saved in the project. Please review the changes and update any corresponding documentation files that may need to be modified to reflect these changes. Consider updating README files, API documentation, code comments, and any other relevant documentation."
+  }
+}
