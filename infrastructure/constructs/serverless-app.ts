@@ -280,10 +280,10 @@ export class ServerlessApp extends Construct {
    */
   public getApiResource(path: string): apigateway.Resource {
     const pathParts = path.split('/').filter(part => part.length > 0);
-    let resource = this.api.root;
+    let resource: apigateway.Resource = this.api.root;
     
     for (const part of pathParts) {
-      const existingResource = resource.getResource(part);
+      const existingResource = resource.node.tryFindChild(part) as apigateway.Resource;
       if (existingResource) {
         resource = existingResource;
       } else {

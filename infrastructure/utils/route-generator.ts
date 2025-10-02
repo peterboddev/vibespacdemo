@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as cdk from 'aws-cdk-lib';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -79,8 +80,8 @@ export class RouteGenerator {
           FUNCTION_NAME: func.functionName,
         },
         timeout: func.routes[0]?.timeout ? 
-          lambda.Duration.seconds(func.routes[0].timeout) : 
-          lambda.Duration.seconds(30),
+          cdk.Duration.seconds(func.routes[0].timeout) : 
+          cdk.Duration.seconds(30),
         memorySize: func.routes[0]?.memorySize || 256,
       });
 
@@ -228,10 +229,10 @@ export class RouteGenerator {
    */
   private getOrCreateResource(api: apigateway.RestApi, path: string): apigateway.Resource {
     const pathParts = path.split('/').filter(part => part.length > 0);
-    let resource = api.root;
+    let resource: apigateway.Resource = api.root;
     
     for (const part of pathParts) {
-      const existingResource = resource.getResource(part);
+      const existingResource = resource.node.tryFindChild(part) as apigateway.Resource;
       if (existingResource) {
         resource = existingResource;
       } else {

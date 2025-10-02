@@ -57,7 +57,7 @@ jspm_packages/
 .env
 
 # Git credentials (contains sensitive tokens)
-.git-credentials
+.git-credentials*
 
 # IDE files
 .vscode/
