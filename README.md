@@ -146,6 +146,7 @@ The CI/CD pipeline is already deployed and active:
 - **Pipeline Name**: insurance-quotation-dev
 - **Status**: Active and monitoring GitHub repository
 - **Automatic Triggering**: Enabled on push to main branch
+- **Route Generation**: Currently disabled for build stability (can be re-enabled when needed)
 
 ```bash
 # Monitor pipeline status
@@ -356,6 +357,20 @@ Fix linting issues:
 ```bash
 npm run lint:fix
 ```
+
+### Route Generation (Currently Disabled)
+
+The project includes scripts for dynamic route generation from Lambda function annotations:
+
+```bash
+# Generate routes configuration (currently disabled in CI/CD)
+npm run generate-routes
+
+# Deploy with route generation (local development only)
+npm run deploy-with-routes
+```
+
+**Note**: Route generation is currently disabled in the CI/CD pipeline for build stability. The system uses default route configuration. See [DYNAMIC_ROUTES.md](DYNAMIC_ROUTES.md) for details on re-enabling this feature.
 
 ## Data Models
 

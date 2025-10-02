@@ -8,7 +8,7 @@ yarn-error.log*
 dist/
 build/
 
-# Environment variables
+# Environment variables and sensitive configuration
 .env
 .env.local
 .env.development.local
@@ -56,8 +56,13 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
-# Git credentials (contains sensitive tokens)
+# Security: Git credentials and sensitive tokens
 .git-credentials*
+*.pem
+*.key
+*.crt
+secrets.json
+config/secrets.json
 
 # IDE files
 .vscode/

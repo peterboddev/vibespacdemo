@@ -16,7 +16,7 @@ The CI/CD pipeline has been successfully deployed and is operational:
 
 The CI/CD pipeline provides:
 - **Automated builds** with TypeScript compilation and testing
-- **Dynamic route generation** from Lambda function annotations
+- **Dynamic route generation** from Lambda function annotations (optional, currently disabled)
 - **Multi-environment deployment** (dev automatic, prod with manual approval)
 - **CloudWatch monitoring** and SNS notifications
 - **Artifact management** with S3 storage and lifecycle policies
@@ -176,12 +176,15 @@ aws logs tail /aws/codebuild/insurance-quotation-dev --follow
 
 ## Dynamic Route Generation
 
-The pipeline automatically:
+The pipeline includes optional dynamic route generation:
 
-1. **Scans** Lambda functions for route annotations
-2. **Generates** `infrastructure/generated/routes.json`
-3. **Integrates** routes into CDK deployment
-4. **Deploys** API Gateway with new routes
+1. **Scans** Lambda functions for route annotations (when enabled)
+2. **Generates** `infrastructure/generated/routes.json` if successful
+3. **Falls back** to default configuration if generation fails
+4. **Integrates** routes into CDK deployment
+5. **Deploys** API Gateway with generated or default routes
+
+**Current Status**: Route generation is currently disabled in the build process to ensure deployment reliability. The system uses default route configuration and can be re-enabled when needed.
 
 ### Route Annotation Example
 

@@ -47,10 +47,13 @@ npm run cdk:deploy      # Deploy infrastructure
 ```
 
 #### CodeBuild Workflow:
-1. **Scan Phase**: CodeBuild scans `src/lambda/` for route annotations
-2. **Generate Phase**: Creates `infrastructure/generated/routes.json`
-3. **Build Phase**: CDK uses the generated configuration to create API Gateway routes
-4. **Deploy Phase**: Infrastructure and Lambda functions are deployed together
+1. **Scan Phase**: CodeBuild scans `src/lambda/` for route annotations (optional)
+2. **Generate Phase**: Creates `infrastructure/generated/routes.json` if successful
+3. **Fallback**: Uses default configuration if route generation fails
+4. **Build Phase**: CDK uses generated or default configuration for API Gateway routes
+5. **Deploy Phase**: Infrastructure and Lambda functions are deployed together
+
+**Note**: Route generation is currently optional in the build process. If the generation script fails, the build continues with default route configuration to ensure deployment reliability.
 
 ### 4. Generated Configuration
 
@@ -124,10 +127,11 @@ infrastructure/
 ### 8. CodeBuild Integration
 
 The `buildspec.yml` includes:
-- Route generation in the pre-build phase
-- CDK synthesis with generated routes
+- Optional route generation in the pre-build phase (with graceful fallback)
+- CDK synthesis with generated or default routes
 - Automated deployment with approval controls
 - Artifact caching for faster builds
+- Error handling to prevent build failures from route generation issues
 
 ### 9. Example Usage
 
@@ -171,7 +175,48 @@ export const getQuote = async (event: APIGatewayProxyEvent) => {
 };
 ```
 
-### 10. Future Enhancements
+### 10. Current Status & Re-enabling Route Generation
+
+#### Current Status
+Route generation is currently **disabled** in the CI/CD pipeline (`buildspec.yml`) to ensure build stability. The system uses default route configuration defined in the CDK constructs.
+
+#### Re-enabling Route Generation
+To re-enable dynamic route generation:
+
+1. **Update buildspec.yml**:
+   ```yaml
+   # Change from:
+   - echo "Skipping route generation for this build..."
+   
+   # To:
+   - echo "Generating routes configuration..."
+   - npx ts-node scripts/generate-routes.ts
+   ```
+
+2. **Ensure route-generator.ts is working**:
+   ```bash
+   # Test locally first
+   npm run generate-routes
+   ```
+
+3. **Verify generated configuration**:
+   ```bash
+   # Check the generated file
+   cat infrastructure/generated/routes.json
+   ```
+
+4. **Update CDK constructs** to use generated routes:
+   - Modify `ServerlessApp` construct to read from `routes.json`
+   - Implement dynamic Lambda function creation
+   - Configure API Gateway routes from generated config
+
+#### Fallback Behavior
+The current implementation provides graceful fallback:
+- If route generation fails, build continues with default configuration
+- No deployment interruption due to route generation issues
+- Manual route configuration remains functional
+
+### 11. Future Enhancements
 
 - **OpenAPI Generation**: Auto-generate OpenAPI/Swagger documentation
 - **Validation Schemas**: Include request/response validation in annotations
@@ -179,3 +224,4 @@ export const getQuote = async (event: APIGatewayProxyEvent) => {
 - **API Versioning**: Automatic API versioning and deprecation handling
 - **Monitoring**: Enhanced CloudWatch metrics and alarms per route
 - **Testing**: Auto-generate integration tests from route definitions
+- **Route Generation Stability**: Improve error handling and validation in route-generator.ts
