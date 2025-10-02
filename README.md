@@ -97,7 +97,7 @@ The AWS infrastructure includes:
 The CI/CD infrastructure includes:
 
 - **CodePipeline**: Multi-stage deployment pipeline with source, build, and deploy stages
-- **CodeBuild Projects**: Separate build and deployment projects with automatic buildspec.yml detection
+- **CodeBuild Projects**: Separate build and deployment projects with Docker support for Lambda layer bundling
 - **S3 Artifact Bucket**: Versioned storage with lifecycle policies for build artifacts
 - **CloudWatch Monitoring**: Automated alarms for pipeline and build failures
 - **SNS Notifications**: Real-time alerts for pipeline events and manual approvals
@@ -146,6 +146,7 @@ The CI/CD pipeline is already deployed and active:
 - **Pipeline Name**: insurance-quotation-dev
 - **Status**: Active and monitoring GitHub repository
 - **Automatic Triggering**: Enabled on push to main branch
+- **Enhanced Dependencies**: npm ci with automatic npm install fallback for reliability
 - **Route Generation**: Currently disabled for build stability (can be re-enabled when needed)
 
 ```bash

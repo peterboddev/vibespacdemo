@@ -72,14 +72,33 @@ error TS7016: Could not find a declaration file for module 'aws-lambda'
 
 This change restores proper TypeScript compilation and validation in the CI/CD pipeline.
 
+## ✅ LATEST UPDATE: Enhanced Dependency Installation
+
+**New Enhancement**: The CI/CD pipeline now includes a more resilient dependency installation process:
+
+```yaml
+# Enhanced dependency installation with fallback
+- echo "Checking for package-lock.json..."
+- ls -la package*.json
+- echo "Attempting npm ci..."
+- npm ci --include=dev || (echo "npm ci failed, trying npm install..." && npm install)
+```
+
+**Benefits**:
+- **Primary Method**: Uses `npm ci --include=dev` for fast, reliable installs
+- **Automatic Fallback**: Falls back to `npm install` if npm ci fails
+- **Better Debugging**: Package verification and clear logging
+- **Improved Reliability**: Handles corrupted lock files and edge cases
+
 ## Expected Results
 
 The build should now:
-1. ✅ Install all dependencies including type definitions
+1. ✅ **Install dependencies reliably** with npm ci primary method and npm install fallback
 2. ✅ **Compile TypeScript properly** with full type checking and validation
 3. ✅ Successfully synthesize CDK infrastructure
 4. ✅ Deploy the API to AWS with compiled TypeScript
 5. ✅ Provide early feedback on TypeScript compilation errors
+6. ✅ Handle dependency installation edge cases automatically
 
 ## Next Steps
 

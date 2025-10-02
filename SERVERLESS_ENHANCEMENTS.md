@@ -7,9 +7,10 @@ The `ServerlessApp` construct has been enhanced with production-ready features a
 ## Key Enhancements
 
 ### 1. Lambda Layer Improvements
-- **Docker Bundling**: Added proper Docker bundling for shared dependencies
+- **Docker Bundling**: Added proper Docker bundling for shared dependencies with privileged CodeBuild support
 - **Production Optimization**: Optimized dependency packaging for faster cold starts
 - **Package Management**: Created dedicated `package.json` for shared layer dependencies
+- **Native Dependencies**: Proper compilation of native modules (pg, ioredis) for Lambda runtime
 
 ### 2. Enhanced Security
 - **IP Restrictions**: Added IP-based access control for production environments

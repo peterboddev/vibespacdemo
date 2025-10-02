@@ -143,6 +143,7 @@ The pipeline uses these environment variables:
 - **Deploy Projects**: Environment-specific deployment projects
 - **Compute Type**: SMALL instances for cost optimization
 - **Build Image**: Amazon Linux Standard 7.0 with Node.js 20
+- **Privileged Mode**: **Enabled for Docker support** (required for Lambda layer bundling)
 - **Build Specification**: Automatically reads buildspec.yml from source repository root
 - **Cache**: Local NPM cache for faster builds
 - **Timeout**: 30 minutes for build, 20 minutes for deployment
@@ -295,7 +296,7 @@ aws codepipeline list-pipeline-executions \
    - Reduced build times and compute costs
 3. **Compute Optimization**: 
    - CodeBuild SMALL instances (3 GB memory, 2 vCPUs)
-   - No privileged mode unless required
+   - **Privileged mode enabled for Docker support** (required for Lambda layer bundling)
    - Optimized build timeouts (30 min build, 20 min deploy)
 4. **Log Retention**: 
    - Development: 1 week retention

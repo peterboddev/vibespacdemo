@@ -1,5 +1,8 @@
 version: 0.2
 
+# This buildspec requires Docker support (privileged: true) in CodeBuild
+# for Lambda layer bundling with native dependencies (pg, ioredis, AWS SDK)
+
 env:
   variables:
     NODE_ENV: "production"

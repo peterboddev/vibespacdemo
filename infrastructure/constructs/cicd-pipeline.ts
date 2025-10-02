@@ -154,7 +154,7 @@ export class CicdPipeline extends Construct {
       environment: {
         buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
         computeType: codebuild.ComputeType.SMALL,
-        privileged: false, // Don't need Docker for our build
+        privileged: true, // Required for Docker daemon access to bundle Lambda layers with native dependencies
         environmentVariables: {
           ENVIRONMENT: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
@@ -224,31 +224,13 @@ export class CicdPipeline extends Construct {
               'cdk bootstrap --context environment=$TARGET_ENV || echo "Bootstrap check completed"',
               'echo "Synthesizing CDK infrastructure..."',
               'cdk synth --context environment=$TARGET_ENV',
-              'if [ "$STAGE" = "deploy-dev" ] || [ "$STAGE" = "deploy-prod" ]; then',
-              '  echo "Deploying infrastructure to $TARGET_ENV..."',
-              '  cdk deploy --context environment=$TARGET_ENV --require-approval never --verbose',
-              'else',
-              '  echo "Build stage - synthesis completed, skipping deployment"',
-              'fi',
+              'if [ "$STAGE" = "deploy-dev" ] || [ "$STAGE" = "deploy-prod" ]; then echo "Deploying infrastructure to $TARGET_ENV..." && cdk deploy --context environment=$TARGET_ENV --require-approval never --verbose; else echo "Build stage - synthesis completed, skipping deployment"; fi',
             ],
           },
           post_build: {
             commands: [
               'echo "=== POST-BUILD PHASE ==="',
-              'if [ "$STAGE" = "deploy-dev" ] || [ "$STAGE" = "deploy-prod" ]; then',
-              '  echo "Deployment stage completed"',
-              '  STACK_NAME="InsuranceQuotation-${TARGET_ENV}"',
-              '  echo "Checking stack: $STACK_NAME"',
-              '  API_URL=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query \'Stacks[0].Outputs[?OutputKey==`ServerlessAppApiGatewayUrl`].OutputValue\' --output text 2>/dev/null || echo "Not available")',
-              '  echo "API Gateway URL: $API_URL"',
-              '  echo "Deployment completed at $(date)" > deployment-info.txt',
-              '  echo "Environment: $TARGET_ENV" >> deployment-info.txt',
-              '  echo "API URL: $API_URL" >> deployment-info.txt',
-              'else',
-              '  echo "Build stage completed - artifacts ready for deployment"',
-              '  echo "Build completed at $(date)" > deployment-info.txt',
-              '  echo "Stage: build" >> deployment-info.txt',
-              'fi',
+              'if [ "$STAGE" = "deploy-dev" ] || [ "$STAGE" = "deploy-prod" ]; then echo "Deployment stage completed" && STACK_NAME="InsuranceQuotation-${TARGET_ENV}" && echo "Checking stack: $STACK_NAME" && API_URL=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey==\`ServerlessAppApiGatewayUrl\`].OutputValue" --output text 2>/dev/null || echo "Not available") && echo "API Gateway URL: $API_URL" && echo "Deployment completed at $(date)" > deployment-info.txt && echo "Environment: $TARGET_ENV" >> deployment-info.txt && echo "API URL: $API_URL" >> deployment-info.txt; else echo "Build stage completed - artifacts ready for deployment" && echo "Build completed at $(date)" > deployment-info.txt && echo "Stage: build" >> deployment-info.txt; fi',
             ],
           },
         },

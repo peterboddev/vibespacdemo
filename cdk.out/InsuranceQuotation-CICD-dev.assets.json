@@ -1,16 +1,16 @@
 {
   "version": "48.0.0",
   "files": {
-    "91e4325e09fe7cc5def61add3e242e1421acb963dfaf5a415e411bcfc473148f": {
+    "2e8b247a6bc45b41fe84049a4ca560b96de860c4569b3837b2fcde9ee1eafb37": {
       "displayName": "InsuranceQuotation-CICD-dev Template",
       "source": {
         "path": "InsuranceQuotation-CICD-dev.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "450683699755-us-east-1-f2bb756f": {
+        "450683699755-us-east-1-1db074c5": {
           "bucketName": "cdk-hnb659fds-assets-450683699755-us-east-1",
-          "objectKey": "91e4325e09fe7cc5def61add3e242e1421acb963dfaf5a415e411bcfc473148f.json",
+          "objectKey": "2e8b247a6bc45b41fe84049a4ca560b96de860c4569b3837b2fcde9ee1eafb37.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-file-publishing-role-450683699755-us-east-1"
         }
