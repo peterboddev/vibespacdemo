@@ -28,7 +28,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-deploy-role-450683699755-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-cfn-exec-role-450683699755-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/74d1faa44df7457fefd2d8000d70c06d00dde60a81ba925935cf039086dfa6c3.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/91e4325e09fe7cc5def61add3e242e1421acb963dfaf5a415e411bcfc473148f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -146,7 +146,7 @@
               "Annotations.addWarningV2 (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:896)",
               "new Pipeline2 (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\aws-cdk-lib\\aws-codepipeline\\lib\\pipeline.js:1:8128)",
               "new Pipeline2 (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:488)",
-              "new CicdPipeline (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\infrastructure\\constructs\\cicd-pipeline.ts:300:21)",
+              "new CicdPipeline (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\infrastructure\\constructs\\cicd-pipeline.ts:303:21)",
               "new CicdStack (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\infrastructure\\stacks\\cicd-stack.ts:38:21)",
               "Object.<anonymous> (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\infrastructure\\cicd-app.ts:43:19)",
               "Module._compile (node:internal/modules/cjs/loader:1469:14)",

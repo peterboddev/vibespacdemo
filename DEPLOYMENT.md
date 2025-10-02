@@ -305,6 +305,7 @@ The CI/CD pipeline is already deployed and operational:
 
 ### Pipeline Features ✅ ACTIVE
 - **Automated builds** with TypeScript compilation and testing
+- **Enhanced dependency management** with npm ci primary method and npm install fallback
 - **Dynamic route generation** from Lambda function annotations (optional, currently disabled for build stability)
 - **Multi-environment deployment** (dev automatic, prod with manual approval)
 - **CloudWatch monitoring** and SNS notifications

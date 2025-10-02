@@ -192,4 +192,44 @@ buildSpec: codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
 - **Deployment**: ✅ No impact - deployment process unchanged
 - **Maintenance**: ✅ Improved - buildspec changes are automatically recognized
 
-**Last Updated**: Infrastructure construct updated to use automatic buildspec.yml detection, documentation synchronized.
+### Latest Update: Enhanced Dependency Installation
+
+#### New NPM Installation Strategy
+The CI/CD pipeline has been enhanced with a more resilient dependency installation process:
+
+**Before (single attempt)**:
+```yaml
+- npm ci --include=dev
+```
+
+**After (fallback strategy)**:
+```yaml
+- echo "Checking for package-lock.json..."
+- ls -la package*.json
+- echo "Attempting npm ci..."
+- npm ci --include=dev || (echo "npm ci failed, trying npm install..." && npm install)
+```
+
+#### Benefits of Enhanced Installation
+
+1. **Improved Reliability**: Fallback to `npm install` if `npm ci` fails
+2. **Better Debugging**: Package file verification before installation attempts
+3. **Resilient Builds**: Handles cases where package-lock.json might be corrupted or missing
+4. **Clear Logging**: Enhanced logging shows exactly what installation method succeeded
+5. **Production Ready**: Maintains preference for `npm ci` while providing fallback
+
+#### Installation Strategy Tiers
+
+1. **Primary Method**: `npm ci --include=dev` for fast, reliable installs from package-lock.json
+2. **Fallback Method**: `npm install` if npm ci fails (handles lock file issues)
+3. **Verification**: Pre-installation check of package files for debugging
+4. **Logging**: Clear indication of which installation method was used
+
+#### Technical Details
+
+- **npm ci Preference**: Still uses `npm ci` as the primary method for speed and reliability
+- **Automatic Fallback**: Seamlessly falls back to `npm install` without manual intervention
+- **Package Verification**: Lists package files to help diagnose installation issues
+- **Error Handling**: Graceful handling of npm ci failures with informative messages
+
+**Last Updated**: Enhanced dependency installation with fallback strategy, infrastructure construct updated to use automatic buildspec.yml detection, documentation synchronized.

@@ -114,7 +114,10 @@ The pipeline uses these environment variables:
 
 ### Build Stages
 
-1. **Install**: Install dependencies and tools
+1. **Install**: 
+   - Enhanced dependency installation with npm ci primary method and npm install fallback
+   - Package verification and debugging information
+   - Global tool installation (CDK, TypeScript)
 2. **Pre-build**: 
    - Generate dynamic routes from Lambda annotations (currently disabled)
    - Multi-tier TypeScript compilation with fallback strategies

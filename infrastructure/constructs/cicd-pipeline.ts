@@ -187,7 +187,10 @@ export class CicdPipeline extends Construct {
             commands: [
               'echo "=== INSTALL PHASE ==="',
               'echo "Installing dependencies..."',
-              'npm ci --include=dev',
+              'echo "Checking for package-lock.json..."',
+              'ls -la package*.json',
+              'echo "Attempting npm ci..."',
+              'npm ci --include=dev || (echo "npm ci failed, trying npm install..." && npm install)',
               'npm install -g aws-cdk@latest',
               'npm install -g typescript@latest',
               'echo "Node version:" && node --version',
