@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Security Documentation Guard",
+  "description": "Monitors all markdown files for updates and automatically checks for sensitive information or security risks, adding files with potential security issues to .gitignore",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "*.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A markdown file has been updated. Please analyze the content of this file for any sensitive information such as API keys, passwords, credentials, internal URLs, security vulnerabilities, or other confidential data. If you find any potential security risks or sensitive information, automatically add this file to the .gitignore file to prevent it from being committed to version control. Provide a summary of what sensitive content was found and confirm the file has been added to .gitignore."
+  }
+}
