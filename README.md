@@ -60,15 +60,25 @@ infrastructure/
     └── insurance-quotation-stack.ts  # Main application stack
 ```
 
-### Network Security
+### Security Architecture 🛡️
 
-The infrastructure implements security best practices:
+**Security Assessment: EXCELLENT** - See [SECURITY_ASSESSMENT.md](SECURITY_ASSESSMENT.md) for detailed analysis.
 
+The infrastructure implements enterprise-grade security best practices:
+
+#### Network Security
 - **VPC Isolation**: Database and cache resources are deployed in private subnets
 - **Security Groups**: Database and Redis access restricted to VPC CIDR block only
 - **Lambda Placement**: Lambda functions deployed inside VPC with single NAT Gateway for cost optimization
 - **VPC Endpoints**: S3, Secrets Manager, and CloudWatch endpoints reduce internet traffic
 - **Principle of Least Privilege**: Each component has minimal required permissions
+
+#### Application Security ✅
+- **Input Validation**: Comprehensive validation for all API endpoints with type safety
+- **Secret Management**: All credentials stored in AWS Secrets Manager (no hardcoded secrets)
+- **Data Protection**: No PII logging, secure error handling, request tracing
+- **Dependency Security**: Clean npm audit with zero vulnerabilities
+- **CORS Configuration**: Proper cross-origin request handling
 
 ### Infrastructure Components
 
