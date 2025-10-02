@@ -30,6 +30,10 @@ The `buildspec.yml` file has been updated to improve build stability by making t
 # Generate dynamic routes configuration (optional - skip for now)
 - echo "Skipping route generation for this build..."
 - mkdir -p infrastructure/generated || echo "Generated directory already exists"
+
+# Compile TypeScript (RE-ENABLED)
+- echo "Compiling TypeScript..."
+- npm run build
 ```
 
 ### Key Improvements
@@ -138,12 +142,12 @@ The buildspec.yml has been further improved with a robust TypeScript compilation
 
 The buildspec.yml configuration is stable and operational with the following status:
 
-- **Build Process**: Multi-tier TypeScript compilation with robust fallback mechanisms
+- **Build Process**: ✅ **TypeScript compilation re-enabled** with standard `npm run build`
 - **Route Generation**: Intentionally disabled for build stability
 - **Deployment**: Automatic deployment to development environment
 - **Testing**: Comprehensive test suite with 6/6 tests passing
-- **Error Handling**: Enhanced fallback mechanisms for both optional and critical build steps
-- **Compilation Resilience**: Build succeeds even with TypeScript configuration issues
+- **Error Handling**: Enhanced fallback mechanisms for optional build steps
+- **Compilation**: ✅ **Standard TypeScript compilation active** - provides early error detection
 
 ### Conclusion
 

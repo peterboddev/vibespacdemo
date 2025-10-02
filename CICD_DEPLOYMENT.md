@@ -16,7 +16,7 @@ The CI/CD pipeline has been successfully deployed and is operational:
 ## Overview
 
 The CI/CD pipeline provides:
-- **Automated builds** with multi-tier TypeScript compilation and robust fallback strategies
+- **Automated builds** with ✅ **TypeScript compilation re-enabled** for proper type checking
 - **Dynamic route generation** from Lambda function annotations (optional, currently disabled)
 - **Multi-environment deployment** (dev automatic, prod with manual approval)
 - **CloudWatch monitoring** and SNS notifications
@@ -116,9 +116,9 @@ The pipeline uses these environment variables:
 
 1. **Install**: Install dependencies and tools
 2. **Pre-build**: 
-   - Generate dynamic routes from Lambda annotations
-   - Compile TypeScript
-   - Run tests and linting
+   - Generate dynamic routes from Lambda annotations (currently disabled)
+   - Multi-tier TypeScript compilation with fallback strategies
+   - Run tests and linting (currently disabled for deployment focus)
 3. **Build**: 
    - CDK synthesis
    - Conditional deployment based on stage
