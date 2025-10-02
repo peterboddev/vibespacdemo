@@ -11,6 +11,7 @@ The CI/CD pipeline has been successfully deployed and is operational:
 - **Build Project**: insurance-quotation-dev
 - **Artifact Bucket**: insurance-quotation-pipeline-dev-450683699755
 - **Status**: Active and monitoring GitHub repository
+- **Last Updated**: Infrastructure construct maintained and up-to-date
 
 ## Overview
 

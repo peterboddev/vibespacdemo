@@ -64,6 +64,13 @@ jspm_packages/
 secrets.json
 config/secrets.json
 
+# AWS and cloud service URLs (potential sensitive infrastructure exposure)
+# Patterns to catch AWS console URLs, API endpoints, and other cloud service URLs
+*amazonaws.com*
+*console.aws.amazon.com*
+*cloudwatch*logs*
+*codebuild*logs*
+
 # IDE files
 .vscode/
 .idea/

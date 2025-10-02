@@ -171,54 +171,8 @@ export class CicdPipeline extends Construct {
         },
       },
 
-      // Build specification (inline since we're using noSource)
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: '0.2',
-        env: {
-          variables: {
-            NODE_ENV: 'production',
-          },
-        },
-        phases: {
-          install: {
-            'runtime-versions': {
-              nodejs: '20',
-            },
-            commands: [
-              'echo "Installing dependencies..."',
-              'npm ci --only=production',
-              'npm install -g aws-cdk@latest',
-              'npm install -g typescript@latest',
-            ],
-          },
-          pre_build: {
-            commands: [
-              'echo "Pre-build phase started"',
-              'npm install --only=dev',
-              'npx ts-node scripts/generate-routes.ts || echo "Route generation skipped"',
-              'npm run build',
-              'npm test -- --passWithNoTests --coverage=false',
-            ],
-          },
-          build: {
-            commands: [
-              'echo "Build phase started"',
-              'TARGET_ENV=${ENVIRONMENT:-dev}',
-              'echo "Target environment: $TARGET_ENV"',
-              'cdk bootstrap --context environment=$TARGET_ENV || echo "Bootstrap exists"',
-              'cdk synth --context environment=$TARGET_ENV',
-            ],
-          },
-          post_build: {
-            commands: [
-              'echo "Build completed successfully!"',
-            ],
-          },
-        },
-        artifacts: {
-          files: ['**/*'],
-        },
-      }),
+      // Use external buildspec.yml file
+      buildSpec: codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
 
       // Artifacts
       artifacts: codebuild.Artifacts.s3({

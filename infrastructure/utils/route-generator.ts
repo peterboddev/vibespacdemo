@@ -227,13 +227,13 @@ export class RouteGenerator {
   /**
    * Get or create API Gateway resource for a path
    */
-  private getOrCreateResource(api: apigateway.RestApi, path: string): apigateway.Resource {
+  private getOrCreateResource(api: apigateway.RestApi, path: string): apigateway.IResource {
     const pathParts = path.split('/').filter(part => part.length > 0);
-    let resource: apigateway.Resource = api.root;
+    let resource: apigateway.IResource = api.root;
     
     for (const part of pathParts) {
-      const existingResource = resource.node.tryFindChild(part) as apigateway.Resource;
-      if (existingResource) {
+      const existingResource = resource.node.tryFindChild(part);
+      if (existingResource && existingResource instanceof apigateway.Resource) {
         resource = existingResource;
       } else {
         resource = resource.addResource(part);
