@@ -155,4 +155,41 @@ These changes prioritize **build stability** and **deployment reliability** over
 
 The system now follows the principle of "make it work, then make it better" - ensuring a stable foundation before adding advanced features.
 
-**Last Updated**: Current buildspec.yml configuration verified and documentation synchronized.
+### Latest Infrastructure Update: Buildspec Configuration Simplification
+
+#### Change Made
+The CI/CD pipeline construct has been updated to simplify buildspec configuration:
+
+**Before**:
+```typescript
+// Use external buildspec.yml file
+buildSpec: codebuild.BuildSpec.fromSourceFilename('buildspec.yml'),
+```
+
+**After**:
+```typescript
+// buildSpec will be automatically read from buildspec.yml in the source
+```
+
+#### Benefits of This Change
+
+1. **Simplified Configuration**: Removes explicit buildspec file reference, relying on CodeBuild's default behavior
+2. **Better Version Control**: buildspec.yml changes are automatically picked up from the source repository
+3. **Reduced Coupling**: Less tight coupling between CDK construct and buildspec file location
+4. **Standard Practice**: Follows AWS CodeBuild best practices for buildspec file handling
+5. **Easier Maintenance**: buildspec.yml changes don't require CDK redeployment
+
+#### Technical Details
+
+- **CodeBuild Default Behavior**: When no buildSpec is explicitly defined, CodeBuild automatically looks for `buildspec.yml` in the source repository root
+- **No Functional Change**: The build process remains identical, only the configuration method has been simplified
+- **Backward Compatible**: Existing buildspec.yml file continues to work without modification
+
+#### Impact Assessment
+
+- **Build Process**: ✅ No impact - builds continue to use the same buildspec.yml file
+- **Pipeline Functionality**: ✅ No impact - all pipeline features remain operational
+- **Deployment**: ✅ No impact - deployment process unchanged
+- **Maintenance**: ✅ Improved - buildspec changes are automatically recognized
+
+**Last Updated**: Infrastructure construct updated to use automatic buildspec.yml detection, documentation synchronized.

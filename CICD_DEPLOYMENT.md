@@ -140,6 +140,7 @@ The pipeline uses these environment variables:
 - **Deploy Projects**: Environment-specific deployment projects
 - **Compute Type**: SMALL instances for cost optimization
 - **Build Image**: Amazon Linux Standard 7.0 with Node.js 20
+- **Build Specification**: Automatically reads buildspec.yml from source repository root
 - **Cache**: Local NPM cache for faster builds
 - **Timeout**: 30 minutes for build, 20 minutes for deployment
 

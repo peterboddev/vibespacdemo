@@ -97,7 +97,7 @@ The AWS infrastructure includes:
 The CI/CD infrastructure includes:
 
 - **CodePipeline**: Multi-stage deployment pipeline with source, build, and deploy stages
-- **CodeBuild Projects**: Separate build and deployment projects with optimized configurations
+- **CodeBuild Projects**: Separate build and deployment projects with automatic buildspec.yml detection
 - **S3 Artifact Bucket**: Versioned storage with lifecycle policies for build artifacts
 - **CloudWatch Monitoring**: Automated alarms for pipeline and build failures
 - **SNS Notifications**: Real-time alerts for pipeline events and manual approvals

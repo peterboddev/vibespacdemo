@@ -216,7 +216,26 @@ The current implementation provides graceful fallback:
 - No deployment interruption due to route generation issues
 - Manual route configuration remains functional
 
-### 11. Future Enhancements
+### 11. Recent Improvements
+
+#### Route Generator Stability Enhancement
+- **Defensive Programming**: Added optional chaining and fallback values in `getFunctionName()` method
+- **Error Prevention**: Prevents runtime errors when parsing malformed file paths
+- **Graceful Degradation**: Returns 'unknown' for missing path components instead of crashing
+- **Improved Reliability**: Enhanced robustness of the route scanning process
+
+#### Code Changes
+```typescript
+// Before (potential runtime error):
+const fileName = parts[parts.length - 1].replace(/\.(ts|js)$/, '');
+const dirName = parts[parts.length - 2];
+
+// After (defensive programming):
+const fileName = parts[parts.length - 1]?.replace(/\.(ts|js)$/, '') || 'unknown';
+const dirName = parts[parts.length - 2] || 'unknown';
+```
+
+### 12. Future Enhancements
 
 - **OpenAPI Generation**: Auto-generate OpenAPI/Swagger documentation
 - **Validation Schemas**: Include request/response validation in annotations
@@ -224,4 +243,4 @@ The current implementation provides graceful fallback:
 - **API Versioning**: Automatic API versioning and deprecation handling
 - **Monitoring**: Enhanced CloudWatch metrics and alarms per route
 - **Testing**: Auto-generate integration tests from route definitions
-- **Route Generation Stability**: Improve error handling and validation in route-generator.ts
+- **Enhanced Path Parsing**: Further improve file path parsing and validation

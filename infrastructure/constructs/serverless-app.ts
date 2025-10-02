@@ -278,13 +278,13 @@ export class ServerlessApp extends Construct {
   /**
    * Get API Gateway resource by path for dynamic route generation
    */
-  public getApiResource(path: string): apigateway.Resource {
+  public getApiResource(path: string): apigateway.IResource {
     const pathParts = path.split('/').filter(part => part.length > 0);
-    let resource: apigateway.Resource = this.api.root;
+    let resource: apigateway.IResource = this.api.root;
     
     for (const part of pathParts) {
-      const existingResource = resource.node.tryFindChild(part) as apigateway.Resource;
-      if (existingResource) {
+      const existingResource = resource.node.tryFindChild(part);
+      if (existingResource && existingResource instanceof apigateway.Resource) {
         resource = existingResource;
       } else {
         resource = resource.addResource(part);

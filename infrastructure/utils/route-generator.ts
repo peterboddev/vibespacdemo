@@ -4,6 +4,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 /**
  * Route annotation interface for Lambda functions
@@ -12,11 +13,11 @@ export interface RouteAnnotation {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   path: string;
   auth?: 'required' | 'optional' | 'none';
-  rateLimit?: string; // e.g., "100/hour", "10/minute"
+  rateLimit?: string | undefined; // e.g., "100/hour", "10/minute"
   cors?: boolean;
-  timeout?: number; // seconds
-  memorySize?: number; // MB
-  description?: string;
+  timeout?: number | undefined; // seconds
+  memorySize?: number | undefined; // MB
+  description?: string | undefined;
 }
 
 /**
@@ -58,9 +59,9 @@ export class RouteGenerator {
     lambdaConfig: {
       role: iam.Role;
       layers: lambda.LayerVersion[];
-      vpc?: any;
-      securityGroups?: any[];
-      subnets?: any;
+      vpc?: ec2.IVpc;
+      securityGroups?: ec2.ISecurityGroup[];
+      subnets?: ec2.SubnetSelection;
       environment?: { [key: string]: string };
     }
   ): void {
@@ -145,38 +146,38 @@ export class RouteGenerator {
     let currentAnnotations: Partial<RouteAnnotation> = {};
     
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
+      const line = lines[i]?.trim() || '';
       
       // Look for route annotations
       if (line.startsWith('* @route ')) {
         const routeMatch = line.match(/\* @route\s+(\w+)\s+(.+)/);
-        if (routeMatch) {
+        if (routeMatch && routeMatch[1] && routeMatch[2]) {
           currentAnnotations.method = routeMatch[1].toUpperCase() as any;
           currentAnnotations.path = routeMatch[2];
         }
       } else if (line.startsWith('* @auth ')) {
         const authMatch = line.match(/\* @auth\s+(\w+)/);
-        if (authMatch) {
+        if (authMatch && authMatch[1]) {
           currentAnnotations.auth = authMatch[1] as any;
         }
       } else if (line.startsWith('* @rateLimit ')) {
         const rateLimitMatch = line.match(/\* @rateLimit\s+(.+)/);
-        if (rateLimitMatch) {
+        if (rateLimitMatch && rateLimitMatch[1]) {
           currentAnnotations.rateLimit = rateLimitMatch[1];
         }
       } else if (line.startsWith('* @timeout ')) {
         const timeoutMatch = line.match(/\* @timeout\s+(\d+)/);
-        if (timeoutMatch) {
+        if (timeoutMatch && timeoutMatch[1]) {
           currentAnnotations.timeout = parseInt(timeoutMatch[1]);
         }
       } else if (line.startsWith('* @memory ')) {
         const memoryMatch = line.match(/\* @memory\s+(\d+)/);
-        if (memoryMatch) {
+        if (memoryMatch && memoryMatch[1]) {
           currentAnnotations.memorySize = parseInt(memoryMatch[1]);
         }
       } else if (line.startsWith('* @description ')) {
         const descMatch = line.match(/\* @description\s+(.+)/);
-        if (descMatch) {
+        if (descMatch && descMatch[1]) {
           currentAnnotations.description = descMatch[1];
         }
       } else if (line.includes('export') && line.includes('=') && line.includes('async')) {
@@ -248,8 +249,8 @@ export class RouteGenerator {
    */
   private getFunctionName(filePath: string): string {
     const parts = filePath.split(path.sep);
-    const fileName = parts[parts.length - 1].replace(/\.(ts|js)$/, '');
-    const dirName = parts[parts.length - 2];
+    const fileName = parts[parts.length - 1]?.replace(/\.(ts|js)$/, '') || 'unknown';
+    const dirName = parts[parts.length - 2] || 'unknown';
     
     return `${dirName}-${fileName}`;
   }
@@ -259,7 +260,7 @@ export class RouteGenerator {
    */
   private getHandlerName(content: string): string {
     const handlerMatch = content.match(/export\s+const\s+(\w+)\s*=/);
-    return handlerMatch ? handlerMatch[1] : 'handler';
+    return handlerMatch && handlerMatch[1] ? handlerMatch[1] : 'handler';
   }
 
   /**
@@ -272,7 +273,7 @@ export class RouteGenerator {
     if (importMatches) {
       for (const match of importMatches) {
         const depMatch = match.match(/from\s+['"]([^'"]+)['"]/);
-        if (depMatch && !depMatch[1].startsWith('.')) {
+        if (depMatch && depMatch[1] && !depMatch[1].startsWith('.')) {
           dependencies.push(depMatch[1]);
         }
       }
