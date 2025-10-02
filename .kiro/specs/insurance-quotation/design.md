@@ -6,10 +6,18 @@ The insurance quotation application is a web-based system that provides instant 
 
 ## Architecture
 
-The application uses a layered architecture with the following components:
+The application uses a layered architecture with automated deployment pipeline:
 
 ```mermaid
 graph TB
+    subgraph "Development Workflow"
+        DEV[Developer]
+        GIT[Git Repository]
+        SYNTH[CDK Synth]
+        DEPLOY[Auto Deploy]
+        HEALTH[Health Check]
+    end
+    
     subgraph "Client Layer"
         A[Customer Web App]
         B[Agent Dashboard]
@@ -32,7 +40,16 @@ graph TB
         J[User Database]
         K[Product Database]
         L[Audit Database]
+        M[Redis Cache]
     end
+    
+    DEV --> GIT
+    GIT --> SYNTH
+    SYNTH --> DEPLOY
+    DEPLOY --> HEALTH
+    HEALTH --> A
+    HEALTH --> B
+    HEALTH --> C
     
     A --> D
     B --> D
@@ -45,6 +62,9 @@ graph TB
     F --> J
     G --> K
     H --> L
+    E --> M
+    F --> M
+    G --> M
 ```
 
 ## Components and Interfaces
@@ -96,6 +116,33 @@ graph TB
 - `POST /api/notifications/email` - Send email notification
 - `GET /api/notifications/templates` - Get notification templates
 - `POST /api/notifications/templates` - Create notification template
+
+### 5. Caching Layer
+**Responsibilities:**
+- Cache frequently accessed data (product information, pricing rules)
+- Store temporary session data and rate limiting counters
+- Improve API response times and reduce database load
+
+**Implementation:**
+- **ElastiCache Serverless Redis**: Auto-scaling cache with performance optimization
+- **Connection Management**: Secure connection pooling with AWS Secrets Manager
+- **Cache Strategies**: TTL-based expiration, cache-aside pattern
+- **Key Prefixing**: Environment-specific key prefixes for isolation
+- **Health Monitoring**: Built-in health checks for cache connectivity
+
+### 6. Serverless Application Layer
+**Responsibilities:**
+- API Gateway with comprehensive security and CORS configuration
+- Lambda functions with VPC integration and shared dependencies
+- Environment-specific configurations and resource management
+- Health monitoring and observability
+
+**Implementation:**
+- **API Gateway**: RESTful endpoints with IP-based access restrictions for production
+- **Lambda Layers**: Docker-bundled shared dependencies for optimal performance
+- **IAM Policies**: Least-privilege access to database, Redis, and VPC resources
+- **CloudWatch Logs**: Environment-specific retention policies (1 week dev, 1 month prod)
+- **Health Endpoints**: Built-in connectivity checks for all infrastructure components
 
 ## Data Models
 
@@ -260,3 +307,67 @@ interface ErrorResponse {
 - Implement data seeding for consistent test scenarios
 - Clean up test data after test execution
 - Maintain separate test environments for different testing phases
+
+## Deployment Automation
+
+### Automated Deployment Pipeline
+
+The system implements continuous deployment with the following workflow:
+
+1. **Code Changes**: Developer commits infrastructure or application changes
+2. **CDK Synthesis**: Automatic validation of CDK templates and TypeScript compilation
+3. **Auto Deployment**: On successful synthesis, automatically deploy to development environment using `npm run cdk:synth-and-deploy`
+4. **Health Checks**: Validate deployment with automated health checks (via deployment scripts)
+5. **Rollback**: Automatic rollback on deployment or health check failures
+
+### Deployment Stages
+
+```mermaid
+graph LR
+    A[Code Commit] --> B[CDK Synth]
+    B --> C{Synth Success?}
+    C -->|Yes| D[Auto Deploy Dev]
+    C -->|No| E[Build Failed]
+    D --> F{Deploy Success?}
+    F -->|Yes| G[Health Checks]
+    F -->|No| H[Rollback]
+    G --> I{Health OK?}
+    I -->|Yes| J[Ready for Testing]
+    I -->|No| H
+    H --> K[Alert Team]
+```
+
+### Environment Strategy
+
+- **Development**: Automatic deployment after successful synthesis using `npm run cdk:synth-and-deploy` or deployment scripts
+- **Testing**: Manual promotion from development after validation
+- **Production**: Manual approval required with additional safeguards
+
+### Deployment Scripts
+
+The project includes platform-specific deployment scripts with advanced features:
+
+- **PowerShell Script** (`scripts/deploy-after-synth.ps1`): Windows deployment with health checks and rollback
+- **Bash Script** (`scripts/deploy-after-synth.sh`): Unix/Linux deployment with health checks and rollback
+- **NPM Script** (`cdk:synth-and-deploy`): Simple synthesis and deployment workflow
+
+Both deployment scripts provide:
+- Automated health checks after deployment
+- Rollback capabilities on failure
+- Environment-specific configuration
+- Dry-run mode for testing
+- Colored output and progress monitoring
+
+### Health Check Components
+
+1. **Infrastructure Health**: Verify all AWS resources are running
+2. **Database Connectivity**: Test database connections and basic queries
+3. **API Endpoints**: Validate all API endpoints respond correctly
+4. **Service Integration**: Test inter-service communication
+
+### Rollback Strategy
+
+- Automatic rollback triggers on deployment failures
+- CloudFormation stack rollback for infrastructure issues
+- Lambda function version rollback for application issues
+- Database migration rollback procedures for schema changes

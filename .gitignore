@@ -56,6 +56,9 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
+# Git credentials (contains sensitive tokens)
+.git-credentials
+
 # IDE files
 .vscode/
 .idea/

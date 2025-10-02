@@ -1,0 +1,21 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "d57f8d574ae5d077f840451db4f32076bccbbb8ee9ad3a8ad1412894affa9b57": {
+      "displayName": "InsuranceQuotation-test Template",
+      "source": {
+        "path": "InsuranceQuotation-test.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "450683699755-us-east-1-ff1a3fc8": {
+          "bucketName": "cdk-hnb659fds-assets-450683699755-us-east-1",
+          "objectKey": "d57f8d574ae5d077f840451db4f32076bccbbb8ee9ad3a8ad1412894affa9b57.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-file-publishing-role-450683699755-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

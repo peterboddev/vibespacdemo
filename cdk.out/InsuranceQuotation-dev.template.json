@@ -1,0 +1,3176 @@
+{
+ "Description": "Insurance Quotation API - dev environment",
+ "Resources": {
+  "NetworkingInsuranceQuotationVpc1D86D6E4": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-VPC-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/Resource"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet1Subnet5B281BA3": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/Subnet"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet1RouteTable971B836D": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet1RouteTableAssociation1C6AC640": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet1RouteTable971B836D"
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet1Subnet5B281BA3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet1DefaultRoute6CFE4CDB": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "NetworkingInsuranceQuotationVpcIGWF4FBDE96"
+    },
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet1RouteTable971B836D"
+    }
+   },
+   "DependsOn": [
+    "NetworkingInsuranceQuotationVpcVPCGWF252BE1E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet1EIPD15D559B": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/EIP"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet1NATGateway2BC2BD57": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "NetworkingInsuranceQuotationVpcPublicSubnet1EIPD15D559B",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet1Subnet5B281BA3"
+    },
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "DependsOn": [
+    "NetworkingInsuranceQuotationVpcPublicSubnet1DefaultRoute6CFE4CDB",
+    "NetworkingInsuranceQuotationVpcPublicSubnet1RouteTableAssociation1C6AC640"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/NATGateway"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet2Subnet99A77CB8": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2/Subnet"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet2RouteTableC98E5482": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet2RouteTableAssociation88AFA45D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet2RouteTableC98E5482"
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet2Subnet99A77CB8"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcPublicSubnet2DefaultRouteFD145360": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "NetworkingInsuranceQuotationVpcIGWF4FBDE96"
+    },
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet2RouteTableC98E5482"
+    }
+   },
+   "DependsOn": [
+    "NetworkingInsuranceQuotationVpcVPCGWF252BE1E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcLambdaSubnet1SubnetB2B4F737": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Lambda"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1/Subnet"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableD045B88C": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1/RouteTable"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableAssociationCD94C904": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableD045B88C"
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet1SubnetB2B4F737"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1/RouteTableAssociation"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcLambdaSubnet1DefaultRoute539C5955": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet1NATGateway2BC2BD57"
+    },
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableD045B88C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1/DefaultRoute"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcLambdaSubnet2Subnet9B04F5BD": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Lambda"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2/Subnet"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTable04713E6C": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2/RouteTable"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTableAssociationE66FE6F7": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTable04713E6C"
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet2Subnet9B04F5BD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2/RouteTableAssociation"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcLambdaSubnet2DefaultRoute3A6BA3EA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet1NATGateway2BC2BD57"
+    },
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTable04713E6C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2/DefaultRoute"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcDatabaseSubnet1Subnet086B443A": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.4.0/26",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Database"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet1/Subnet"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcDatabaseSubnet1RouteTable80AFE7A9": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet1/RouteTable"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcDatabaseSubnet1RouteTableAssociationCD6C1B18": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet1RouteTable80AFE7A9"
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet1Subnet086B443A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet1/RouteTableAssociation"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcDatabaseSubnet2SubnetF6F60672": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.4.64/26",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Database"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet2"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet2/Subnet"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcDatabaseSubnet2RouteTableD055850B": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet2"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet2/RouteTable"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcDatabaseSubnet2RouteTableAssociationA937398B": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet2RouteTableD055850B"
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet2SubnetF6F60672"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet2/RouteTableAssociation"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcCacheSubnet1SubnetC23B71B5": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "CidrBlock": "10.0.4.128/26",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Cache"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet1/Subnet"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcCacheSubnet1RouteTable983FD53F": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet1"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet1/RouteTable"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcCacheSubnet1RouteTableAssociationE20038E7": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet1RouteTable983FD53F"
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet1SubnetC23B71B5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet1/RouteTableAssociation"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcCacheSubnet2Subnet90E50C2C": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "us-east-1b",
+    "CidrBlock": "10.0.4.192/26",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Cache"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet2"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet2/Subnet"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcCacheSubnet2RouteTable947BCE40": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet2"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet2/RouteTable"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcCacheSubnet2RouteTableAssociationC16CE69D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet2RouteTable947BCE40"
+    },
+    "SubnetId": {
+     "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet2Subnet90E50C2C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet2/RouteTableAssociation"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcIGWF4FBDE96": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-VPC-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/IGW"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcVPCGWF252BE1E": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "NetworkingInsuranceQuotationVpcIGWF4FBDE96"
+    },
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/VPCGW"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcRestrictDefaultSecurityGroupCustomResourceE5332666": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "NetworkingInsuranceQuotationVpc1D86D6E4",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": "450683699755"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcS3Endpoint1F77F097": {
+   "Type": "AWS::EC2::VPCEndpoint",
+   "Properties": {
+    "RouteTableIds": [
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableD045B88C"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTable04713E6C"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet1RouteTable971B836D"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcPublicSubnet2RouteTableC98E5482"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet1RouteTable80AFE7A9"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet2RouteTableD055850B"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet1RouteTable983FD53F"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet2RouteTable947BCE40"
+     }
+    ],
+    "ServiceName": {
+     "Fn::Join": [
+      "",
+      [
+       "com.amazonaws.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".s3"
+      ]
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-VPC-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcEndpointType": "Gateway",
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/S3Endpoint/Resource"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcSecretsManagerSecurityGroup45B4098A": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/SecretsManager/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": {
+       "Fn::GetAtt": [
+        "NetworkingInsuranceQuotationVpc1D86D6E4",
+        "CidrBlock"
+       ]
+      },
+      "Description": {
+       "Fn::Join": [
+        "",
+        [
+         "from ",
+         {
+          "Fn::GetAtt": [
+           "NetworkingInsuranceQuotationVpc1D86D6E4",
+           "CidrBlock"
+          ]
+         },
+         ":443"
+        ]
+       ]
+      },
+      "FromPort": 443,
+      "IpProtocol": "tcp",
+      "ToPort": 443
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-VPC-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/SecretsManager/SecurityGroup/Resource"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcSecretsManager10AA68F4": {
+   "Type": "AWS::EC2::VPCEndpoint",
+   "Properties": {
+    "PrivateDnsEnabled": true,
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "NetworkingInsuranceQuotationVpcSecretsManagerSecurityGroup45B4098A",
+       "GroupId"
+      ]
+     }
+    ],
+    "ServiceName": "com.amazonaws.us-east-1.secretsmanager",
+    "SubnetIds": [
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet1Subnet086B443A"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet2SubnetF6F60672"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-VPC-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcEndpointType": "Interface",
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/SecretsManager/Resource"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcCloudWatchLogsSecurityGroup56315DD5": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CloudWatchLogs/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": {
+       "Fn::GetAtt": [
+        "NetworkingInsuranceQuotationVpc1D86D6E4",
+        "CidrBlock"
+       ]
+      },
+      "Description": {
+       "Fn::Join": [
+        "",
+        [
+         "from ",
+         {
+          "Fn::GetAtt": [
+           "NetworkingInsuranceQuotationVpc1D86D6E4",
+           "CidrBlock"
+          ]
+         },
+         ":443"
+        ]
+       ]
+      },
+      "FromPort": 443,
+      "IpProtocol": "tcp",
+      "ToPort": 443
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-VPC-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CloudWatchLogs/SecurityGroup/Resource"
+   }
+  },
+  "NetworkingInsuranceQuotationVpcCloudWatchLogs79464380": {
+   "Type": "AWS::EC2::VPCEndpoint",
+   "Properties": {
+    "PrivateDnsEnabled": true,
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "NetworkingInsuranceQuotationVpcCloudWatchLogsSecurityGroup56315DD5",
+       "GroupId"
+      ]
+     }
+    ],
+    "ServiceName": "com.amazonaws.us-east-1.logs",
+    "SubnetIds": [
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet1Subnet086B443A"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet2SubnetF6F60672"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-VPC-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcEndpointType": "Interface",
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CloudWatchLogs/Resource"
+   }
+  },
+  "NetworkingLambdaSecurityGroupA5120D58": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for Lambda functions in VPC",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-Lambda-SG"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/LambdaSecurityGroup/Resource"
+   }
+  },
+  "NetworkingDatabaseSecurityGroupF326A325": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for Aurora PostgreSQL database",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-Database-SG"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/DatabaseSecurityGroup/Resource"
+   }
+  },
+  "NetworkingDatabaseSecurityGroupfromInsuranceQuotationdevNetworkingLambdaSecurityGroup8B3BBDD7543221DAAA5A": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "PostgreSQL access from Lambda functions",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "NetworkingDatabaseSecurityGroupF326A325",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "NetworkingLambdaSecurityGroupA5120D58",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/DatabaseSecurityGroup/from InsuranceQuotationdevNetworkingLambdaSecurityGroup8B3BBDD7:5432"
+   }
+  },
+  "NetworkingRedisSecurityGroupF70E9C50": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for ElastiCache Redis",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-Redis-SG"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcId": {
+     "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/RedisSecurityGroup/Resource"
+   }
+  },
+  "NetworkingRedisSecurityGroupfromInsuranceQuotationdevNetworkingLambdaSecurityGroup8B3BBDD763798F43AA46": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Redis access from Lambda functions",
+    "FromPort": 6379,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "NetworkingRedisSecurityGroupF70E9C50",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "NetworkingLambdaSecurityGroupA5120D58",
+      "GroupId"
+     ]
+    },
+    "ToPort": 6379
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Networking/RedisSecurityGroup/from InsuranceQuotationdevNetworkingLambdaSecurityGroup8B3BBDD7:6379"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:ec2:us-east-1:450683699755:security-group/",
+             {
+              "Fn::GetAtt": [
+               "NetworkingInsuranceQuotationVpc1D86D6E4",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+    "aws:asset:property": "Code"
+   }
+  },
+  "DatabaseDatabaseSecret487264A7": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "Database credentials for Insurance Quotation dev",
+    "GenerateSecretString": {
+     "ExcludeCharacters": "\"@/\\'",
+     "GenerateStringKey": "password",
+     "IncludeSpace": false,
+     "PasswordLength": 32,
+     "SecretStringTemplate": "{\"username\":\"postgres\"}"
+    },
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-DatabaseSecret-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Database/DatabaseSecret/Resource"
+   }
+  },
+  "DatabaseDatabaseSecretAttachment246FE93C": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "DatabaseDatabaseSecret487264A7"
+    },
+    "TargetId": {
+     "Ref": "DatabaseDatabaseCluster0C7C993F"
+    },
+    "TargetType": "AWS::RDS::DBCluster"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Database/DatabaseSecret/Attachment/Resource"
+   }
+  },
+  "DatabaseDatabaseSubnetGroup8EABBC08": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for Insurance Quotation database - dev",
+    "SubnetIds": [
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet1Subnet086B443A"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcDatabaseSubnet2SubnetF6F60672"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Database/DatabaseSubnetGroup/Default"
+   }
+  },
+  "DatabaseDatabaseClusterMonitoringRole09B3EBEB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "monitoring.rds.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "BackupRetention",
+      "Value": "7days"
+     },
+     {
+      "Key": "Engine",
+      "Value": "aurora-postgresql"
+     },
+     {
+      "Key": "EngineMode",
+      "Value": "serverless-v2"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-Database-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Database/DatabaseCluster/MonitoringRole/Resource"
+   }
+  },
+  "DatabaseDatabaseCluster0C7C993F": {
+   "Type": "AWS::RDS::DBCluster",
+   "Properties": {
+    "BackupRetentionPeriod": 7,
+    "CopyTagsToSnapshot": true,
+    "DBClusterParameterGroupName": "default.aurora-postgresql15",
+    "DBSubnetGroupName": {
+     "Ref": "DatabaseDatabaseSubnetGroup8EABBC08"
+    },
+    "DatabaseName": "insurance_quotation",
+    "DeletionProtection": false,
+    "Engine": "aurora-postgresql",
+    "EngineVersion": "15.4",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DatabaseDatabaseSecret487264A7"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DatabaseDatabaseSecret487264A7"
+       },
+       ":SecretString:username::}}"
+      ]
+     ]
+    },
+    "PerformanceInsightsEnabled": true,
+    "PerformanceInsightsRetentionPeriod": 7,
+    "Port": 5432,
+    "PreferredBackupWindow": "03:00-04:00",
+    "PreferredMaintenanceWindow": "sun:04:00-sun:05:00",
+    "ServerlessV2ScalingConfiguration": {
+     "MaxCapacity": 16,
+     "MinCapacity": 0.5
+    },
+    "StorageEncrypted": true,
+    "Tags": [
+     {
+      "Key": "BackupRetention",
+      "Value": "7days"
+     },
+     {
+      "Key": "Engine",
+      "Value": "aurora-postgresql"
+     },
+     {
+      "Key": "EngineMode",
+      "Value": "serverless-v2"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-Database-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "VpcSecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "NetworkingDatabaseSecurityGroupF326A325",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Snapshot",
+   "DeletionPolicy": "Snapshot",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Database/DatabaseCluster/Resource"
+   }
+  },
+  "DatabaseDatabaseClusterwriter77E5E64F": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AutoMinorVersionUpgrade": true,
+    "DBClusterIdentifier": {
+     "Ref": "DatabaseDatabaseCluster0C7C993F"
+    },
+    "DBInstanceClass": "db.serverless",
+    "EnablePerformanceInsights": true,
+    "Engine": "aurora-postgresql",
+    "MonitoringInterval": 60,
+    "MonitoringRoleArn": {
+     "Fn::GetAtt": [
+      "DatabaseDatabaseClusterMonitoringRole09B3EBEB",
+      "Arn"
+     ]
+    },
+    "PerformanceInsightsRetentionPeriod": 7,
+    "PromotionTier": 0,
+    "PubliclyAccessible": false,
+    "Tags": [
+     {
+      "Key": "BackupRetention",
+      "Value": "7days"
+     },
+     {
+      "Key": "Engine",
+      "Value": "aurora-postgresql"
+     },
+     {
+      "Key": "EngineMode",
+      "Value": "serverless-v2"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-Database-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "DependsOn": [
+    "NetworkingInsuranceQuotationVpcDatabaseSubnet1RouteTableAssociationCD6C1B18",
+    "NetworkingInsuranceQuotationVpcDatabaseSubnet2RouteTableAssociationA937398B"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Database/DatabaseCluster/writer/Resource"
+   }
+  },
+  "RedisRedisSecret04F920F1": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "Redis connection configuration for Insurance Quotation dev",
+    "GenerateSecretString": {
+     "ExcludeCharacters": "\"@/\\'",
+     "GenerateStringKey": "auth_token",
+     "IncludeSpace": false,
+     "PasswordLength": 32,
+     "SecretStringTemplate": "{\"host\":\"\",\"port\":6379,\"ssl\":true,\"connectTimeout\":10000,\"lazyConnect\":true,\"maxRetriesPerRequest\":3,\"retryDelayOnFailover\":100,\"enableReadyCheck\":true,\"family\":4,\"keepAlive\":true,\"db\":0,\"keyPrefix\":\"insurance-quotation-dev:\"}"
+    },
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-RedisSecret-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Redis/RedisSecret/Resource"
+   }
+  },
+  "RedisRedisSubnetGroupE7D796E2": {
+   "Type": "AWS::ElastiCache::SubnetGroup",
+   "Properties": {
+    "CacheSubnetGroupName": "insurance-quotation-redis-dev",
+    "Description": "Subnet group for Insurance Quotation Redis - dev",
+    "SubnetIds": [
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet1SubnetC23B71B5"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet2Subnet90E50C2C"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Redis/RedisSubnetGroup"
+   }
+  },
+  "RedisRedisServerlessCacheB7CEB3D4": {
+   "Type": "AWS::ElastiCache::ServerlessCache",
+   "Properties": {
+    "CacheUsageLimits": {
+     "DataStorage": {
+      "Maximum": 50,
+      "Unit": "GB"
+     },
+     "ECPUPerSecond": {
+      "Maximum": 5000
+     }
+    },
+    "DailySnapshotTime": "03:00",
+    "Description": "ElastiCache Serverless Redis for Insurance Quotation dev",
+    "Engine": "redis",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "NetworkingRedisSecurityGroupF70E9C50",
+       "GroupId"
+      ]
+     }
+    ],
+    "ServerlessCacheName": "insurance-quotation-dev",
+    "SnapshotRetentionLimit": 1,
+    "SubnetIds": [
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet1SubnetC23B71B5"
+     },
+     {
+      "Ref": "NetworkingInsuranceQuotationVpcCacheSubnet2Subnet90E50C2C"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "CacheType",
+      "Value": "serverless"
+     },
+     {
+      "Key": "Engine",
+      "Value": "redis"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Name",
+      "Value": "InsuranceQuotation-Redis-dev"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "DependsOn": [
+    "RedisRedisSubnetGroupE7D796E2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Redis/RedisServerlessCache"
+   }
+  },
+  "ServerlessAppLambdaLogGroup20642418": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/aws/lambda/insurance-quotation-dev",
+    "RetentionInDays": 7,
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/LambdaLogGroup/Resource"
+   }
+  },
+  "ServerlessAppLambdaExecutionRole47A06588": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "Lambda execution role for Insurance Quotation dev",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetSecretValue"
+         ],
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Ref": "DatabaseDatabaseSecret487264A7"
+          },
+          {
+           "Ref": "RedisRedisSecret04F920F1"
+          }
+         ]
+        },
+        {
+         "Action": [
+          "rds:DescribeDBClusters",
+          "rds:DescribeDBInstances"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "DatabaseAccess"
+     },
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            {
+             "Fn::GetAtt": [
+              "ServerlessAppLambdaLogGroup20642418",
+              "Arn"
+             ]
+            },
+            ":*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "CloudWatchLogs"
+     },
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "ec2:AttachNetworkInterface",
+          "ec2:CreateNetworkInterface",
+          "ec2:DeleteNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DetachNetworkInterface"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "VPCAccess"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/LambdaExecutionRole/Resource"
+   }
+  },
+  "ServerlessAppSharedDependenciesLayer3DFD75E1": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "CompatibleRuntimes": [
+     "nodejs20.x"
+    ],
+    "Content": {
+     "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
+     "S3Key": "13ae62f46f74b78021fd1340c4e2adaf91852f5b2baafc5e9cda9de7a9a8e58b.zip"
+    },
+    "Description": "Shared dependencies for Insurance Quotation dev",
+    "LayerName": "insurance-quotation-shared-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/SharedDependenciesLayer/Resource",
+    "aws:asset:path": "asset.13ae62f46f74b78021fd1340c4e2adaf91852f5b2baafc5e9cda9de7a9a8e58b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApi278BAD0B": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "BinaryMediaTypes": [
+     "multipart/form-data",
+     "application/octet-stream"
+    ],
+    "Description": "Insurance Quotation API - dev",
+    "Name": "insurance-quotation-dev",
+    "Policy": {
+     "Statement": [
+      {
+       "Action": "execute-api:Invoke",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiCloudWatchRole9D72B339": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/CloudWatchRole/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiAccount7247A3FC": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "ServerlessAppInsuranceQuotationApiCloudWatchRole9D72B339",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ServerlessAppInsuranceQuotationApi278BAD0B"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Account"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiDeployment2D016444e23cb29ddf0df3c0698aea1df525fe95": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Insurance Quotation API - dev",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "DependsOn": [
+    "ServerlessAppInsuranceQuotationApiapiOPTIONS545C1EB7",
+    "ServerlessAppInsuranceQuotationApiapiA508EA3A",
+    "ServerlessAppInsuranceQuotationApiapiv1healthGET9B435BB9",
+    "ServerlessAppInsuranceQuotationApiapiv1healthOPTIONSD87663C4",
+    "ServerlessAppInsuranceQuotationApiapiv1health354FBB05",
+    "ServerlessAppInsuranceQuotationApiapiv1OPTIONS1BB008FC",
+    "ServerlessAppInsuranceQuotationApiapiv1productsOPTIONS7723A89F",
+    "ServerlessAppInsuranceQuotationApiapiv1productsE8C886DC",
+    "ServerlessAppInsuranceQuotationApiapiv1quotesOPTIONSE5D91E35",
+    "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E",
+    "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7",
+    "ServerlessAppInsuranceQuotationApiapiv1usersOPTIONS251C229C",
+    "ServerlessAppInsuranceQuotationApiapiv1usersC559A852",
+    "ServerlessAppInsuranceQuotationApiOPTIONSB4BC19BF"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiDeploymentStagedevBF9545D5": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiDeployment2D016444e23cb29ddf0df3c0698aea1df525fe95"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": true,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "MetricsEnabled": true,
+      "ResourcePath": "/*",
+      "ThrottlingBurstLimit": 200,
+      "ThrottlingRateLimit": 100
+     }
+    ],
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    },
+    "StageName": "dev",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "DependsOn": [
+    "ServerlessAppInsuranceQuotationApiAccount7247A3FC"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/DeploymentStage.dev/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiOPTIONSB4BC19BF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "ServerlessAppInsuranceQuotationApi278BAD0B",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiA508EA3A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ServerlessAppInsuranceQuotationApi278BAD0B",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "api",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiOPTIONS545C1EB7": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiA508EA3A"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiA508EA3A"
+    },
+    "PathPart": "v1",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1OPTIONS1BB008FC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
+    },
+    "PathPart": "quotes",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesOPTIONSE5D91E35": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1usersC559A852": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
+    },
+    "PathPart": "users",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/users/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1usersOPTIONS251C229C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1usersC559A852"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/users/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1productsE8C886DC": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
+    },
+    "PathPart": "products",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/products/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1productsOPTIONS7723A89F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1productsE8C886DC"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/products/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1health354FBB05": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
+    },
+    "PathPart": "health",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1healthOPTIONSD87663C4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1health354FBB05"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1healthGETApiPermissionInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1health4183666A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ServerlessAppHealthCheckFunction5B64D795",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:450683699755:",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+       },
+       "/",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApiDeploymentStagedevBF9545D5"
+       },
+       "/GET/api/v1/health"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/ApiPermission.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.health"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1healthGETApiPermissionTestInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1health8D852ABB": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ServerlessAppHealthCheckFunction5B64D795",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:450683699755:",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+       },
+       "/test-invoke-stage/GET/api/v1/health"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/ApiPermission.Test.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.health"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1healthGET9B435BB9": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Origin": "'*'"
+       },
+       "StatusCode": "200"
+      }
+     ],
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ServerlessAppHealthCheckFunction5B64D795",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true
+      },
+      "StatusCode": "200"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1health354FBB05"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/Resource"
+   }
+  },
+  "ServerlessAppHealthCheckFunction5B64D795": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
+     "S3Key": "aa629b45d016707f2d8698fc8496d27013bca11c27c3fa685b57c784866a2778.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "NODE_ENV": "dev",
+      "LOG_LEVEL": "debug",
+      "REDIS_SECRET_ARN": {
+       "Ref": "RedisRedisSecret04F920F1"
+      },
+      "DB_SECRET_ARN": {
+       "Ref": "DatabaseDatabaseSecret487264A7"
+      }
+     }
+    },
+    "Handler": "handler.handler",
+    "Layers": [
+     {
+      "Ref": "ServerlessAppSharedDependenciesLayer3DFD75E1"
+     }
+    ],
+    "LoggingConfig": {
+     "LogGroup": {
+      "Ref": "ServerlessAppLambdaLogGroup20642418"
+     }
+    },
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "ServerlessAppLambdaExecutionRole47A06588",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Timeout": 30,
+    "VpcConfig": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "NetworkingLambdaSecurityGroupA5120D58",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet1SubnetB2B4F737"
+      },
+      {
+       "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet2Subnet9B04F5BD"
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "NetworkingInsuranceQuotationVpcLambdaSubnet1DefaultRoute539C5955",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableAssociationCD94C904",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet2DefaultRoute3A6BA3EA",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTableAssociationE66FE6F7",
+    "ServerlessAppLambdaExecutionRole47A06588"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/HealthCheckFunction/Resource",
+    "aws:asset:path": "asset.aa629b45d016707f2d8698fc8496d27013bca11c27c3fa685b57c784866a2778",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ServerlessAppTestStageF73AA1C7": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiDeployment2D016444e23cb29ddf0df3c0698aea1df525fe95"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "ResourcePath": "/*",
+      "ThrottlingBurstLimit": 100,
+      "ThrottlingRateLimit": 50
+     }
+    ],
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    },
+    "StageName": "test",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ]
+   },
+   "DependsOn": [
+    "ServerlessAppInsuranceQuotationApiAccount7247A3FC"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/TestStage/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31Sy27bMBD8ltxp1nEO7VW208BA2gpS4GuwojYyY4kUuEsbhqB/L0Q9YxQ97czsYB9cbuTm8YdcP8CVVio/r0qdySZlUGcBV3pvUG1kc6yV2H2YY7wTsc9KrVKfGeROm1FiPeMbZCXO+qxFRFZpYG3NZO7A8yHuwm/gF2C8wk3ETl+AcS58MIzO4GToJxlYxAzqVKFhMSjHWj2bvLba8GCdaKj0AQqXnhSVd5pvL876Ooz+X+FgCodErSBUDpkqMFCgk00a+ODvUB/ewBXIizEnw32mFS4n2fSLT83326WwB4YMCHelJ0bXG76QgyEGo7AVGirZJLa/RxdbgSUQawXqhLKZrrRY1F3QlUi06yytKG1Bsnm1xWQZcStKqLIcZPMKN3RHdDSc9p7H6CpNgf30Ro0/YMStoKd3IEImGXVB0JPcenVG3gKhgFoX/WFlkyBxVOuwzwwjpaw3LPZYl/Y2vvGCpQxF/ykDSJCsdwpD+V/IJ5t3yQGN2aFJwG27kD2xrf7l6vAfz7XnO1Ps7EXn6ELDsGM3iDZFK4zNUX7St8tmLR+/y/XDJ2m9ct6wrlAmffwLGPGs3aQDAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "NetworkingVpcIdA4694F27": {
+   "Description": "VPC ID",
+   "Value": {
+    "Ref": "NetworkingInsuranceQuotationVpc1D86D6E4"
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-VpcId"
+   }
+  },
+  "NetworkingLambdaSecurityGroupId36193F5C": {
+   "Description": "Lambda Security Group ID",
+   "Value": {
+    "Fn::GetAtt": [
+     "NetworkingLambdaSecurityGroupA5120D58",
+     "GroupId"
+    ]
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-LambdaSG"
+   }
+  },
+  "NetworkingDatabaseSecurityGroupId8332A848": {
+   "Description": "Database Security Group ID",
+   "Value": {
+    "Fn::GetAtt": [
+     "NetworkingDatabaseSecurityGroupF326A325",
+     "GroupId"
+    ]
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-DatabaseSG"
+   }
+  },
+  "NetworkingRedisSecurityGroupId7086B095": {
+   "Description": "Redis Security Group ID",
+   "Value": {
+    "Fn::GetAtt": [
+     "NetworkingRedisSecurityGroupF70E9C50",
+     "GroupId"
+    ]
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-RedisSG"
+   }
+  },
+  "DatabaseDatabaseClusterEndpoint92B6597E": {
+   "Description": "Aurora PostgreSQL cluster endpoint",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      {
+       "Fn::GetAtt": [
+        "DatabaseDatabaseCluster0C7C993F",
+        "Endpoint.Address"
+       ]
+      },
+      ":",
+      {
+       "Fn::GetAtt": [
+        "DatabaseDatabaseCluster0C7C993F",
+        "Endpoint.Port"
+       ]
+      }
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-DatabaseEndpoint"
+   }
+  },
+  "DatabaseDatabaseClusterIdentifier37395F7F": {
+   "Description": "Aurora PostgreSQL cluster identifier",
+   "Value": {
+    "Ref": "DatabaseDatabaseCluster0C7C993F"
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-DatabaseIdentifier"
+   }
+  },
+  "DatabaseDatabaseSecretArn884B6F93": {
+   "Description": "Database credentials secret ARN",
+   "Value": {
+    "Ref": "DatabaseDatabaseSecret487264A7"
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-DatabaseSecretArn"
+   }
+  },
+  "DatabaseDatabaseName925B74A8": {
+   "Description": "Default database name",
+   "Value": "insurance_quotation",
+   "Export": {
+    "Name": "InsuranceQuotation-DatabaseName"
+   }
+  },
+  "RedisRedisEndpointCDC87E15": {
+   "Description": "ElastiCache Serverless Redis endpoint",
+   "Value": {
+    "Fn::GetAtt": [
+     "RedisRedisServerlessCacheB7CEB3D4",
+     "Endpoint.Address"
+    ]
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-RedisEndpoint"
+   }
+  },
+  "RedisRedisCacheName791949B0": {
+   "Description": "ElastiCache Serverless Redis cache name",
+   "Value": "insurance-quotation-dev",
+   "Export": {
+    "Name": "InsuranceQuotation-RedisCacheName"
+   }
+  },
+  "RedisRedisSecretArnB4805263": {
+   "Description": "Redis connection configuration secret ARN",
+   "Value": {
+    "Ref": "RedisRedisSecret04F920F1"
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-RedisSecretArn"
+   }
+  },
+  "RedisRedisPort13CA67FB": {
+   "Description": "Redis port",
+   "Value": "6379",
+   "Export": {
+    "Name": "InsuranceQuotation-RedisPort"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiEndpoint816DA825": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ServerlessAppInsuranceQuotationApiDeploymentStagedevBF9545D5"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ServerlessAppApiGatewayUrl426EB626": {
+   "Description": "API Gateway URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ServerlessAppInsuranceQuotationApiDeploymentStagedevBF9545D5"
+      },
+      "/"
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-ApiUrl-dev"
+   }
+  },
+  "ServerlessAppApiGatewayId595687C3": {
+   "Description": "API Gateway ID",
+   "Value": {
+    "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-ApiId-dev"
+   }
+  },
+  "ServerlessAppLambdaRoleArn09A8F06E": {
+   "Description": "Lambda execution role ARN",
+   "Value": {
+    "Fn::GetAtt": [
+     "ServerlessAppLambdaExecutionRole47A06588",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-LambdaRoleArn-dev"
+   }
+  },
+  "ServerlessAppSharedLayerArn7276B64B": {
+   "Description": "Shared dependencies layer ARN",
+   "Value": {
+    "Ref": "ServerlessAppSharedDependenciesLayer3DFD75E1"
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-SharedLayerArn-dev"
+   }
+  },
+  "Environment": {
+   "Description": "Deployment environment",
+   "Value": "dev"
+  },
+  "Region": {
+   "Description": "AWS Region",
+   "Value": "us-east-1"
+  },
+  "Account": {
+   "Description": "AWS Account ID",
+   "Value": "450683699755"
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

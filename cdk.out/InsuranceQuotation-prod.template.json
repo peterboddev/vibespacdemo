@@ -1,0 +1,62 @@
+{
+ "Description": "Insurance Quotation API - prod environment",
+ "Outputs": {
+  "Environment": {
+   "Description": "Deployment environment",
+   "Value": "prod"
+  },
+  "Region": {
+   "Description": "AWS Region",
+   "Value": "us-east-1"
+  },
+  "Account": {
+   "Description": "AWS Account ID",
+   "Value": "450683699755"
+  }
+ },
+ "Resources": {
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zPSMzK00DNQTCwv1k1OydbNyUzSqw4uSUzO1nFOy/MvLSkoLanVyctPSdXLKtYvMzLQMzTXM1DMKs7M1C0qzSvJzE3VC4LQAJHqBT1LAAAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-prod/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

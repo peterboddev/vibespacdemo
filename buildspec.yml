@@ -1,0 +1,138 @@
+version: 0.2
+
+env:
+  variables:
+    NODE_ENV: "production"
+  parameter-store:
+    # Add any sensitive parameters from Parameter Store here
+    # GITHUB_TOKEN: /insurance-quotation/github-token
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo "Installing dependencies..."
+      - npm ci --only=production
+      - npm install -g aws-cdk@latest
+      - npm install -g typescript@latest
+      - echo "Node version:" && node --version
+      - echo "NPM version:" && npm --version
+      - echo "CDK version:" && cdk --version
+      
+  pre_build:
+    commands:
+      - echo "Pre-build phase started on `date`"
+      - echo "Environment:" $ENVIRONMENT
+      - echo "Target Environment:" $TARGET_ENVIRONMENT
+      - echo "Stage:" $STAGE
+      
+      # Install dev dependencies for build process
+      - npm install --only=dev
+      
+      # Generate dynamic routes configuration
+      - echo "Generating routes configuration..."
+      - npx ts-node scripts/generate-routes.ts
+      - echo "Routes configuration generated:"
+      - ls -la infrastructure/generated/ || echo "No generated directory found"
+      
+      # Compile TypeScript
+      - echo "Compiling TypeScript..."
+      - npm run build
+      
+      # Run tests
+      - echo "Running tests..."
+      - npm test -- --passWithNoTests --coverage=false
+      
+      # Lint code
+      - echo "Running linter..."
+      - npm run lint || echo "Linting completed with warnings"
+      
+  build:
+    commands:
+      - echo "Build phase started on `date`"
+      
+      # Set CDK context based on stage
+      - |
+        if [ "$STAGE" = "deploy-dev" ] || [ "$STAGE" = "deploy-prod" ]; then
+          echo "Deployment stage detected"
+          TARGET_ENV=${TARGET_ENVIRONMENT:-dev}
+        else
+          echo "Build stage detected"
+          TARGET_ENV=${ENVIRONMENT:-dev}
+        fi
+      
+      - echo "Target environment for deployment:" $TARGET_ENV
+      
+      # CDK Bootstrap check
+      - echo "Checking CDK bootstrap..."
+      - cdk bootstrap --context environment=$TARGET_ENV || echo "Bootstrap already exists"
+      
+      # Synthesize CDK
+      - echo "Synthesizing CDK..."
+      - cdk synth --context environment=$TARGET_ENV
+      
+      # Deploy only if this is a deployment stage
+      - |
+        if [ "$STAGE" = "deploy-dev" ] || [ "$STAGE" = "deploy-prod" ]; then
+          echo "Deploying infrastructure to $TARGET_ENV..."
+          cdk deploy --context environment=$TARGET_ENV --require-approval never --verbose
+        else
+          echo "Skipping deployment - this is a build stage"
+        fi
+      
+  post_build:
+    commands:
+      - echo "Post-build phase started on `date`"
+      
+      # Get deployment outputs if this was a deployment
+      - |
+        if [ "$STAGE" = "deploy-dev" ] || [ "$STAGE" = "deploy-prod" ]; then
+          echo "Deployment completed successfully!"
+          echo "Getting stack outputs..."
+          
+          STACK_NAME="InsuranceQuotation-${TARGET_ENV}"
+          echo "Stack name: $STACK_NAME"
+          
+          # Get API Gateway URL
+          API_URL=$(aws cloudformation describe-stacks \
+            --stack-name $STACK_NAME \
+            --query 'Stacks[0].Outputs[?OutputKey==`ServerlessAppApiGatewayUrl`].OutputValue' \
+            --output text 2>/dev/null || echo "Not found")
+          
+          echo "API Gateway URL: $API_URL"
+          
+          # Test health endpoint if URL is available
+          if [ "$API_URL" != "Not found" ] && [ "$API_URL" != "" ]; then
+            echo "Testing health endpoint..."
+            curl -f "${API_URL}api/v1/health" || echo "Health check failed or endpoint not ready"
+          fi
+          
+          # Save deployment info
+          echo "Deployment completed at $(date)" > deployment-info.txt
+          echo "Environment: $TARGET_ENV" >> deployment-info.txt
+          echo "API URL: $API_URL" >> deployment-info.txt
+        else
+          echo "Build completed successfully!"
+          echo "Build artifacts ready for deployment"
+        fi
+
+reports:
+  jest_reports:
+    files:
+      - coverage/lcov.info
+    base-directory: coverage
+    file-format: CLOVERXML
+
+artifacts:
+  files:
+    - '**/*'
+    - deployment-info.txt
+  name: insurance-quotation-build-$(date +%Y-%m-%d-%H-%M-%S)
+  base-directory: .
+
+cache:
+  paths:
+    - node_modules/**/*
+    - layers/shared-dependencies/node_modules/**/*
+    - ~/.npm/**/*

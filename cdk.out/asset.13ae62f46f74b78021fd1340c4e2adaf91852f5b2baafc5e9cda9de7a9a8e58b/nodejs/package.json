@@ -1,0 +1,6 @@
+{
+  "name": "insurance-quotation-shared-layer",
+  "version": "1.0.0",
+  "description": "Shared dependencies for Insurance Quotation Lambda functions",
+  "main": "index.js"
+}

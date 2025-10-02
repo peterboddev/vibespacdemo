@@ -32,3 +32,78 @@ export interface SuccessResponse<T = any> {
   timestamp: string;     // ISO timestamp of response
   requestId: string;     // Unique request identifier for tracing
 }
+
+/**
+ * Insurance types supported by the quotation system
+ */
+export enum InsuranceType {
+  AUTO = 'auto',
+  HOME = 'home',
+  LIFE = 'life',
+  HEALTH = 'health'
+}
+
+/**
+ * Quote status enumeration
+ */
+export enum QuoteStatus {
+  DRAFT = 'draft',
+  ACTIVE = 'active',
+  EXPIRED = 'expired',
+  CONVERTED = 'converted'
+}
+
+/**
+ * Personal information for quote requests
+ */
+export interface PersonalInfo {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+}
+
+/**
+ * Coverage details for insurance quote
+ */
+export interface CoverageDetails {
+  insuranceType: InsuranceType;
+  coverageAmount: number;
+  deductible: number;
+  additionalOptions?: string[];
+}
+
+/**
+ * Quote request payload from client
+ */
+export interface QuoteRequest {
+  personalInfo: PersonalInfo;
+  coverageDetails: CoverageDetails;
+}
+
+/**
+ * Complete quote response with calculated premium
+ */
+export interface Quote {
+  id: string;
+  referenceNumber: string;
+  personalInfo: PersonalInfo;
+  coverageDetails: CoverageDetails;
+  premium: {
+    basePremium: number;
+    discounts: number;
+    surcharges: number;
+    totalPremium: number;
+  };
+  status: QuoteStatus;
+  expirationDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
