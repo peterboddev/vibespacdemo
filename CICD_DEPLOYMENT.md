@@ -16,7 +16,7 @@ The CI/CD pipeline has been successfully deployed and is operational:
 ## Overview
 
 The CI/CD pipeline provides:
-- **Automated builds** with TypeScript compilation and testing
+- **Automated builds** with multi-tier TypeScript compilation and robust fallback strategies
 - **Dynamic route generation** from Lambda function annotations (optional, currently disabled)
 - **Multi-environment deployment** (dev automatic, prod with manual approval)
 - **CloudWatch monitoring** and SNS notifications
