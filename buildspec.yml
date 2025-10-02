@@ -13,7 +13,7 @@ phases:
       nodejs: 20
     commands:
       - echo "Installing dependencies..."
-      - npm ci --only=production
+      - npm ci --omit=dev
       - npm install -g aws-cdk@latest
       - npm install -g typescript@latest
       - echo "Node version:" && node --version
@@ -28,13 +28,11 @@ phases:
       - echo "Stage:" $STAGE
       
       # Install dev dependencies for build process
-      - npm install --only=dev
+      - npm install --include=dev
       
-      # Generate dynamic routes configuration
-      - echo "Generating routes configuration..."
-      - npx ts-node scripts/generate-routes.ts
-      - echo "Routes configuration generated:"
-      - ls -la infrastructure/generated/ || echo "No generated directory found"
+      # Generate dynamic routes configuration (optional - skip for now)
+      - echo "Skipping route generation for this build..."
+      - mkdir -p infrastructure/generated || echo "Generated directory already exists"
       
       # Compile TypeScript
       - echo "Compiling TypeScript..."
