@@ -62,7 +62,7 @@ infrastructure/
 
 ### Security Architecture 🛡️
 
-**Security Assessment: EXCELLENT** - See [SECURITY_ASSESSMENT.md](SECURITY_ASSESSMENT.md) for detailed analysis.
+**Security Assessment: EXCELLENT** - See [docs/SECURITY_ASSESSMENT.md](docs/SECURITY_ASSESSMENT.md) for detailed analysis.
 
 The infrastructure implements enterprise-grade security best practices:
 
@@ -88,7 +88,7 @@ The AWS infrastructure includes:
 - **ElastiCache Serverless Redis**: Auto-scaling cache with performance optimization
 - **VPC with Private Subnets**: Secure network isolation across multiple AZs
 - **API Gateway + Lambda**: Serverless compute with comprehensive security and CORS configuration
-- **Lambda Layers**: Shared dependencies with Docker bundling for production optimization
+- **Lambda Layers**: Shared dependencies with direct asset bundling for simplified deployment
 - **Secrets Manager**: Secure credential storage for database and cache connections
 - **CloudWatch Logs**: Environment-specific log retention and monitoring
 
@@ -97,7 +97,7 @@ The AWS infrastructure includes:
 The CI/CD infrastructure includes:
 
 - **CodePipeline**: Multi-stage deployment pipeline with source, build, and deploy stages
-- **CodeBuild Projects**: Separate build and deployment projects with Docker support for Lambda layer bundling
+- **CodeBuild Projects**: Separate build and deployment projects with simplified Lambda layer bundling
 - **S3 Artifact Bucket**: Versioned storage with lifecycle policies for build artifacts
 - **CloudWatch Monitoring**: Automated alarms for pipeline and build failures
 - **SNS Notifications**: Real-time alerts for pipeline events and manual approvals
@@ -395,7 +395,7 @@ npm run generate-routes
 npm run deploy-with-routes
 ```
 
-**Note**: Route generation is currently disabled in the CI/CD pipeline for build stability. The system uses default route configuration. See [DYNAMIC_ROUTES.md](DYNAMIC_ROUTES.md) for details on re-enabling this feature.
+**Note**: Route generation is currently disabled in the CI/CD pipeline for build stability. The system uses default route configuration. See [docs/DYNAMIC_ROUTES.md](docs/DYNAMIC_ROUTES.md) for details on re-enabling this feature.
 
 ## Data Models
 
@@ -609,6 +609,32 @@ The application includes reusable middleware for Lambda functions:
 Standardized response creation utilities ensure consistent API responses:
 - `createSuccessResponse<T>(data, statusCode, requestId)` - Success responses
 - `createErrorResponse(code, message, statusCode, requestId, details)` - Error responses
+
+## 📚 Documentation
+
+This project includes comprehensive documentation organized by category. For a complete overview of all available documentation, see **[docs/README.md](docs/README.md)**.
+
+### Key Documentation Files
+
+#### 🚀 **Deployment & Status**
+- [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md) - Overall project status and progress
+- [docs/DEPLOYMENT_STATUS.md](docs/DEPLOYMENT_STATUS.md) - Current deployment status
+- [docs/PIPELINE_SUCCESS_SUMMARY.md](docs/PIPELINE_SUCCESS_SUMMARY.md) - CI/CD pipeline success details
+
+#### 🔒 **Security & Architecture**
+- [docs/SECURITY_ASSESSMENT.md](docs/SECURITY_ASSESSMENT.md) - Comprehensive security analysis
+- [docs/SERVERLESS_ENHANCEMENTS.md](docs/SERVERLESS_ENHANCEMENTS.md) - Serverless architecture details
+
+#### 🧪 **Implementation & Testing**
+- [docs/IMPLEMENTATION_COMPLETE.md](docs/IMPLEMENTATION_COMPLETE.md) - Completed features
+- [docs/QUOTE_API_IMPLEMENTATION.md](docs/QUOTE_API_IMPLEMENTATION.md) - Quote API details
+- [docs/TESTING_RESULTS.md](docs/TESTING_RESULTS.md) - Test results and coverage
+
+#### 🔧 **Build & Configuration**
+- [docs/BUILD_FIX_SUMMARY.md](docs/BUILD_FIX_SUMMARY.md) - Build system improvements
+- [docs/DOCKER_REMOVAL_SUMMARY.md](docs/DOCKER_REMOVAL_SUMMARY.md) - Simplified deployment approach
+
+For the complete documentation index with all available files, visit **[docs/README.md](docs/README.md)**.
 
 ## Features
 

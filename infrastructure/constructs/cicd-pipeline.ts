@@ -154,7 +154,7 @@ export class CicdPipeline extends Construct {
       environment: {
         buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
         computeType: codebuild.ComputeType.SMALL,
-        privileged: true, // Required for Docker daemon access to bundle Lambda layers with native dependencies
+        privileged: false, // No Docker required for simplified layer approach
         environmentVariables: {
           ENVIRONMENT: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,

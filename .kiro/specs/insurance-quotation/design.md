@@ -139,10 +139,42 @@ graph TB
 
 **Implementation:**
 - **API Gateway**: RESTful endpoints with IP-based access restrictions for production
-- **Lambda Layers**: Docker-bundled shared dependencies for optimal performance
+- **Lambda Layers**: Simplified shared dependencies without Docker bundling for faster deployments
 - **IAM Policies**: Least-privilege access to database, Redis, and VPC resources
 - **CloudWatch Logs**: Environment-specific retention policies (1 week dev, 1 month prod)
 - **Health Endpoints**: Built-in connectivity checks for all infrastructure components
+
+**Lambda Layer Strategy:**
+- **Pre-built Structure**: Use standard Node.js layer format (`nodejs/node_modules/`) without Docker
+- **Build Script**: Simple npm install process to prepare layer dependencies
+- **Deployment Simplicity**: Eliminate Docker dependency for faster CI/CD pipeline
+- **Shared Dependencies**: Common AWS SDK clients, database drivers, and validation libraries
+
+**Layer Implementation Details:**
+```
+layers/shared-dependencies/
+├── package.json                 # Layer dependencies definition
+├── build-layer.js              # Build script to prepare layer
+└── nodejs/                     # Lambda layer runtime directory
+    └── node_modules/           # Installed dependencies
+        ├── @aws-sdk/
+        ├── ioredis/
+        ├── pg/
+        ├── joi/
+        └── uuid/
+```
+
+**Build Process:**
+1. **Dependency Installation**: Run `npm install --production` in layer directory
+2. **Structure Creation**: Move `node_modules` to `nodejs/` subdirectory
+3. **CDK Integration**: Reference layer using `lambda.Code.fromAsset('layers/shared-dependencies')`
+4. **No Docker Required**: Standard file system operations only
+
+**Benefits:**
+- **Faster Builds**: No Docker image pulling or container startup time
+- **Simpler CI/CD**: Remove Docker daemon and privileged access requirements
+- **Local Development**: Layer can be built and tested locally without Docker
+- **Reduced Complexity**: Standard npm workflow familiar to all developers
 
 ## Data Models
 

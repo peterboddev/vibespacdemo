@@ -8,6 +8,9 @@ yarn-error.log*
 dist/
 build/
 
+# Documentation (generated/temporary docs)
+docs/
+
 # Environment variables and sensitive configuration
 .env
 .env.local

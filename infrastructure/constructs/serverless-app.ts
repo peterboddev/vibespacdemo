@@ -26,7 +26,7 @@ export interface ServerlessAppProps {
 export class ServerlessApp extends Construct {
   public readonly api: apigateway.RestApi;
   public readonly lambdaRole: iam.Role;
-  public readonly sharedLayer: lambda.LayerVersion;
+  public readonly sharedLayer?: lambda.LayerVersion;
   public readonly logGroup: logs.LogGroup;
 
   constructor(scope: Construct, id: string, props: ServerlessAppProps) {
@@ -99,27 +99,9 @@ export class ServerlessApp extends Construct {
       },
     });
 
-    // Create Lambda layer for shared dependencies with Docker bundling
-    this.sharedLayer = new lambda.LayerVersion(this, 'SharedDependenciesLayer', {
-      layerVersionName: `insurance-quotation-shared-${environment}`,
-      description: `Shared dependencies for Insurance Quotation ${environment}`,
-      code: lambda.Code.fromAsset('layers/shared-dependencies', {
-        bundling: {
-          image: lambda.Runtime.NODEJS_20_X.bundlingImage,
-          command: [
-            'bash', '-c', [
-              'mkdir -p /asset-output/nodejs',
-              'cp package*.json /asset-output/nodejs/',
-              'cd /asset-output/nodejs',
-              'npm ci --only=production',
-              'rm package*.json',
-            ].join(' && '),
-          ],
-        },
-      }),
-      compatibleRuntimes: [lambda.Runtime.NODEJS_20_X],
-      removalPolicy: environment === 'prod' ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
-    });
+    // Skip Lambda layer for now to avoid Docker issues - Lambda functions will bundle their own dependencies
+    // TODO: Re-enable layer once Docker bundling is working or use alternative approach
+    this.sharedLayer = undefined;
 
     // Create API Gateway with comprehensive configuration
     this.api = new apigateway.RestApi(this, 'InsuranceQuotationApi', {

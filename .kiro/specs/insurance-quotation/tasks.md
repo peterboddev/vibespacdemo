@@ -90,21 +90,27 @@
     - Create Redis connection secrets in AWS Secrets Manager
     - _Requirements: Performance optimization for all services_
 
-  - [x] 3.5 Create serverless application infrastructure
+  - [ ] 3.5 Simplify Lambda Layer configuration to remove Docker dependency
+    - Remove Docker bundling configuration from ServerlessApp construct
+    - Create pre-built layer structure with nodejs/node_modules directory
+    - Add build script to prepare layer dependencies using standard npm install
+    - Update CDK configuration to use simple asset reference without bundling
+    - Test layer deployment without Docker requirements
+    - Update CI/CD pipeline to remove privileged Docker access requirement
+    - _Requirements: Simplified deployment pipeline without Docker complexity_
 
-
-
+  - [ ] 3.6 Create serverless application infrastructure
     - Set up API Gateway with comprehensive security and CORS configuration
     - Configure Lambda execution roles and policies for AWS service access
     - Set up CloudWatch log groups for Lambda function monitoring with environment-specific retention
-    - Create Lambda layers for shared dependencies with Docker bundling for production
+    - Deploy simplified Lambda layers for shared dependencies
     - Configure API Gateway integration with Lambda functions and health check endpoint
     - Set up API Gateway stages (dev, test, prod) with environment-specific throttling
     - Implement IP-based access restrictions for production environment
     - Add comprehensive IAM policies for database, Redis, and VPC access
     - _Requirements: Scalable serverless hosting for all API services_
 
-  - [x] 3.6 Implement automated deployment after successful synthesis
+  - [x] 3.7 Implement automated deployment after successful synthesis
     - Create deployment script that triggers after `cdk synth` success
     - Add npm script for `synth-and-deploy` workflow
     - Configure automatic deployment to development environment
