@@ -2033,28 +2033,6 @@
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/LambdaExecutionRole/Resource"
    }
   },
-  "ServerlessAppSharedDependenciesLayer3DFD75E1": {
-   "Type": "AWS::Lambda::LayerVersion",
-   "Properties": {
-    "CompatibleRuntimes": [
-     "nodejs20.x"
-    ],
-    "Content": {
-     "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
-     "S3Key": "13ae62f46f74b78021fd1340c4e2adaf91852f5b2baafc5e9cda9de7a9a8e58b.zip"
-    },
-    "Description": "Shared dependencies for Insurance Quotation dev",
-    "LayerName": "insurance-quotation-shared-dev"
-   },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete",
-   "Metadata": {
-    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/SharedDependenciesLayer/Resource",
-    "aws:asset:path": "asset.13ae62f46f74b78021fd1340c4e2adaf91852f5b2baafc5e9cda9de7a9a8e58b",
-    "aws:asset:is-bundled": false,
-    "aws:asset:property": "Content"
-   }
-  },
   "ServerlessAppInsuranceQuotationApi278BAD0B": {
    "Type": "AWS::ApiGateway::RestApi",
    "Properties": {
@@ -2791,11 +2769,6 @@
      }
     },
     "Handler": "handler.handler",
-    "Layers": [
-     {
-      "Ref": "ServerlessAppSharedDependenciesLayer3DFD75E1"
-     }
-    ],
     "LoggingConfig": {
      "LogGroup": {
       "Ref": "ServerlessAppLambdaLogGroup20642418"
@@ -2909,7 +2882,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31Sy27bMBD8ltxp1nEO7VW208BA2gpS4GuwojYyY4kUuEsbhqB/L0Q9YxQ97czsYB9cbuTm8YdcP8CVVio/r0qdySZlUGcBV3pvUG1kc6yV2H2YY7wTsc9KrVKfGeROm1FiPeMbZCXO+qxFRFZpYG3NZO7A8yHuwm/gF2C8wk3ETl+AcS58MIzO4GToJxlYxAzqVKFhMSjHWj2bvLba8GCdaKj0AQqXnhSVd5pvL876Ooz+X+FgCodErSBUDpkqMFCgk00a+ODvUB/ewBXIizEnw32mFS4n2fSLT83326WwB4YMCHelJ0bXG76QgyEGo7AVGirZJLa/RxdbgSUQawXqhLKZrrRY1F3QlUi06yytKG1Bsnm1xWQZcStKqLIcZPMKN3RHdDSc9p7H6CpNgf30Ro0/YMStoKd3IEImGXVB0JPcenVG3gKhgFoX/WFlkyBxVOuwzwwjpaw3LPZYl/Y2vvGCpQxF/ykDSJCsdwpD+V/IJ5t3yQGN2aFJwG27kD2xrf7l6vAfz7XnO1Ps7EXn6ELDsGM3iDZFK4zNUX7St8tmLR+/y/XDJ2m9ct6wrlAmffwLGPGs3aQDAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STW/bMAz9Lb0rWpoetquTdEWAfRh2kWtBy6yjxpYMkUoQGPrvg/wVrxh24uPjAx8pcSM3j9/k+gGutFLleVXrQnY5gzoLuNJbh2oju2OrxO7dHNOdSH1Ra5X7wiBH7o4y6xlfoajxzt+5hMgqDaytmcURPB/SGH4BvwDjFW4idfoCjPfGB8PoDM6CYZIxS5hBnRo0LEbm2KpnU7ZWGx6lc9p3egeFS02OyjvNtxdnfduP/l/iYCqHREEQKodMDRio0Mku7/NRH9EQXsFVyIsxZ8HnShCuJNkNi8/m++2S2ANDAYS72hOjGwR/JQdDDEZhEBoa2WV2+I8Yg8AaiLUCdULZzb+0WNRd0NVItIuSIGpbkex+2GqWTDgIaHU1vLjsMiROWt0b3WGilPWGxR7b2t6m5RdZzlAN19KDDMl6p3ALhOIn8smWsTiiqTqa9DiIGpqihH6ZFF2jieKFffdGTac24SDo6Q2IkEkmMQh6kluvzsjRMCwMPLFt/uUX8W/PredPotTZiy7R9aP33eNK2lRBGFui/KAvl81aPn6V64cP0nrlvGHdoMyG+AdXFf6uhwMAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/CDKMetadata/Default"
@@ -3115,15 +3088,6 @@
    },
    "Export": {
     "Name": "InsuranceQuotation-LambdaRoleArn-dev"
-   }
-  },
-  "ServerlessAppSharedLayerArn7276B64B": {
-   "Description": "Shared dependencies layer ARN",
-   "Value": {
-    "Ref": "ServerlessAppSharedDependenciesLayer3DFD75E1"
-   },
-   "Export": {
-    "Name": "InsuranceQuotation-SharedLayerArn-dev"
    }
   },
   "Environment": {

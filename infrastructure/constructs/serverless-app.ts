@@ -26,7 +26,7 @@ export interface ServerlessAppProps {
 export class ServerlessApp extends Construct {
   public readonly api: apigateway.RestApi;
   public readonly lambdaRole: iam.Role;
-  public readonly sharedLayer?: lambda.LayerVersion;
+  public readonly sharedLayer: lambda.LayerVersion | undefined;
   public readonly logGroup: logs.LogGroup;
 
   constructor(scope: Construct, id: string, props: ServerlessAppProps) {
@@ -143,14 +143,14 @@ export class ServerlessApp extends Construct {
             principals: [new iam.AnyPrincipal()],
             actions: ['execute-api:Invoke'],
             resources: ['*'],
-            conditions: {
-              IpAddress: environment === 'prod' ? {
+            conditions: environment === 'prod' ? {
+              IpAddress: {
                 'aws:SourceIp': [
                   // Add allowed IP ranges for production
                   '0.0.0.0/0', // Replace with actual IP restrictions
                 ],
-              } : undefined,
-            },
+              },
+            } : {},
           }),
         ],
       }),
@@ -174,7 +174,7 @@ export class ServerlessApp extends Construct {
       handler: 'handler.handler',
       code: lambda.Code.fromAsset('src/lambda/health'),
       role: this.lambdaRole,
-      layers: [this.sharedLayer],
+      layers: this.sharedLayer ? [this.sharedLayer] : [],
       
       // VPC configuration
       vpc,
@@ -248,7 +248,7 @@ export class ServerlessApp extends Construct {
   } {
     return {
       role: this.lambdaRole,
-      layers: [this.sharedLayer],
+      layers: this.sharedLayer ? [this.sharedLayer] : [],
       logGroup: this.logGroup,
       environment: {
         NODE_ENV: this.node.tryGetContext('environment') || 'dev',
@@ -298,10 +298,13 @@ export class ServerlessApp extends Construct {
       exportName: `InsuranceQuotation-LambdaRoleArn-${this.node.tryGetContext('environment') || 'dev'}`,
     });
 
-    new cdk.CfnOutput(this, 'SharedLayerArn', {
-      value: this.sharedLayer.layerVersionArn,
-      description: 'Shared dependencies layer ARN',
-      exportName: `InsuranceQuotation-SharedLayerArn-${this.node.tryGetContext('environment') || 'dev'}`,
-    });
+    // Only create layer output if layer exists
+    if (this.sharedLayer) {
+      new cdk.CfnOutput(this, 'SharedLayerArn', {
+        value: this.sharedLayer.layerVersionArn,
+        description: 'Shared dependencies layer ARN',
+        exportName: `InsuranceQuotation-SharedLayerArn-${this.node.tryGetContext('environment') || 'dev'}`,
+      });
+    }
   }
 }

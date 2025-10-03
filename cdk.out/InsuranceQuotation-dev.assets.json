@@ -16,21 +16,6 @@
         }
       }
     },
-    "13ae62f46f74b78021fd1340c4e2adaf91852f5b2baafc5e9cda9de7a9a8e58b": {
-      "displayName": "ServerlessApp/SharedDependenciesLayer/Code",
-      "source": {
-        "path": "asset.13ae62f46f74b78021fd1340c4e2adaf91852f5b2baafc5e9cda9de7a9a8e58b",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "450683699755-us-east-1-0a45edca": {
-          "bucketName": "cdk-hnb659fds-assets-450683699755-us-east-1",
-          "objectKey": "13ae62f46f74b78021fd1340c4e2adaf91852f5b2baafc5e9cda9de7a9a8e58b.zip",
-          "region": "us-east-1",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-file-publishing-role-450683699755-us-east-1"
-        }
-      }
-    },
     "aa629b45d016707f2d8698fc8496d27013bca11c27c3fa685b57c784866a2778": {
       "displayName": "ServerlessApp/HealthCheckFunction/Code",
       "source": {
@@ -46,16 +31,16 @@
         }
       }
     },
-    "8d4869b86bee1b21a87bba6e971c7ce093f93bf0f7b07d6dde03dc36d4fa5ff3": {
+    "294f11ecb87769d43bbcbb54e96d121a35c416937e4dc764c0ac2061a2dfd6a0": {
       "displayName": "InsuranceQuotation-dev Template",
       "source": {
         "path": "InsuranceQuotation-dev.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "450683699755-us-east-1-8428b3cf": {
+        "450683699755-us-east-1-fdebfa5a": {
           "bucketName": "cdk-hnb659fds-assets-450683699755-us-east-1",
-          "objectKey": "8d4869b86bee1b21a87bba6e971c7ce093f93bf0f7b07d6dde03dc36d4fa5ff3.json",
+          "objectKey": "294f11ecb87769d43bbcbb54e96d121a35c416937e4dc764c0ac2061a2dfd6a0.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-file-publishing-role-450683699755-us-east-1"
         }

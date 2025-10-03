@@ -1,38 +1,34 @@
 {
   "version": "48.0.0",
   "artifacts": {
-    "InsuranceQuotation-CICD-dev.assets": {
+    "InsuranceQuotation-dev.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "InsuranceQuotation-CICD-dev.assets.json",
+        "file": "InsuranceQuotation-dev.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "InsuranceQuotation-CICD-dev": {
+    "InsuranceQuotation-dev": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://450683699755/us-east-1",
       "properties": {
-        "templateFile": "InsuranceQuotation-CICD-dev.template.json",
+        "templateFile": "InsuranceQuotation-dev.template.json",
         "terminationProtection": false,
         "tags": {
-          "Application": "InsuranceQuotationAPI",
-          "Backup": "Optional",
-          "Component": "CICD",
-          "CostCenter": "Engineering",
           "Environment": "dev",
           "ManagedBy": "CDK",
-          "Owner": "DevOps",
+          "Owner": "Development Team",
           "Project": "InsuranceQuotation"
         },
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-deploy-role-450683699755-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-cfn-exec-role-450683699755-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/66b383fc9385f4a4d9e72842f1d243e71b8ed6f55f98961e4cfe57cacb5c2e74.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/294f11ecb87769d43bbcbb54e96d121a35c416937e4dc764c0ac2061a2dfd6a0.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "InsuranceQuotation-CICD-dev.assets"
+          "InsuranceQuotation-dev.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-lookup-role-450683699755-us-east-1",
@@ -41,29 +37,13 @@
         }
       },
       "dependencies": [
-        "InsuranceQuotation-CICD-dev.assets"
+        "InsuranceQuotation-dev.assets"
       ],
       "metadata": {
-        "/InsuranceQuotation-CICD-dev": [
+        "/InsuranceQuotation-dev": [
           {
             "type": "aws:cdk:stack-tags",
             "data": [
-              {
-                "Key": "Application",
-                "Value": "InsuranceQuotationAPI"
-              },
-              {
-                "Key": "Backup",
-                "Value": "Optional"
-              },
-              {
-                "Key": "Component",
-                "Value": "CICD"
-              },
-              {
-                "Key": "CostCenter",
-                "Value": "Engineering"
-              },
               {
                 "Key": "Environment",
                 "Value": "dev"
@@ -74,7 +54,7 @@
               },
               {
                 "Key": "Owner",
-                "Value": "DevOps"
+                "Value": "Development Team"
               },
               {
                 "Key": "Project",
@@ -83,214 +63,626 @@
             ]
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/PipelineArtifacts/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelinePipelineArtifacts46D65C74"
+            "data": "NetworkingInsuranceQuotationVpc1D86D6E4"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/PipelineNotifications/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelinePipelineNotificationsD09EF7F8"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet1Subnet5B281BA3"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/BuildLogGroup/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineBuildLogGroup15A88889"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet1RouteTable971B836D"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/CodeBuildRole/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineCodeBuildRole42BB8656"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet1RouteTableAssociation1C6AC640"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/CodeBuildRole/DefaultPolicy/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineCodeBuildRoleDefaultPolicy241DE1F1"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet1DefaultRoute6CFE4CDB"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/BuildProject/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/EIP": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineBuildProject9D447FA8"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet1EIPD15D559B"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/DeployRoledev/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet1/NATGateway": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineDeployRoledev4A6FE50F"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet1NATGateway2BC2BD57"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/DeployRoledev/DefaultPolicy/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineDeployRoledevDefaultPolicy37905E66"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet2Subnet99A77CB8"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/DeployProjectdev/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineDeployProjectdev24D74B39"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet2RouteTableC98E5482"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/Pipeline": [
-          {
-            "type": "aws:cdk:warning",
-            "data": "V1 pipeline type is implicitly selected when `pipelineType` is not set. If you want to use V2 type, set `PipelineType.V2`. [ack: @aws-cdk/aws-codepipeline:unspecifiedPipelineType]",
-            "trace": [
-              "Annotations.addMessage (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1978)",
-              "Annotations.addWarningV2 (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:896)",
-              "new Pipeline2 (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\aws-cdk-lib\\aws-codepipeline\\lib\\pipeline.js:1:8128)",
-              "new Pipeline2 (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:488)",
-              "new CicdPipeline (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\infrastructure\\constructs\\cicd-pipeline.ts:285:21)",
-              "new CicdStack (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\infrastructure\\stacks\\cicd-stack.ts:38:21)",
-              "Object.<anonymous> (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\infrastructure\\cicd-app.ts:43:19)",
-              "Module._compile (node:internal/modules/cjs/loader:1469:14)",
-              "Module.m._compile (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\ts-node\\src\\index.ts:1618:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1548:10)",
-              "Object.require.extensions.<computed> [as .ts] (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\ts-node\\src\\index.ts:1621:12)",
-              "Module.load (node:internal/modules/cjs/loader:1288:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:1104:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12)",
-              "phase4 (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\ts-node\\src\\bin.ts:649:14)",
-              "bootstrap (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\ts-node\\src\\bin.ts:95:10)",
-              "main (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\ts-node\\src\\bin.ts:55:10)",
-              "Object.<anonymous> (C:\\Users\\piotrbod\\Documents\\repos\\vibespacdemo\\node_modules\\ts-node\\src\\bin.ts:800:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1469:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1548:10)",
-              "Module.load (node:internal/modules/cjs/loader:1288:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:1104:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12)",
-              "node:internal/main/run_main_module:28:49"
-            ]
-          }
-        ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/Pipeline/Role/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineRoleB27FAA37"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet2RouteTableAssociation88AFA45D"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/Pipeline/Role/DefaultPolicy/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/PublicSubnet2/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineRoleDefaultPolicy7BDC1ABB"
+            "data": "NetworkingInsuranceQuotationVpcPublicSubnet2DefaultRouteFD145360"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/Pipeline/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "Pipeline9850B417"
+            "data": "NetworkingInsuranceQuotationVpcLambdaSubnet1SubnetB2B4F737"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/Pipeline/Build/Build/CodePipelineActionRole/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineBuildCodePipelineActionRole183A2F80"
+            "data": "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableD045B88C"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/Pipeline/Build/Build/CodePipelineActionRole/DefaultPolicy/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineBuildCodePipelineActionRoleDefaultPolicyF1BA3038"
+            "data": "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableAssociationCD94C904"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/Pipeline/DeployDev/DeployToDev/CodePipelineActionRole/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet1/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineDeployDevDeployToDevCodePipelineActionRoleC491A8E8"
+            "data": "NetworkingInsuranceQuotationVpcLambdaSubnet1DefaultRoute539C5955"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/Pipeline/DeployDev/DeployToDev/CodePipelineActionRole/DefaultPolicy/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineDeployDevDeployToDevCodePipelineActionRoleDefaultPolicy838A4978"
+            "data": "NetworkingInsuranceQuotationVpcLambdaSubnet2Subnet9B04F5BD"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/PipelineFailureAlarm/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelinePipelineFailureAlarmE06D4B23"
+            "data": "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTable04713E6C"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/BuildFailureAlarm/Resource": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineBuildFailureAlarm0A00ECCB"
+            "data": "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTableAssociationE66FE6F7"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/PipelineName": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/LambdaSubnet2/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelinePipelineName0D474C17"
+            "data": "NetworkingInsuranceQuotationVpcLambdaSubnet2DefaultRoute3A6BA3EA"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/PipelineArn": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet1/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelinePipelineArnF8678EF2"
+            "data": "NetworkingInsuranceQuotationVpcDatabaseSubnet1Subnet086B443A"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/BuildProjectName": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet1/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineBuildProjectName071FD770"
+            "data": "NetworkingInsuranceQuotationVpcDatabaseSubnet1RouteTable80AFE7A9"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/ArtifactBucketName": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet1/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineArtifactBucketName8CA8B15B"
+            "data": "NetworkingInsuranceQuotationVpcDatabaseSubnet1RouteTableAssociationCD6C1B18"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Pipeline/NotificationTopicArn": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PipelineNotificationTopicArnA4221741"
+            "data": "NetworkingInsuranceQuotationVpcDatabaseSubnet2SubnetF6F60672"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Environment": [
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcDatabaseSubnet2RouteTableD055850B"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/DatabaseSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcDatabaseSubnet2RouteTableAssociationA937398B"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcCacheSubnet1SubnetC23B71B5"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcCacheSubnet1RouteTable983FD53F"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcCacheSubnet1RouteTableAssociationE20038E7"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcCacheSubnet2Subnet90E50C2C"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcCacheSubnet2RouteTable947BCE40"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CacheSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcCacheSubnet2RouteTableAssociationC16CE69D"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcIGWF4FBDE96"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcVPCGWF252BE1E"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcRestrictDefaultSecurityGroupCustomResourceE5332666"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/S3Endpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcS3Endpoint1F77F097"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/SecretsManager/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcSecretsManagerSecurityGroup45B4098A"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/SecretsManager/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcSecretsManager10AA68F4"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CloudWatchLogs/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcCloudWatchLogsSecurityGroup56315DD5"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/InsuranceQuotationVpc/CloudWatchLogs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingInsuranceQuotationVpcCloudWatchLogs79464380"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/LambdaSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingLambdaSecurityGroupA5120D58"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/DatabaseSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingDatabaseSecurityGroupF326A325"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/DatabaseSecurityGroup/from InsuranceQuotationdevNetworkingLambdaSecurityGroup8B3BBDD7:5432": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingDatabaseSecurityGroupfromInsuranceQuotationdevNetworkingLambdaSecurityGroup8B3BBDD7543221DAAA5A"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/RedisSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingRedisSecurityGroupF70E9C50"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/RedisSecurityGroup/from InsuranceQuotationdevNetworkingLambdaSecurityGroup8B3BBDD7:6379": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingRedisSecurityGroupfromInsuranceQuotationdevNetworkingLambdaSecurityGroup8B3BBDD763798F43AA46"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/VpcId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingVpcIdA4694F27"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/LambdaSecurityGroupId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingLambdaSecurityGroupId36193F5C"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/DatabaseSecurityGroupId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingDatabaseSecurityGroupId8332A848"
+          }
+        ],
+        "/InsuranceQuotation-dev/Networking/RedisSecurityGroupId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NetworkingRedisSecurityGroupId7086B095"
+          }
+        ],
+        "/InsuranceQuotation-dev/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/InsuranceQuotation-dev/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/InsuranceQuotation-dev/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseSecret487264A7"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseSecret/Attachment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseSecretAttachment246FE93C"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseSubnetGroup/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseSubnetGroup8EABBC08"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseCluster/MonitoringRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseClusterMonitoringRole09B3EBEB"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseCluster/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseCluster0C7C993F"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseCluster/writer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseClusterwriter77E5E64F"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseClusterEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseClusterEndpoint92B6597E"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseClusterIdentifier": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseClusterIdentifier37395F7F"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseSecretArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseSecretArn884B6F93"
+          }
+        ],
+        "/InsuranceQuotation-dev/Database/DatabaseName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseDatabaseName925B74A8"
+          }
+        ],
+        "/InsuranceQuotation-dev/Redis/RedisSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisRedisSecret04F920F1"
+          }
+        ],
+        "/InsuranceQuotation-dev/Redis/RedisSubnetGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisRedisSubnetGroupE7D796E2"
+          }
+        ],
+        "/InsuranceQuotation-dev/Redis/RedisServerlessCache": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisRedisServerlessCacheB7CEB3D4"
+          }
+        ],
+        "/InsuranceQuotation-dev/Redis/RedisEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisRedisEndpointCDC87E15"
+          }
+        ],
+        "/InsuranceQuotation-dev/Redis/RedisCacheName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisRedisCacheName791949B0"
+          }
+        ],
+        "/InsuranceQuotation-dev/Redis/RedisSecretArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisRedisSecretArnB4805263"
+          }
+        ],
+        "/InsuranceQuotation-dev/Redis/RedisPort": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisRedisPort13CA67FB"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/LambdaLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppLambdaLogGroup20642418"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/LambdaExecutionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppLambdaExecutionRole47A06588"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApi278BAD0B"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiCloudWatchRole9D72B339"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiAccount7247A3FC"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiDeployment2D016444e23cb29ddf0df3c0698aea1df525fe95"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/DeploymentStage.dev/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiDeploymentStagedevBF9545D5"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiEndpoint816DA825"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiOPTIONSB4BC19BF"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiA508EA3A"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiOPTIONS545C1EB7"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1OPTIONS1BB008FC"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1quotesOPTIONSE5D91E35"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/users/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1usersC559A852"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/users/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1usersOPTIONS251C229C"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/products/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1productsE8C886DC"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/products/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1productsOPTIONS7723A89F"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1health354FBB05"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1healthOPTIONSD87663C4"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/ApiPermission.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.health": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1healthGETApiPermissionInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1health4183666A"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/ApiPermission.Test.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.health": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1healthGETApiPermissionTestInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1health8D852ABB"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppInsuranceQuotationApiapiv1healthGET9B435BB9"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/HealthCheckFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppHealthCheckFunction5B64D795"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/TestStage/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppTestStageF73AA1C7"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/ApiGatewayUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppApiGatewayUrl426EB626"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/ApiGatewayId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppApiGatewayId595687C3"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/LambdaRoleArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppLambdaRoleArn09A8F06E"
+          }
+        ],
+        "/InsuranceQuotation-dev/Environment": [
           {
             "type": "aws:cdk:logicalId",
             "data": "Environment"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Region": [
+        "/InsuranceQuotation-dev/Region": [
           {
             "type": "aws:cdk:logicalId",
             "data": "Region"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/Account": [
+        "/InsuranceQuotation-dev/Account": [
           {
             "type": "aws:cdk:logicalId",
             "data": "Account"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/CDKMetadata/Default": [
+        "/InsuranceQuotation-dev/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/BootstrapVersion": [
+        "/InsuranceQuotation-dev/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/InsuranceQuotation-CICD-dev/CheckBootstrapVersion": [
+        "/InsuranceQuotation-dev/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "InsuranceQuotation-CICD-dev"
+      "displayName": "InsuranceQuotation-dev"
     },
     "Tree": {
       "type": "cdk:tree",
