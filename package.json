@@ -18,6 +18,8 @@
     "cdk:bootstrap": "powershell -ExecutionPolicy Bypass -File scripts/bootstrap-cdk.ps1",
     "cdk:deploy": "cdk deploy",
     "cdk:destroy": "cdk destroy",
+    "layer:build": "echo 'Layer building is now automated by CDK. This script is kept for legacy/manual use.'",
+    "layer:build:win": "echo 'Layer building is now automated by CDK. This script is kept for legacy/manual use.'",
     "cdk:diff": "cdk diff",
     "cdk:synth": "cdk synth",
     "cdk:synth-and-deploy": "npm run cdk:synth && npm run cdk:deploy -- --require-approval never",

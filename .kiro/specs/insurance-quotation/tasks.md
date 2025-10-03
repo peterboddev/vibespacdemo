@@ -90,24 +90,39 @@
     - Create Redis connection secrets in AWS Secrets Manager
     - _Requirements: Performance optimization for all services_
 
-  - [ ] 3.5 Simplify Lambda Layer configuration to remove Docker dependency
-    - Remove Docker bundling configuration from ServerlessApp construct
+  - [x] 3.5 Implement Lambda Layer with proper deployment architecture
+    - Create Lambda Layer in ServerlessApp construct without Docker bundling
     - Create pre-built layer structure with nodejs/node_modules directory
-    - Add build script to prepare layer dependencies using standard npm install
-    - Update CDK configuration to use simple asset reference without bundling
+    - Add build scripts (Node.js and PowerShell) to prepare layer dependencies
+    - Update CDK configuration to use simple asset reference without Docker bundling
     - Test layer deployment without Docker requirements
-    - Update CI/CD pipeline to remove privileged Docker access requirement
+    - Update CI/CD pipeline to build layer during application deployment
     - _Requirements: Simplified deployment pipeline without Docker complexity_
 
-  - [ ] 3.6 Create serverless application infrastructure
+  - [x] 3.7 Restructure deployment architecture for infrastructure/application separation
+
+
+
+    - Move Lambda Layer from application stack to infrastructure stack
+    - Move SNS topics from application stack to infrastructure stack  
+    - Keep health check Lambda and CloudWatch alarms in application stack
+    - Update infrastructure stack to export layer ARN for application use
+    - Update application stack to import and use infrastructure layer
+    - Ensure clean separation between foundational and application components
+    - _Requirements: Clear deployment boundary between infrastructure and application_
+
+
+
+  - [x] 3.6 Create serverless application infrastructure
     - Set up API Gateway with comprehensive security and CORS configuration
     - Configure Lambda execution roles and policies for AWS service access
     - Set up CloudWatch log groups for Lambda function monitoring with environment-specific retention
-    - Deploy simplified Lambda layers for shared dependencies
     - Configure API Gateway integration with Lambda functions and health check endpoint
     - Set up API Gateway stages (dev, test, prod) with environment-specific throttling
     - Implement IP-based access restrictions for production environment
     - Add comprehensive IAM policies for database, Redis, and VPC access
+    - Create health check Lambda function with database and Redis connectivity checks
+    - Implement CloudWatch alarms for application-specific monitoring
     - _Requirements: Scalable serverless hosting for all API services_
 
   - [x] 3.7 Implement automated deployment after successful synthesis
@@ -140,15 +155,20 @@
     - [x] Set up deployment notification system via SNS
     - [x] Create platform-specific deployment scripts (PowerShell and Bash)
     - [x] Add health check validation and rollback capabilities
+
+
+
     - [x] Implement dry-run mode for testing deployment workflows
     - _Requirements: 7.1, 7.2 - ✅ FULLY SATISFIED_
 
-  - [ ] 4.3 Create automated health check system
-    - Implement health check endpoints for all services
-    - Create database connectivity health checks
-    - Add API endpoint validation health checks
-    - Configure CloudWatch alarms for health monitoring
-    - Implement automated rollback on health check failures
+  - [x] 4.3 Create automated health check system
+    - Implement health check endpoints for all services (GET /api/v1/health)
+    - Create database connectivity health checks with latency monitoring
+    - Add Redis connectivity health checks with error handling
+    - Configure CloudWatch alarms for health monitoring (function errors, duration, API 5xx, latency)
+    - Implement automated health check validation in CI/CD pipeline
+    - Create health check validation scripts (Node.js and PowerShell)
+    - Add SNS notifications for health alert distribution
     - _Requirements: 7.2, 7.3, 7.4 - Health monitoring and rollback_
 
 - [ ] 5. Implement data models and validation

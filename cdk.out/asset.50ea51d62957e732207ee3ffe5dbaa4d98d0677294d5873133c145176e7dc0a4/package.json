@@ -1,0 +1,17 @@
+{
+  "name": "insurance-quotation-shared-layer",
+  "version": "1.0.0",
+  "description": "Shared dependencies layer for Insurance Quotation Lambda functions",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.654.0",
+    "@aws-sdk/client-rds": "^3.654.0",
+    "ioredis": "^5.3.2",
+    "pg": "^8.11.3",
+    "uuid": "^9.0.1",
+    "joi": "^17.11.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -88,7 +88,7 @@ The AWS infrastructure includes:
 - **ElastiCache Serverless Redis**: Auto-scaling cache with performance optimization
 - **VPC with Private Subnets**: Secure network isolation across multiple AZs
 - **API Gateway + Lambda**: Serverless compute with comprehensive security and CORS configuration
-- **Lambda Layers**: Shared dependencies with direct asset bundling for simplified deployment
+- **Lambda Layers**: Shared dependencies with automated CDK Docker bundling for consistent deployment
 - **Secrets Manager**: Secure credential storage for database and cache connections
 - **CloudWatch Logs**: Environment-specific log retention and monitoring
 
@@ -97,7 +97,7 @@ The AWS infrastructure includes:
 The CI/CD infrastructure includes:
 
 - **CodePipeline**: Multi-stage deployment pipeline with source, build, and deploy stages
-- **CodeBuild Projects**: Separate build and deployment projects with simplified Lambda layer bundling
+- **CodeBuild Projects**: Separate build and deployment projects with automated Lambda layer bundling
 - **S3 Artifact Bucket**: Versioned storage with lifecycle policies for build artifacts
 - **CloudWatch Monitoring**: Automated alarms for pipeline and build failures
 - **SNS Notifications**: Real-time alerts for pipeline events and manual approvals

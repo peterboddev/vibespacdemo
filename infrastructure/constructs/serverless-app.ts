@@ -4,6 +4,9 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as cloudwatchActions from 'aws-cdk-lib/aws-cloudwatch-actions';
 import { Construct } from 'constructs';
 
 export interface ServerlessAppProps {
@@ -13,6 +16,8 @@ export interface ServerlessAppProps {
   lambdaSubnets: ec2.SubnetSelection;
   databaseSecretArn: string;
   redisSecretArn: string;
+  sharedLayerArn: string;
+  alertTopicArn: string;
 }
 
 /**
@@ -26,13 +31,21 @@ export interface ServerlessAppProps {
 export class ServerlessApp extends Construct {
   public readonly api: apigateway.RestApi;
   public readonly lambdaRole: iam.Role;
-  public readonly sharedLayer: lambda.LayerVersion | undefined;
+  public readonly sharedLayer: lambda.ILayerVersion;
   public readonly logGroup: logs.LogGroup;
+  public readonly healthCheckFunction: lambda.Function;
+  public readonly alertTopic: sns.ITopic;
 
   constructor(scope: Construct, id: string, props: ServerlessAppProps) {
     super(scope, id);
 
-    const { environment, vpc, lambdaSecurityGroup, lambdaSubnets, databaseSecretArn, redisSecretArn } = props;
+    const { environment, vpc, lambdaSecurityGroup, lambdaSubnets, databaseSecretArn, redisSecretArn, sharedLayerArn, alertTopicArn } = props;
+
+    // Import shared layer from infrastructure
+    this.sharedLayer = lambda.LayerVersion.fromLayerVersionArn(this, 'ImportedSharedLayer', sharedLayerArn);
+
+    // Import alert topic from infrastructure
+    this.alertTopic = sns.Topic.fromTopicArn(this, 'ImportedAlertTopic', alertTopicArn);
 
     // Create CloudWatch log group for Lambda functions
     this.logGroup = new logs.LogGroup(this, 'LambdaLogGroup', {
@@ -99,9 +112,7 @@ export class ServerlessApp extends Construct {
       },
     });
 
-    // Skip Lambda layer for now to avoid Docker issues - Lambda functions will bundle their own dependencies
-    // TODO: Re-enable layer once Docker bundling is working or use alternative approach
-    this.sharedLayer = undefined;
+
 
     // Create API Gateway with comprehensive configuration
     this.api = new apigateway.RestApi(this, 'InsuranceQuotationApi', {
@@ -168,13 +179,15 @@ export class ServerlessApp extends Construct {
     apiV1.addResource('products');
     const healthResource = apiV1.addResource('health');
 
+
+
     // Create a basic health check endpoint (static, not dynamic)
-    const healthLambda = new lambda.Function(this, 'HealthCheckFunction', {
+    this.healthCheckFunction = new lambda.Function(this, 'HealthCheckFunction', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'handler.handler',
       code: lambda.Code.fromAsset('src/lambda/health'),
       role: this.lambdaRole,
-      layers: this.sharedLayer ? [this.sharedLayer] : [],
+      layers: [this.sharedLayer],
       
       // VPC configuration
       vpc,
@@ -198,7 +211,7 @@ export class ServerlessApp extends Construct {
     });
 
     // Add health check endpoint
-    healthResource.addMethod('GET', new apigateway.LambdaIntegration(healthLambda, {
+    healthResource.addMethod('GET', new apigateway.LambdaIntegration(this.healthCheckFunction, {
       proxy: true,
       integrationResponses: [
         {
@@ -218,6 +231,9 @@ export class ServerlessApp extends Construct {
         },
       ],
     });
+
+    // Create CloudWatch alarms for health monitoring
+    this.createHealthMonitoringAlarms(environment);
 
     // Create additional stages for different environments
     if (environment === 'dev') {
@@ -242,13 +258,13 @@ export class ServerlessApp extends Construct {
    */
   public getLambdaConfig(): {
     role: iam.Role;
-    layers: lambda.LayerVersion[];
+    layers: lambda.ILayerVersion[];
     logGroup: logs.LogGroup;
     environment: { [key: string]: string };
   } {
     return {
       role: this.lambdaRole,
-      layers: this.sharedLayer ? [this.sharedLayer] : [],
+      layers: [this.sharedLayer],
       logGroup: this.logGroup,
       environment: {
         NODE_ENV: this.node.tryGetContext('environment') || 'dev',
@@ -277,6 +293,77 @@ export class ServerlessApp extends Construct {
   }
 
   /**
+   * Create CloudWatch alarms for health monitoring
+   */
+  private createHealthMonitoringAlarms(environment: string): void {
+    // Health check function error rate alarm
+    const healthCheckErrorAlarm = new cloudwatch.Alarm(this, 'HealthCheckErrorAlarm', {
+      alarmName: `insurance-quotation-health-check-errors-${environment}`,
+      alarmDescription: 'Health check function error rate is too high',
+      metric: this.healthCheckFunction.metricErrors({
+        period: cdk.Duration.minutes(5),
+        statistic: 'Sum',
+      }),
+      threshold: 3, // Alert if 3 or more errors in 5 minutes
+      evaluationPeriods: 1,
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // Health check function duration alarm
+    const healthCheckDurationAlarm = new cloudwatch.Alarm(this, 'HealthCheckDurationAlarm', {
+      alarmName: `insurance-quotation-health-check-duration-${environment}`,
+      alarmDescription: 'Health check function duration is too high',
+      metric: this.healthCheckFunction.metricDuration({
+        period: cdk.Duration.minutes(5),
+        statistic: 'Average',
+      }),
+      threshold: 10000, // Alert if average duration > 10 seconds
+      evaluationPeriods: 2,
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // API Gateway 5xx error rate alarm
+    const apiGateway5xxAlarm = new cloudwatch.Alarm(this, 'ApiGateway5xxAlarm', {
+      alarmName: `insurance-quotation-api-5xx-errors-${environment}`,
+      alarmDescription: 'API Gateway 5xx error rate is too high',
+      metric: this.api.metricServerError({
+        period: cdk.Duration.minutes(5),
+        statistic: 'Sum',
+      }),
+      threshold: 5, // Alert if 5 or more 5xx errors in 5 minutes
+      evaluationPeriods: 1,
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // API Gateway high latency alarm
+    const apiGatewayLatencyAlarm = new cloudwatch.Alarm(this, 'ApiGatewayLatencyAlarm', {
+      alarmName: `insurance-quotation-api-latency-${environment}`,
+      alarmDescription: 'API Gateway latency is too high',
+      metric: this.api.metricLatency({
+        period: cdk.Duration.minutes(5),
+        statistic: 'Average',
+      }),
+      threshold: 5000, // Alert if average latency > 5 seconds
+      evaluationPeriods: 3,
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // Add SNS actions to all alarms
+    const snsAction = new cloudwatchActions.SnsAction(this.alertTopic);
+    
+    healthCheckErrorAlarm.addAlarmAction(snsAction);
+    healthCheckDurationAlarm.addAlarmAction(snsAction);
+    apiGateway5xxAlarm.addAlarmAction(snsAction);
+    apiGatewayLatencyAlarm.addAlarmAction(snsAction);
+
+    // Add OK actions to send notifications when alarms recover
+    healthCheckErrorAlarm.addOkAction(snsAction);
+    healthCheckDurationAlarm.addOkAction(snsAction);
+    apiGateway5xxAlarm.addOkAction(snsAction);
+    apiGatewayLatencyAlarm.addOkAction(snsAction);
+  }
+
+  /**
    * Add outputs for the serverless application
    */
   public addOutputs(): void {
@@ -298,13 +385,6 @@ export class ServerlessApp extends Construct {
       exportName: `InsuranceQuotation-LambdaRoleArn-${this.node.tryGetContext('environment') || 'dev'}`,
     });
 
-    // Only create layer output if layer exists
-    if (this.sharedLayer) {
-      new cdk.CfnOutput(this, 'SharedLayerArn', {
-        value: this.sharedLayer.layerVersionArn,
-        description: 'Shared dependencies layer ARN',
-        exportName: `InsuranceQuotation-SharedLayerArn-${this.node.tryGetContext('environment') || 'dev'}`,
-      });
-    }
+
   }
 }

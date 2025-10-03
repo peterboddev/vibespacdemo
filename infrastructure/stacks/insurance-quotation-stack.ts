@@ -4,6 +4,7 @@ import { Construct } from 'constructs';
 import { Networking } from '../constructs/networking';
 import { Database } from '../constructs/database';
 import { Redis } from '../constructs/redis';
+import { LambdaLayer } from '../constructs/lambda-layer';
 import { ServerlessApp } from '../constructs/serverless-app';
 
 export interface InsuranceQuotationStackProps extends cdk.StackProps {
@@ -14,6 +15,7 @@ export class InsuranceQuotationStack extends cdk.Stack {
   public readonly networking: Networking;
   public readonly database: Database;
   public readonly redis: Redis;
+  public readonly lambdaLayer: LambdaLayer;
   public readonly serverlessApp: ServerlessApp;
 
   constructor(scope: Construct, id: string, props: InsuranceQuotationStackProps) {
@@ -48,6 +50,11 @@ export class InsuranceQuotationStack extends cdk.Stack {
       cacheSubnets: this.networking.getCacheSubnets(),
     });
 
+    // Create Lambda layer and shared infrastructure
+    this.lambdaLayer = new LambdaLayer(this, 'LambdaLayer', {
+      environment,
+    });
+
     // Create serverless application infrastructure
     this.serverlessApp = new ServerlessApp(this, 'ServerlessApp', {
       environment,
@@ -56,12 +63,15 @@ export class InsuranceQuotationStack extends cdk.Stack {
       lambdaSubnets: this.networking.getLambdaSubnets(),
       databaseSecretArn: this.database.secret.secretArn,
       redisSecretArn: this.redis.secret.secretArn,
+      sharedLayerArn: this.lambdaLayer.sharedLayer.layerVersionArn,
+      alertTopicArn: this.lambdaLayer.alertTopic.topicArn,
     });
 
     // Add outputs
     this.networking.addOutputs();
     this.database.addOutputs();
     this.redis.addOutputs();
+    this.lambdaLayer.addOutputs();
     this.serverlessApp.addOutputs();
 
     // Output the environment for verification

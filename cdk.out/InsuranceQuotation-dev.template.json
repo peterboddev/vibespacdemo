@@ -1869,6 +1869,56 @@
     "aws:cdk:path": "InsuranceQuotation-dev/Redis/RedisServerlessCache"
    }
   },
+  "LambdaLayerSharedDependenciesLayer64C69A98": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "CompatibleRuntimes": [
+     "nodejs20.x"
+    ],
+    "Content": {
+     "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
+     "S3Key": "50ea51d62957e732207ee3ffe5dbaa4d98d0677294d5873133c145176e7dc0a4.zip"
+    },
+    "Description": "Shared dependencies for Insurance Quotation Lambda functions",
+    "LayerName": "insurance-quotation-shared-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/LambdaLayer/SharedDependenciesLayer/Resource",
+    "aws:asset:path": "asset.50ea51d62957e732207ee3ffe5dbaa4d98d0677294d5873133c145176e7dc0a4",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "LambdaLayerAlertTopic1CDBD960": {
+   "Type": "AWS::SNS::Topic",
+   "Properties": {
+    "DisplayName": "Insurance Quotation Alerts - dev",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "LambdaLayer"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "TopicName": "insurance-quotation-alerts-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/LambdaLayer/AlertTopic/Resource"
+   }
+  },
   "ServerlessAppLambdaLogGroup20642418": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {
@@ -2754,7 +2804,7 @@
    "Properties": {
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
-     "S3Key": "aa629b45d016707f2d8698fc8496d27013bca11c27c3fa685b57c784866a2778.zip"
+     "S3Key": "45f0f1960dc4b3fc3a8ef960c7e9fd2517907f510cd306de17488006aa853135.zip"
     },
     "Environment": {
      "Variables": {
@@ -2769,6 +2819,11 @@
      }
     },
     "Handler": "handler.handler",
+    "Layers": [
+     {
+      "Ref": "LambdaLayerSharedDependenciesLayer64C69A98"
+     }
+    ],
     "LoggingConfig": {
      "LogGroup": {
       "Ref": "ServerlessAppLambdaLogGroup20642418"
@@ -2829,9 +2884,221 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/HealthCheckFunction/Resource",
-    "aws:asset:path": "asset.aa629b45d016707f2d8698fc8496d27013bca11c27c3fa685b57c784866a2778",
+    "aws:asset:path": "asset.45f0f1960dc4b3fc3a8ef960c7e9fd2517907f510cd306de17488006aa853135",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
+   }
+  },
+  "ServerlessAppHealthCheckErrorAlarm9A9A3D0E": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "AlarmDescription": "Health check function error rate is too high",
+    "AlarmName": "insurance-quotation-health-check-errors-dev",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "FunctionName",
+      "Value": {
+       "Ref": "ServerlessAppHealthCheckFunction5B64D795"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "Errors",
+    "Namespace": "AWS/Lambda",
+    "OKActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "Period": 300,
+    "Statistic": "Sum",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Threshold": 3,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/HealthCheckErrorAlarm/Resource"
+   }
+  },
+  "ServerlessAppHealthCheckDurationAlarmAE822D3A": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "AlarmDescription": "Health check function duration is too high",
+    "AlarmName": "insurance-quotation-health-check-duration-dev",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "FunctionName",
+      "Value": {
+       "Ref": "ServerlessAppHealthCheckFunction5B64D795"
+      }
+     }
+    ],
+    "EvaluationPeriods": 2,
+    "MetricName": "Duration",
+    "Namespace": "AWS/Lambda",
+    "OKActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "Period": 300,
+    "Statistic": "Average",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Threshold": 10000,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/HealthCheckDurationAlarm/Resource"
+   }
+  },
+  "ServerlessAppApiGateway5xxAlarmA0B7A877": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "AlarmDescription": "API Gateway 5xx error rate is too high",
+    "AlarmName": "insurance-quotation-api-5xx-errors-dev",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "ApiName",
+      "Value": "insurance-quotation-dev"
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "5XXError",
+    "Namespace": "AWS/ApiGateway",
+    "OKActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "Period": 300,
+    "Statistic": "Sum",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Threshold": 5,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/ApiGateway5xxAlarm/Resource"
+   }
+  },
+  "ServerlessAppApiGatewayLatencyAlarm0B203E1F": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "AlarmDescription": "API Gateway latency is too high",
+    "AlarmName": "insurance-quotation-api-latency-dev",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "ApiName",
+      "Value": "insurance-quotation-dev"
+     }
+    ],
+    "EvaluationPeriods": 3,
+    "MetricName": "Latency",
+    "Namespace": "AWS/ApiGateway",
+    "OKActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "Period": 300,
+    "Statistic": "Average",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Threshold": 5000,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/ApiGatewayLatencyAlarm/Resource"
    }
   },
   "ServerlessAppTestStageF73AA1C7": {
@@ -2882,7 +3149,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STW/bMAz9Lb0rWpoetquTdEWAfRh2kWtBy6yjxpYMkUoQGPrvg/wVrxh24uPjAx8pcSM3j9/k+gGutFLleVXrQnY5gzoLuNJbh2oju2OrxO7dHNOdSH1Ra5X7wiBH7o4y6xlfoajxzt+5hMgqDaytmcURPB/SGH4BvwDjFW4idfoCjPfGB8PoDM6CYZIxS5hBnRo0LEbm2KpnU7ZWGx6lc9p3egeFS02OyjvNtxdnfduP/l/iYCqHREEQKodMDRio0Mku7/NRH9EQXsFVyIsxZ8HnShCuJNkNi8/m++2S2ANDAYS72hOjGwR/JQdDDEZhEBoa2WV2+I8Yg8AaiLUCdULZzb+0WNRd0NVItIuSIGpbkex+2GqWTDgIaHU1vLjsMiROWt0b3WGilPWGxR7b2t6m5RdZzlAN19KDDMl6p3ALhOIn8smWsTiiqTqa9DiIGpqihH6ZFF2jieKFffdGTac24SDo6Q2IkEkmMQh6kluvzsjRMCwMPLFt/uUX8W/PredPotTZiy7R9aP33eNK2lRBGFui/KAvl81aPn6V64cP0nrlvGHdoMyG+AdXFf6uhwMAAA=="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31SwW7bMAz9lt4VLU0P29VJuiJAtxlJkWtBy6yjxpYMkUoQGPr3QbLjuMGwi/ke+UQ+mVrIxeMPOX+AM81UeZzVupDdjkEdBZzpvUO1kN2+VWL1Yfb5SuS+qLXa+cIgx9wNba1nfIOixlv+lsuIrNLA2ppRHMHzJo/hN/ALMJ7hInKnT8B4a7wxjM7gKOidDCxjBnVo0LAYMvtWPZuytdrwIB1p6vQBCqeaHSrvNF9enPVtsv7fxMZUDomCIFQOmRowUKGT3S7xQR9RH97AVcgTm6PgvhKEK0l2/cXH4evlNLEGhgIIV7UnRtcLvpCNIQajMAgNjey2tt9HjEFgDcRagTqg7MYtTS7qTuhqJFpFSRA1NEUJsnuFC7o9OhrWd89zdI2mxH56o65bvuIg6OkdiJBJZjEIepJLr47ISyAUZEh2b7bV6Zn1IH1jNYjaViS7V1uNRq84CGh11e9ddlskzlqdrnuDmVLWGxZrbGt7ua5gwnYMVf9mE9giWe8UJme/kA+2jMUBXavDkISDULX15RlYHWSX1eCaNDiCECZHPLFt/tUh4j+eW893otzZky7RJTPp10WT2lRBGFui/KRvp8VcPn6X84dP0nrmvGHdoNz28S+L3sP73wMAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/CDKMetadata/Default"
@@ -3020,6 +3287,28 @@
    "Export": {
     "Name": "InsuranceQuotation-RedisPort"
    }
+  },
+  "LambdaLayerSharedLayerArn416D286B": {
+   "Description": "Shared dependencies layer ARN",
+   "Value": {
+    "Ref": "LambdaLayerSharedDependenciesLayer64C69A98"
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-SharedLayerArn-dev"
+   }
+  },
+  "LambdaLayerAlertTopicArnFA264C36": {
+   "Description": "SNS topic ARN for alerts",
+   "Value": {
+    "Ref": "LambdaLayerAlertTopic1CDBD960"
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-AlertTopicArn-dev"
+   }
+  },
+  "LambdaLayerSharedLayerNameEFF59E4F": {
+   "Description": "Shared dependencies layer name",
+   "Value": "insurance-quotation-shared-dev"
   },
   "ServerlessAppInsuranceQuotationApiEndpoint816DA825": {
    "Value": {

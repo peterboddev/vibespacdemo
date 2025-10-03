@@ -1,0 +1,1 @@
+{"version":3,"file":"middleware.d.ts","sourceRoot":"","sources":["../../../src/lambda/shared/middleware.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,aAAa,EAAE,MAAM,SAAS,CAAC;AAExC,eAAO,MAAM,gBAAgB,GAAI,SAAS,aAAa,KAAG,aA2BzD,CAAC;AAEF,eAAO,MAAM,QAAQ,GAAI,SAAS,aAAa,KAAG,aA4BjD,CAAC;AAEF,eAAO,MAAM,cAAc,GACzB,SAAS,GAAG,EACZ,SAAS,aAAa,KACrB,aAsBF,CAAC"}

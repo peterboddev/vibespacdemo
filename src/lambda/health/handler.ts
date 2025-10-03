@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda
 import { createSuccessResponse } from '../shared/response';
 import { withErrorHandler, withCors } from '../shared/middleware';
 import { redisManager } from '../../database/redis';
+import { healthCheck as databaseHealthCheck } from '../../database/connection';
 
 /**
  * Health check endpoint for the Insurance Quotation API
@@ -31,18 +32,49 @@ const healthCheckHandler = async (
   // Check Redis health
   const redisHealth = await redisManager.healthCheck();
   
+  // Check Database health
+  const dbStartTime = Date.now();
+  let databaseHealth: { status: string; latency?: number; error?: string };
+  
+  try {
+    const isDbHealthy = await databaseHealthCheck();
+    const dbLatency = Date.now() - dbStartTime;
+    
+    databaseHealth = {
+      status: isDbHealthy ? 'healthy' : 'unhealthy',
+      latency: dbLatency
+    };
+  } catch (error) {
+    const dbLatency = Date.now() - dbStartTime;
+    databaseHealth = {
+      status: 'unhealthy',
+      latency: dbLatency,
+      error: error instanceof Error ? error.message : 'Unknown database error'
+    };
+  }
+  
+  // Determine overall status
+  const allHealthy = redisHealth.status === 'healthy' && databaseHealth.status === 'healthy';
+  const overallStatus = allHealthy ? 'OK' : 'DEGRADED';
+  
   const healthData = {
-    status: redisHealth.status === 'healthy' ? 'OK' : 'DEGRADED',
+    status: overallStatus,
     service: 'insurance-quotation-api',
     version: process.env['SERVICE_VERSION'] || '1.0.0',
     environment: process.env['NODE_ENV'] || 'development',
     region: process.env['AWS_REGION'] || 'unknown',
     functionName: context.functionName,
     memoryLimit: context.memoryLimitInMB,
+    timestamp: new Date().toISOString(),
     checks: {
       redis: {
         status: redisHealth.status,
         latency: redisHealth.latency,
+      },
+      database: {
+        status: databaseHealth.status,
+        latency: databaseHealth.latency,
+        ...(databaseHealth.error && { error: databaseHealth.error })
       }
     }
   };

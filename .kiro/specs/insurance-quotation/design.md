@@ -8,6 +8,34 @@ The insurance quotation application is a web-based system that provides instant 
 
 The application uses a layered architecture with automated deployment pipeline:
 
+### Deployment Architecture
+
+The system follows a clear separation between infrastructure and application deployments:
+
+#### Infrastructure Deployment (CLI-based)
+**Deployed via:** `cdk deploy` from local CLI or infrastructure CI/CD
+**Components:**
+- **VPC & Networking**: Private subnets, security groups, NAT gateways
+- **Database Infrastructure**: Aurora Serverless PostgreSQL cluster
+- **Cache Infrastructure**: ElastiCache Serverless Redis
+- **Lambda Layer**: Shared dependencies (AWS SDK, ioredis, pg, uuid, joi)
+- **SNS Topics**: Notification infrastructure for alerts
+- **API Gateway Shell**: Base API Gateway without routes/methods
+
+#### Application Deployment (Pipeline-based)
+**Deployed via:** CodePipeline triggered by Git commits
+**Components:**
+- **Lambda Functions**: All business logic functions (quotes, users, products, health)
+- **API Gateway Routes**: All endpoints and methods (/api/v1/*)
+- **CloudWatch Alarms**: Application-specific monitoring and alerting
+- **Application Configuration**: Environment variables, permissions
+
+#### Deployment Boundary Logic
+- **Infrastructure**: Foundational components that applications depend on
+- **Application**: Business logic, API endpoints, and application-specific monitoring
+- **Shared Dependencies**: Lambda layer provides consistent dependency versions across all functions
+- **Monitoring**: Infrastructure provides notification channels, application provides specific alarms
+
 ```mermaid
 graph TB
     subgraph "Development Workflow"
@@ -68,6 +96,19 @@ graph TB
 ```
 
 ## Components and Interfaces
+
+### Deployment Component Mapping
+
+**Infrastructure Components (CLI Deployment):**
+- VPC, Database, Redis constructs → `infrastructure/constructs/`
+- Lambda Layer → `layers/shared-dependencies/`
+- SNS Topics → Infrastructure stack
+
+**Application Components (Pipeline Deployment):**
+- All Lambda functions → `src/lambda/`
+- API Gateway routes → Serverless app construct
+- CloudWatch alarms → Application monitoring
+- Health check system → Application endpoint
 
 ### 1. Quote Service
 **Responsibilities:**
@@ -147,34 +188,34 @@ graph TB
 **Lambda Layer Strategy:**
 - **Pre-built Structure**: Use standard Node.js layer format (`nodejs/node_modules/`) without Docker
 - **Build Script**: Simple npm install process to prepare layer dependencies
-- **Deployment Simplicity**: Eliminate Docker dependency for faster CI/CD pipeline
+- **Automated CDK Bundling**: Uses CDK's built-in Docker bundling for consistent layer creation
 - **Shared Dependencies**: Common AWS SDK clients, database drivers, and validation libraries
 
 **Layer Implementation Details:**
 ```
 layers/shared-dependencies/
 ├── package.json                 # Layer dependencies definition
-├── build-layer.js              # Build script to prepare layer
-└── nodejs/                     # Lambda layer runtime directory
-    └── node_modules/           # Installed dependencies
-        ├── @aws-sdk/
-        ├── ioredis/
-        ├── pg/
-        ├── joi/
-        └── uuid/
+└── (generated during deployment)
+    └── nodejs/                 # Lambda layer runtime directory (auto-created)
+        └── node_modules/       # Installed dependencies (auto-created)
+            ├── @aws-sdk/
+            ├── ioredis/
+            ├── pg/
+            ├── joi/
+            └── uuid/
 ```
 
 **Build Process:**
-1. **Dependency Installation**: Run `npm install --production` in layer directory
-2. **Structure Creation**: Move `node_modules` to `nodejs/` subdirectory
-3. **CDK Integration**: Reference layer using `lambda.Code.fromAsset('layers/shared-dependencies')`
-4. **No Docker Required**: Standard file system operations only
+1. **CDK Bundling**: CDK automatically handles Docker-based bundling during deployment
+2. **Dependency Installation**: Runs `npm ci --omit=dev --ignore-scripts` in Docker container
+3. **Structure Creation**: Automatically creates `nodejs/node_modules/` structure
+4. **Asset Optimization**: Removes unnecessary files (package.json, etc.) from final layer
 
 **Benefits:**
-- **Faster Builds**: No Docker image pulling or container startup time
-- **Simpler CI/CD**: Remove Docker daemon and privileged access requirements
-- **Local Development**: Layer can be built and tested locally without Docker
-- **Reduced Complexity**: Standard npm workflow familiar to all developers
+- **Consistent Builds**: Docker ensures identical layer creation across environments
+- **Automated Process**: No manual layer preparation required
+- **Optimized Size**: Removes dev dependencies and unnecessary files automatically
+- **CDK Integration**: Seamless integration with CDK deployment process
 
 ## Data Models
 
@@ -340,6 +381,13 @@ interface ErrorResponse {
 - Clean up test data after test execution
 - Maintain separate test environments for different testing phases
 
+### Deployment Testing
+- **Infrastructure Testing**: Validate infrastructure components deploy correctly via CLI
+- **Application Testing**: Verify application components deploy through pipeline
+- **Health Check Validation**: Automated post-deployment health verification
+- **Integration Testing**: Ensure infrastructure and application components work together
+- **Rollback Testing**: Validate automated rollback mechanisms work correctly
+
 ## Deployment Automation
 
 ### Automated Deployment Pipeline
@@ -403,3 +451,41 @@ Both deployment scripts provide:
 - CloudFormation stack rollback for infrastructure issues
 - Lambda function version rollback for application issues
 - Database migration rollback procedures for schema changes
+## Deploym
+ent Architecture Summary
+
+### Infrastructure vs Application Deployment
+
+This design implements a clear separation between infrastructure and application deployments:
+
+**Infrastructure (CLI-based deployment):**
+- **Purpose**: Provides foundational services that applications depend on
+- **Components**: VPC, Database, Redis, Lambda Layer, SNS Topics, API Gateway shell
+- **Deployment**: Manual CLI deployment (`cdk deploy`) for infrastructure changes
+- **Frequency**: Infrequent, only when foundational changes are needed
+- **Stability**: High stability, changes rarely
+
+**Application (Pipeline-based deployment):**
+- **Purpose**: Implements business logic and API functionality  
+- **Components**: Lambda functions, API routes, CloudWatch alarms, health checks
+- **Deployment**: Automated pipeline deployment triggered by Git commits
+- **Frequency**: Regular deployments as features are developed
+- **Agility**: High agility, supports rapid development cycles
+
+### Key Benefits
+
+1. **Clear Separation of Concerns**: Infrastructure and application have distinct responsibilities
+2. **Independent Deployment Cycles**: Infrastructure stability doesn't block application development
+3. **Shared Dependencies**: Lambda layer provides consistent dependency versions
+4. **Automated Quality Gates**: Health checks and monitoring ensure deployment quality
+5. **Scalable Architecture**: Supports multiple applications using the same infrastructure foundation
+
+### Implementation Status
+
+- ✅ **Infrastructure Components**: VPC, Database, Redis deployed and stable
+- ✅ **Lambda Layer**: Shared dependencies layer implemented without Docker
+- ✅ **Health Check System**: Comprehensive monitoring and validation implemented
+- ✅ **CI/CD Pipeline**: Automated application deployment pipeline configured
+- 🔄 **Architecture Restructuring**: Moving layer and SNS to infrastructure stack (Task 3.7)
+
+This architecture provides a robust foundation for the insurance quotation system while maintaining the flexibility needed for rapid application development and deployment.

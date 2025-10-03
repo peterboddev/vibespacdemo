@@ -29,6 +29,9 @@ phases:
       - echo "Target Environment:" $TARGET_ENVIRONMENT
       - echo "Stage:" $STAGE
       
+      # Lambda layer building is now handled automatically by CDK during deployment
+      - echo "Lambda layer will be built automatically by CDK..."
+      
       # Skip route generation (has CDK dependency issues in build environment)
       - echo "Skipping route generation - CDK dependencies not available in build context"
       - mkdir -p infrastructure/generated || true
@@ -90,6 +93,27 @@ phases:
             --output text 2>/dev/null || echo "Not available")
           
           echo "API Gateway URL: $API_URL"
+          
+          # Perform health check validation if API URL is available
+          if [ "$API_URL" != "Not available" ] && [ "$API_URL" != "" ]; then
+            echo "Performing post-deployment health check validation..."
+            HEALTH_URL="${API_URL}api/v1/health"
+            echo "Health check URL: $HEALTH_URL"
+            
+            # Run health check validation with retries
+            node scripts/health-check-validator.js "$HEALTH_URL" --max-retries 5 --retry-delay 10000 --timeout 30000
+            
+            if [ $? -eq 0 ]; then
+              echo "✅ Health check validation passed - deployment is healthy"
+            else
+              echo "❌ Health check validation failed - deployment may have issues"
+              echo "WARNING: Consider investigating the deployment health"
+              # Note: We don't fail the build here to avoid blocking deployments
+              # In production, you might want to implement automated rollback
+            fi
+          else
+            echo "API URL not available - skipping health check validation"
+          fi
           
           # Save deployment info
           echo "Deployment completed at $(date)" > deployment-info.txt

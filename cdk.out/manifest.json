@@ -24,7 +24,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-deploy-role-450683699755-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-cfn-exec-role-450683699755-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/294f11ecb87769d43bbcbb54e96d121a35c416937e4dc764c0ac2061a2dfd6a0.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/cfebc3813e100c486f7fada2fe881a1cac93ef87239519407a1ca9c5965031e2.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -471,6 +471,36 @@
             "data": "RedisRedisPort13CA67FB"
           }
         ],
+        "/InsuranceQuotation-dev/LambdaLayer/SharedDependenciesLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaLayerSharedDependenciesLayer64C69A98"
+          }
+        ],
+        "/InsuranceQuotation-dev/LambdaLayer/AlertTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaLayerAlertTopic1CDBD960"
+          }
+        ],
+        "/InsuranceQuotation-dev/LambdaLayer/SharedLayerArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaLayerSharedLayerArn416D286B"
+          }
+        ],
+        "/InsuranceQuotation-dev/LambdaLayer/AlertTopicArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaLayerAlertTopicArnFA264C36"
+          }
+        ],
+        "/InsuranceQuotation-dev/LambdaLayer/SharedLayerName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaLayerSharedLayerNameEFF59E4F"
+          }
+        ],
         "/InsuranceQuotation-dev/ServerlessApp/LambdaLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -619,6 +649,30 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ServerlessAppHealthCheckFunction5B64D795"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/HealthCheckErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppHealthCheckErrorAlarm9A9A3D0E"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/HealthCheckDurationAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppHealthCheckDurationAlarmAE822D3A"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/ApiGateway5xxAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppApiGateway5xxAlarmA0B7A877"
+          }
+        ],
+        "/InsuranceQuotation-dev/ServerlessApp/ApiGatewayLatencyAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServerlessAppApiGatewayLatencyAlarm0B203E1F"
           }
         ],
         "/InsuranceQuotation-dev/ServerlessApp/TestStage/Resource": [
