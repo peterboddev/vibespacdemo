@@ -8,6 +8,10 @@ yarn-error.log*
 dist/
 build/
 
+# CDK outputs
+cdk.out/
+*.d.ts.map
+
 # Documentation (generated/temporary docs)
 docs/
 

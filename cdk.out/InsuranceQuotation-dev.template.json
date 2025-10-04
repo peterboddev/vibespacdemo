@@ -2804,7 +2804,7 @@
    "Properties": {
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
-     "S3Key": "45f0f1960dc4b3fc3a8ef960c7e9fd2517907f510cd306de17488006aa853135.zip"
+     "S3Key": "2146c255610536d1d63ae44d6071e167e97ea45767dc838fe24677944bd5fd2f.zip"
     },
     "Environment": {
      "Variables": {
@@ -2884,7 +2884,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/HealthCheckFunction/Resource",
-    "aws:asset:path": "asset.45f0f1960dc4b3fc3a8ef960c7e9fd2517907f510cd306de17488006aa853135",
+    "aws:asset:path": "asset.2146c255610536d1d63ae44d6071e167e97ea45767dc838fe24677944bd5fd2f",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }

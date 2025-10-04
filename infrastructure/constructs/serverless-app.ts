@@ -33,7 +33,7 @@ export class ServerlessApp extends Construct {
   public readonly lambdaRole: iam.Role;
   public readonly sharedLayer: lambda.ILayerVersion;
   public readonly logGroup: logs.LogGroup;
-  public readonly healthCheckFunction: lambda.Function;
+
   public readonly alertTopic: sns.ITopic;
 
   constructor(scope: Construct, id: string, props: ServerlessAppProps) {
@@ -181,59 +181,8 @@ export class ServerlessApp extends Construct {
 
 
 
-    // Create a basic health check endpoint (static, not dynamic)
-    this.healthCheckFunction = new lambda.Function(this, 'HealthCheckFunction', {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'handler.handler',
-      code: lambda.Code.fromAsset('src/lambda/health'),
-      role: this.lambdaRole,
-      layers: [this.sharedLayer],
-      
-      // VPC configuration
-      vpc,
-      vpcSubnets: lambdaSubnets,
-      securityGroups: [lambdaSecurityGroup],
-      
-      // Environment variables
-      environment: {
-        NODE_ENV: environment,
-        LOG_LEVEL: environment === 'prod' ? 'info' : 'debug',
-        REDIS_SECRET_ARN: redisSecretArn,
-        DB_SECRET_ARN: databaseSecretArn,
-      },
-      
-      // Performance configuration
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 256,
-      
-      // Logging configuration
-      logGroup: this.logGroup,
-    });
-
-    // Add health check endpoint
-    healthResource.addMethod('GET', new apigateway.LambdaIntegration(this.healthCheckFunction, {
-      proxy: true,
-      integrationResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            'method.response.header.Access-Control-Allow-Origin': "'*'",
-          },
-        },
-      ],
-    }), {
-      methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            'method.response.header.Access-Control-Allow-Origin': true,
-          },
-        },
-      ],
-    });
-
-    // Create CloudWatch alarms for health monitoring
-    this.createHealthMonitoringAlarms(environment);
+    // Note: Health check endpoint and monitoring will be deployed via pipeline
+    // Infrastructure only provides the foundation (API Gateway shell, layer, SNS topic)
 
     // Create additional stages for different environments
     if (environment === 'dev') {
@@ -292,76 +241,7 @@ export class ServerlessApp extends Construct {
     return resource;
   }
 
-  /**
-   * Create CloudWatch alarms for health monitoring
-   */
-  private createHealthMonitoringAlarms(environment: string): void {
-    // Health check function error rate alarm
-    const healthCheckErrorAlarm = new cloudwatch.Alarm(this, 'HealthCheckErrorAlarm', {
-      alarmName: `insurance-quotation-health-check-errors-${environment}`,
-      alarmDescription: 'Health check function error rate is too high',
-      metric: this.healthCheckFunction.metricErrors({
-        period: cdk.Duration.minutes(5),
-        statistic: 'Sum',
-      }),
-      threshold: 3, // Alert if 3 or more errors in 5 minutes
-      evaluationPeriods: 1,
-      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
-    });
 
-    // Health check function duration alarm
-    const healthCheckDurationAlarm = new cloudwatch.Alarm(this, 'HealthCheckDurationAlarm', {
-      alarmName: `insurance-quotation-health-check-duration-${environment}`,
-      alarmDescription: 'Health check function duration is too high',
-      metric: this.healthCheckFunction.metricDuration({
-        period: cdk.Duration.minutes(5),
-        statistic: 'Average',
-      }),
-      threshold: 10000, // Alert if average duration > 10 seconds
-      evaluationPeriods: 2,
-      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
-    });
-
-    // API Gateway 5xx error rate alarm
-    const apiGateway5xxAlarm = new cloudwatch.Alarm(this, 'ApiGateway5xxAlarm', {
-      alarmName: `insurance-quotation-api-5xx-errors-${environment}`,
-      alarmDescription: 'API Gateway 5xx error rate is too high',
-      metric: this.api.metricServerError({
-        period: cdk.Duration.minutes(5),
-        statistic: 'Sum',
-      }),
-      threshold: 5, // Alert if 5 or more 5xx errors in 5 minutes
-      evaluationPeriods: 1,
-      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
-    });
-
-    // API Gateway high latency alarm
-    const apiGatewayLatencyAlarm = new cloudwatch.Alarm(this, 'ApiGatewayLatencyAlarm', {
-      alarmName: `insurance-quotation-api-latency-${environment}`,
-      alarmDescription: 'API Gateway latency is too high',
-      metric: this.api.metricLatency({
-        period: cdk.Duration.minutes(5),
-        statistic: 'Average',
-      }),
-      threshold: 5000, // Alert if average latency > 5 seconds
-      evaluationPeriods: 3,
-      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
-    });
-
-    // Add SNS actions to all alarms
-    const snsAction = new cloudwatchActions.SnsAction(this.alertTopic);
-    
-    healthCheckErrorAlarm.addAlarmAction(snsAction);
-    healthCheckDurationAlarm.addAlarmAction(snsAction);
-    apiGateway5xxAlarm.addAlarmAction(snsAction);
-    apiGatewayLatencyAlarm.addAlarmAction(snsAction);
-
-    // Add OK actions to send notifications when alarms recover
-    healthCheckErrorAlarm.addOkAction(snsAction);
-    healthCheckDurationAlarm.addOkAction(snsAction);
-    apiGateway5xxAlarm.addOkAction(snsAction);
-    apiGatewayLatencyAlarm.addOkAction(snsAction);
-  }
 
   /**
    * Add outputs for the serverless application

@@ -67,6 +67,8 @@ export class RouteGenerator {
   ): void {
     for (const func of this.functions) {
       // Create Lambda function
+      // TODO: Consider migrating to lambdaNodejs.NodejsFunction for improved TypeScript bundling
+      // See docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md for implementation details
       const lambdaFunction = new lambda.Function(api, `${func.functionName}Function`, {
         runtime: lambda.Runtime.NODEJS_20_X,
         handler: `${func.handlerName}.handler`,

@@ -38,7 +38,8 @@ phases:
       
       # Compile TypeScript with build config
       - echo "Compiling TypeScript..."
-      - npm run build || echo "TypeScript compilation failed, continuing..."
+      - npm run build
+      - echo "TypeScript compilation completed"
       
       # Skip tests (Jest not needed for deployment)
       - echo "Skipping tests - not required for infrastructure deployment"

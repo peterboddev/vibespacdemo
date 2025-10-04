@@ -43,6 +43,8 @@ src/lambda/
 └── index.ts             # Export all handlers
 ```
 
+**Deployment Strategy**: Currently uses standard `lambda.Function` construct with pre-compiled TypeScript assets. Future enhancement opportunity exists to migrate to `aws-lambda-nodejs.NodejsFunction` for improved TypeScript compilation and bundling. See [docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md](docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md) for details.
+
 ## AWS Infrastructure
 
 This project uses AWS CDK (Cloud Development Kit) for infrastructure as code. The infrastructure is defined in TypeScript and deployed to AWS.
@@ -613,6 +615,9 @@ Standardized response creation utilities ensure consistent API responses:
 ## 📚 Documentation
 
 This project includes comprehensive documentation organized by category. For a complete overview of all available documentation, see **[docs/README.md](docs/README.md)**.
+
+### Recent Documentation Updates
+- **Lambda Deployment Enhancements**: Added documentation for potential migration to `aws-lambda-nodejs.NodejsFunction` construct for improved TypeScript compilation and bundling. See [docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md](docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md).
 
 ### Key Documentation Files
 
