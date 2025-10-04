@@ -24,7 +24,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-deploy-role-450683699755-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-cfn-exec-role-450683699755-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/abf8e5878a395e08da43b99399d07ca5f9b29efb46e23437ad85d362c88647ac.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/d95e4e21bb69c9d429f01f5869533b59b0008e9b34504a5c5b5e7e6ffc8fd54a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -534,7 +534,7 @@
         "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppInsuranceQuotationApiDeployment2D016444e23cb29ddf0df3c0698aea1df525fe95"
+            "data": "ServerlessAppInsuranceQuotationApiDeployment2D016444c32a0a2b49bb14a48f728284d1fa4719"
           }
         ],
         "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/DeploymentStage.dev/Resource": [
@@ -625,54 +625,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ServerlessAppInsuranceQuotationApiapiv1healthOPTIONSD87663C4"
-          }
-        ],
-        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/ApiPermission.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.health": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppInsuranceQuotationApiapiv1healthGETApiPermissionInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1health4183666A"
-          }
-        ],
-        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/ApiPermission.Test.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.health": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppInsuranceQuotationApiapiv1healthGETApiPermissionTestInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1health8D852ABB"
-          }
-        ],
-        "/InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppInsuranceQuotationApiapiv1healthGET9B435BB9"
-          }
-        ],
-        "/InsuranceQuotation-dev/ServerlessApp/HealthCheckFunction/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppHealthCheckFunction5B64D795"
-          }
-        ],
-        "/InsuranceQuotation-dev/ServerlessApp/HealthCheckErrorAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppHealthCheckErrorAlarm9A9A3D0E"
-          }
-        ],
-        "/InsuranceQuotation-dev/ServerlessApp/HealthCheckDurationAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppHealthCheckDurationAlarmAE822D3A"
-          }
-        ],
-        "/InsuranceQuotation-dev/ServerlessApp/ApiGateway5xxAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppApiGateway5xxAlarmA0B7A877"
-          }
-        ],
-        "/InsuranceQuotation-dev/ServerlessApp/ApiGatewayLatencyAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ServerlessAppApiGatewayLatencyAlarm0B203E1F"
           }
         ],
         "/InsuranceQuotation-dev/ServerlessApp/TestStage/Resource": [

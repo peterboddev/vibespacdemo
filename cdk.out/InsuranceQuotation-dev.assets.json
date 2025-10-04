@@ -31,31 +31,16 @@
         }
       }
     },
-    "2146c255610536d1d63ae44d6071e167e97ea45767dc838fe24677944bd5fd2f": {
-      "displayName": "ServerlessApp/HealthCheckFunction/Code",
-      "source": {
-        "path": "asset.2146c255610536d1d63ae44d6071e167e97ea45767dc838fe24677944bd5fd2f",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "450683699755-us-east-1-2ca428ea": {
-          "bucketName": "cdk-hnb659fds-assets-450683699755-us-east-1",
-          "objectKey": "2146c255610536d1d63ae44d6071e167e97ea45767dc838fe24677944bd5fd2f.zip",
-          "region": "us-east-1",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-file-publishing-role-450683699755-us-east-1"
-        }
-      }
-    },
-    "abf8e5878a395e08da43b99399d07ca5f9b29efb46e23437ad85d362c88647ac": {
+    "d95e4e21bb69c9d429f01f5869533b59b0008e9b34504a5c5b5e7e6ffc8fd54a": {
       "displayName": "InsuranceQuotation-dev Template",
       "source": {
         "path": "InsuranceQuotation-dev.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "450683699755-us-east-1-1ea48faf": {
+        "450683699755-us-east-1-80595a6d": {
           "bucketName": "cdk-hnb659fds-assets-450683699755-us-east-1",
-          "objectKey": "abf8e5878a395e08da43b99399d07ca5f9b29efb46e23437ad85d362c88647ac.json",
+          "objectKey": "d95e4e21bb69c9d429f01f5869533b59b0008e9b34504a5c5b5e7e6ffc8fd54a.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-file-publishing-role-450683699755-us-east-1"
         }

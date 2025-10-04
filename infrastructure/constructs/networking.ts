@@ -29,7 +29,7 @@ export class Networking extends Construct {
     // Create VPC with private subnets for Lambda, RDS, and Redis across multiple AZs
     this.vpc = new ec2.Vpc(this, 'InsuranceQuotationVpc', {
       maxAzs: 2, // Use 2 AZs for high availability
-      cidr: '10.0.0.0/16',
+      ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16'),
       natGateways: 1, // Single NAT Gateway for cost optimization
       natGatewayProvider: ec2.NatProvider.gateway(), // Let CDK create EIP automatically
       subnetConfiguration: [

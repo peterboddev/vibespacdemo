@@ -4,9 +4,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import * as sns from 'aws-cdk-lib/aws-sns';
-import * as cloudwatchActions from 'aws-cdk-lib/aws-cloudwatch-actions';
 import { Construct } from 'constructs';
 
 export interface ServerlessAppProps {
@@ -39,7 +37,7 @@ export class ServerlessApp extends Construct {
   constructor(scope: Construct, id: string, props: ServerlessAppProps) {
     super(scope, id);
 
-    const { environment, vpc, lambdaSecurityGroup, lambdaSubnets, databaseSecretArn, redisSecretArn, sharedLayerArn, alertTopicArn } = props;
+    const { environment, databaseSecretArn, redisSecretArn, sharedLayerArn, alertTopicArn } = props;
 
     // Import shared layer from infrastructure
     this.sharedLayer = lambda.LayerVersion.fromLayerVersionArn(this, 'ImportedSharedLayer', sharedLayerArn);
@@ -177,7 +175,7 @@ export class ServerlessApp extends Construct {
     apiV1.addResource('quotes');
     apiV1.addResource('users');
     apiV1.addResource('products');
-    const healthResource = apiV1.addResource('health');
+    apiV1.addResource('health');
 
 
 
