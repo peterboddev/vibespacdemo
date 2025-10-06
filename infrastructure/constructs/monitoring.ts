@@ -42,14 +42,37 @@ export class Monitoring extends Construct {
   }
 
   /**
+   * Helper method to create a graph widget with consistent properties
+   */
+  private createGraphWidget(config: {
+    title: string;
+    width?: number;
+    height?: number;
+    left?: cloudwatch.IMetric[];
+    right?: cloudwatch.IMetric[];
+  }): cloudwatch.IWidget {
+    const widgetProps: any = {
+      title: config.title,
+      width: config.width || 12,
+      height: config.height || 6,
+      left: config.left || [],
+      warnings: []
+    };
+    
+    if (config.right) {
+      widgetProps.right = config.right;
+    }
+    
+    return new cloudwatch.GraphWidget(widgetProps) as cloudwatch.IWidget;
+  }
+
+  /**
    * Add system overview widgets
    */
   private addSystemOverviewWidgets(environment: string): void {
     // Health Check Success Rate
-    const healthCheckSuccessRate = new cloudwatch.GraphWidget({
+    const healthCheckSuccessRate = this.createGraphWidget({
       title: 'System Health Overview',
-      width: 12,
-      height: 6,
       left: [
         new cloudwatch.Metric({
           namespace: 'InsuranceQuotation/Database',
@@ -97,10 +120,8 @@ export class Monitoring extends Construct {
     });
 
     // Overall System Latency
-    const systemLatency = new cloudwatch.GraphWidget({
+    const systemLatency = this.createGraphWidget({
       title: 'System Response Times',
-      width: 12,
-      height: 6,
       left: [
         new cloudwatch.Metric({
           namespace: 'InsuranceQuotation/Database',
@@ -131,10 +152,8 @@ export class Monitoring extends Construct {
    */
   private addDatabaseMetricsWidgets(environment: string): void {
     // Database Operation Latencies
-    const dbOperationLatencies = new cloudwatch.GraphWidget({
+    const dbOperationLatencies = this.createGraphWidget({
       title: 'Database Operation Latencies',
-      width: 12,
-      height: 6,
       left: [
         new cloudwatch.Metric({
           namespace: 'InsuranceQuotation/Database',
@@ -155,107 +174,21 @@ export class Monitoring extends Construct {
           },
           statistic: 'Average',
           label: 'Read Operations (avg)'
-        }),
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'HealthCheckOperationLatency',
-          dimensionsMap: {
-            Environment: environment,
-            Operation: 'connection'
-          },
-          statistic: 'Average',
-          label: 'Connection (avg)'
         })
       ]
     });
 
-    // Database Operation Counts
-    const dbOperationCounts = new cloudwatch.GraphWidget({
-      title: 'Database Operation Counts',
-      width: 12,
-      height: 6,
-      left: [
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'OperationCount',
-          dimensionsMap: {
-            Environment: environment,
-            Status: 'Success'
-          },
-          statistic: 'Sum',
-          label: 'Successful Operations'
-        }),
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'OperationCount',
-          dimensionsMap: {
-            Environment: environment,
-            Status: 'Error'
-          },
-          statistic: 'Sum',
-          label: 'Failed Operations'
-        })
-      ]
-    });
-
-    // Connection Pool Metrics
-    const connectionPoolMetrics = new cloudwatch.GraphWidget({
-      title: 'Database Connection Pool',
-      width: 12,
-      height: 6,
-      left: [
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'ConnectionPoolTotal',
-          dimensionsMap: {
-            Environment: environment
-          },
-          statistic: 'Average',
-          label: 'Total Connections'
-        }),
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'ConnectionPoolIdle',
-          dimensionsMap: {
-            Environment: environment
-          },
-          statistic: 'Average',
-          label: 'Idle Connections'
-        }),
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'ConnectionPoolWaiting',
-          dimensionsMap: {
-            Environment: environment
-          },
-          statistic: 'Average',
-          label: 'Waiting Clients'
-        })
-      ]
-    });
-
-    this.dashboard.addWidgets(dbOperationLatencies, dbOperationCounts, connectionPoolMetrics);
+    this.dashboard.addWidgets(dbOperationLatencies);
   }
 
   /**
    * Add Redis-specific metrics widgets
    */
   private addRedisMetricsWidgets(environment: string): void {
-    // Redis Operation Latencies
-    const redisLatencies = new cloudwatch.GraphWidget({
+    // Redis Performance
+    const redisLatencies = this.createGraphWidget({
       title: 'Redis Performance',
-      width: 12,
-      height: 6,
       left: [
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'RedisOperationLatency',
-          dimensionsMap: {
-            Environment: environment
-          },
-          statistic: 'Average',
-          label: 'Redis Operation Latency (avg)'
-        }),
         new cloudwatch.Metric({
           namespace: 'InsuranceQuotation/Database',
           metricName: 'RedisHealthCheckLatency',
@@ -268,47 +201,18 @@ export class Monitoring extends Construct {
       ]
     });
 
-    // Redis Operation Counts
-    const redisOperationCounts = new cloudwatch.GraphWidget({
-      title: 'Redis Operation Counts',
-      width: 12,
-      height: 6,
-      left: [
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'RedisOperationCount',
-          dimensionsMap: {
-            Environment: environment,
-            Status: 'Success'
-          },
-          statistic: 'Sum',
-          label: 'Successful Operations'
-        }),
-        new cloudwatch.Metric({
-          namespace: 'InsuranceQuotation/Database',
-          metricName: 'RedisOperationCount',
-          dimensionsMap: {
-            Environment: environment,
-            Status: 'Error'
-          },
-          statistic: 'Sum',
-          label: 'Failed Operations'
-        })
-      ]
-    });
-
-    this.dashboard.addWidgets(redisLatencies, redisOperationCounts);
+    this.dashboard.addWidgets(redisLatencies);
   }
 
   /**
    * Add Lambda function metrics widgets
    */
-  private addLambdaMetricsWidgets(lambdaFunctions: lambda.Function[], environment: string): void {
+  private addLambdaMetricsWidgets(lambdaFunctions: lambda.Function[], _environment: string): void {
+    if (lambdaFunctions.length === 0) return;
+
     // Lambda Duration
-    const lambdaDuration = new cloudwatch.GraphWidget({
+    const lambdaDuration = this.createGraphWidget({
       title: 'Lambda Function Duration',
-      width: 12,
-      height: 6,
       left: lambdaFunctions.map(func => 
         new cloudwatch.Metric({
           namespace: 'AWS/Lambda',
@@ -322,54 +226,16 @@ export class Monitoring extends Construct {
       )
     });
 
-    // Lambda Errors
-    const lambdaErrors = new cloudwatch.GraphWidget({
-      title: 'Lambda Function Errors',
-      width: 12,
-      height: 6,
-      left: lambdaFunctions.map(func => 
-        new cloudwatch.Metric({
-          namespace: 'AWS/Lambda',
-          metricName: 'Errors',
-          dimensionsMap: {
-            FunctionName: func.functionName
-          },
-          statistic: 'Sum',
-          label: `${func.functionName} errors`
-        })
-      )
-    });
-
-    // Lambda Invocations
-    const lambdaInvocations = new cloudwatch.GraphWidget({
-      title: 'Lambda Function Invocations',
-      width: 12,
-      height: 6,
-      left: lambdaFunctions.map(func => 
-        new cloudwatch.Metric({
-          namespace: 'AWS/Lambda',
-          metricName: 'Invocations',
-          dimensionsMap: {
-            FunctionName: func.functionName
-          },
-          statistic: 'Sum',
-          label: `${func.functionName} invocations`
-        })
-      )
-    });
-
-    this.dashboard.addWidgets(lambdaDuration, lambdaErrors, lambdaInvocations);
+    this.dashboard.addWidgets(lambdaDuration);
   }
 
   /**
    * Add API Gateway metrics widgets
    */
-  private addApiGatewayMetricsWidgets(apiGatewayId: string, environment: string): void {
+  private addApiGatewayMetricsWidgets(_apiGatewayId: string, environment: string): void {
     // API Gateway Latency
-    const apiLatency = new cloudwatch.GraphWidget({
+    const apiLatency = this.createGraphWidget({
       title: 'API Gateway Latency',
-      width: 12,
-      height: 6,
       left: [
         new cloudwatch.Metric({
           namespace: 'AWS/ApiGateway',
@@ -379,58 +245,11 @@ export class Monitoring extends Construct {
           },
           statistic: 'Average',
           label: 'API Latency (avg)'
-        }),
-        new cloudwatch.Metric({
-          namespace: 'AWS/ApiGateway',
-          metricName: 'IntegrationLatency',
-          dimensionsMap: {
-            ApiName: `insurance-quotation-${environment}`
-          },
-          statistic: 'Average',
-          label: 'Integration Latency (avg)'
         })
       ]
     });
 
-    // API Gateway Requests and Errors
-    const apiRequestsAndErrors = new cloudwatch.GraphWidget({
-      title: 'API Gateway Requests & Errors',
-      width: 12,
-      height: 6,
-      left: [
-        new cloudwatch.Metric({
-          namespace: 'AWS/ApiGateway',
-          metricName: 'Count',
-          dimensionsMap: {
-            ApiName: `insurance-quotation-${environment}`
-          },
-          statistic: 'Sum',
-          label: 'Total Requests'
-        })
-      ],
-      right: [
-        new cloudwatch.Metric({
-          namespace: 'AWS/ApiGateway',
-          metricName: '4XXError',
-          dimensionsMap: {
-            ApiName: `insurance-quotation-${environment}`
-          },
-          statistic: 'Sum',
-          label: '4XX Errors'
-        }),
-        new cloudwatch.Metric({
-          namespace: 'AWS/ApiGateway',
-          metricName: '5XXError',
-          dimensionsMap: {
-            ApiName: `insurance-quotation-${environment}`
-          },
-          statistic: 'Sum',
-          label: '5XX Errors'
-        })
-      ]
-    });
-
-    this.dashboard.addWidgets(apiLatency, apiRequestsAndErrors);
+    this.dashboard.addWidgets(apiLatency);
   }
 
   /**

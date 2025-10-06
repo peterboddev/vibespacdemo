@@ -1877,7 +1877,7 @@
     ],
     "Content": {
      "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
-     "S3Key": "50ea51d62957e732207ee3ffe5dbaa4d98d0677294d5873133c145176e7dc0a4.zip"
+     "S3Key": "e9906b89e22ecccb0423ae903f2ced7f7ba0599a9386dc203d0bc9bb1572b28a.zip"
     },
     "Description": "Shared dependencies for Insurance Quotation Lambda functions",
     "LayerName": "insurance-quotation-shared-dev"
@@ -1886,7 +1886,7 @@
    "DeletionPolicy": "Delete",
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/LambdaLayer/SharedDependenciesLayer/Resource",
-    "aws:asset:path": "asset.50ea51d62957e732207ee3ffe5dbaa4d98d0677294d5873133c145176e7dc0a4",
+    "aws:asset:path": "asset.e9906b89e22ecccb0423ae903f2ced7f7ba0599a9386dc203d0bc9bb1572b28a",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Content"
    }
@@ -2058,6 +2058,24 @@
        "Version": "2012-10-17"
       },
       "PolicyName": "VPCAccess"
+     },
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": "cloudwatch:PutMetricData",
+         "Condition": {
+          "StringEquals": {
+           "cloudwatch:namespace": "InsuranceQuotation/Database"
+          }
+         },
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "CloudWatchMetrics"
      }
     ],
     "Tags": [
@@ -2918,7 +2936,7 @@
    "Properties": {
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
-     "S3Key": "2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b.zip"
+     "S3Key": "8a4086ea37be561cbd36c63ce6af81d7dd5132af807bff8782ecf491d54d17d8.zip"
     },
     "Description": "Health check endpoint",
     "Environment": {
@@ -3000,7 +3018,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/healthFunction/Resource",
-    "aws:asset:path": "asset.2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b",
+    "aws:asset:path": "asset.8a4086ea37be561cbd36c63ce6af81d7dd5132af807bff8782ecf491d54d17d8",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -3010,7 +3028,7 @@
    "Properties": {
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
-     "S3Key": "2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b.zip"
+     "S3Key": "8a4086ea37be561cbd36c63ce6af81d7dd5132af807bff8782ecf491d54d17d8.zip"
     },
     "Description": "Create insurance quote",
     "Environment": {
@@ -3092,7 +3110,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/quotes-createFunction/Resource",
-    "aws:asset:path": "asset.2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b",
+    "aws:asset:path": "asset.8a4086ea37be561cbd36c63ce6af81d7dd5132af807bff8782ecf491d54d17d8",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -3102,7 +3120,7 @@
    "Properties": {
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
-     "S3Key": "2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b.zip"
+     "S3Key": "8a4086ea37be561cbd36c63ce6af81d7dd5132af807bff8782ecf491d54d17d8.zip"
     },
     "Description": "Get insurance quote by ID",
     "Environment": {
@@ -3184,7 +3202,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/quotes-getFunction/Resource",
-    "aws:asset:path": "asset.2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b",
+    "aws:asset:path": "asset.8a4086ea37be561cbd36c63ce6af81d7dd5132af807bff8782ecf491d54d17d8",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -3234,10 +3252,210 @@
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/TestStage/Resource"
    }
   },
+  "MonitoringInsuranceQuotationDashboard36379380": {
+   "Type": "AWS::CloudWatch::Dashboard",
+   "Properties": {
+    "DashboardBody": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"start\":\"-PT1H\",\"widgets\":[{\"type\":\"metric\",\"width\":12,\"height\":6,\"x\":0,\"y\":0,\"properties\":{\"view\":\"timeSeries\",\"title\":\"System Health Overview\",\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"metrics\":[[\"InsuranceQuotation/Database\",\"HealthCheckCount\",\"Environment\",\"dev\",\"Status\",\"Success\",{\"label\":\"Database Health Checks (Success)\",\"stat\":\"Sum\"}],[\"InsuranceQuotation/Database\",\"RedisHealthCheckCount\",\"Environment\",\"dev\",\"Status\",\"Success\",{\"label\":\"Redis Health Checks (Success)\",\"stat\":\"Sum\"}],[\"InsuranceQuotation/Database\",\"HealthCheckCount\",\"Environment\",\"dev\",\"Status\",\"Error\",{\"label\":\"Database Health Checks (Error)\",\"stat\":\"Sum\",\"yAxis\":\"right\"}],[\"InsuranceQuotation/Database\",\"RedisHealthCheckCount\",\"Environment\",\"dev\",\"Status\",\"Error\",{\"label\":\"Redis Health Checks (Error)\",\"stat\":\"Sum\",\"yAxis\":\"right\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":12,\"height\":6,\"x\":12,\"y\":0,\"properties\":{\"view\":\"timeSeries\",\"title\":\"System Response Times\",\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"metrics\":[[\"InsuranceQuotation/Database\",\"HealthCheckLatency\",\"Environment\",\"dev\",{\"label\":\"Database Health Check Latency (avg)\"}],[\"InsuranceQuotation/Database\",\"RedisHealthCheckLatency\",\"Environment\",\"dev\",{\"label\":\"Redis Health Check Latency (avg)\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":12,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Database Operation Latencies\",\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"metrics\":[[\"InsuranceQuotation/Database\",\"HealthCheckOperationLatency\",\"Environment\",\"dev\",\"Operation\",\"write\",{\"label\":\"Write Operations (avg)\"}],[\"InsuranceQuotation/Database\",\"HealthCheckOperationLatency\",\"Environment\",\"dev\",\"Operation\",\"read\",{\"label\":\"Read Operations (avg)\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":12,\"height\":6,\"x\":0,\"y\":12,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Redis Performance\",\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"metrics\":[[\"InsuranceQuotation/Database\",\"RedisHealthCheckLatency\",\"Environment\",\"dev\",{\"label\":\"Redis Health Check Latency (avg)\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":12,\"height\":6,\"x\":0,\"y\":18,\"properties\":{\"view\":\"timeSeries\",\"title\":\"Lambda Function Duration\",\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"metrics\":[[\"AWS/Lambda\",\"Duration\",\"FunctionName\",\"",
+       {
+        "Ref": "ServerlessApphealthFunction77B4F61F"
+       },
+       "\",{\"label\":\"",
+       {
+        "Ref": "ServerlessApphealthFunction77B4F61F"
+       },
+       " (avg)\"}],[\"AWS/Lambda\",\"Duration\",\"FunctionName\",\"",
+       {
+        "Ref": "ServerlessAppquotescreateFunctionED9F43BD"
+       },
+       "\",{\"label\":\"",
+       {
+        "Ref": "ServerlessAppquotescreateFunctionED9F43BD"
+       },
+       " (avg)\"}],[\"AWS/Lambda\",\"Duration\",\"FunctionName\",\"",
+       {
+        "Ref": "ServerlessAppquotesgetFunctionB6E0E869"
+       },
+       "\",{\"label\":\"",
+       {
+        "Ref": "ServerlessAppquotesgetFunctionB6E0E869"
+       },
+       " (avg)\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":12,\"height\":6,\"x\":0,\"y\":24,\"properties\":{\"view\":\"timeSeries\",\"title\":\"API Gateway Latency\",\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"metrics\":[[\"AWS/ApiGateway\",\"Latency\",\"ApiName\",\"insurance-quotation-dev\",{\"label\":\"API Latency (avg)\"}]],\"yAxis\":{}}}]}"
+      ]
+     ]
+    },
+    "DashboardName": "InsuranceQuotation-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Monitoring/InsuranceQuotationDashboard/Resource"
+   }
+  },
+  "MonitoringDatabaseHealthCheckFailureAlarm2AF83898": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "AlarmDescription": "Database health checks are failing",
+    "AlarmName": "InsuranceQuotation-DatabaseHealthFailure-dev",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "Status",
+      "Value": "Error"
+     }
+    ],
+    "EvaluationPeriods": 2,
+    "MetricName": "HealthCheckCount",
+    "Namespace": "InsuranceQuotation/Database",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "Monitoring"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Threshold": 3,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Monitoring/DatabaseHealthCheckFailureAlarm/Resource"
+   }
+  },
+  "MonitoringHighDatabaseLatencyAlarm9C889DE3": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "AlarmDescription": "Database operations are taking too long",
+    "AlarmName": "InsuranceQuotation-HighDatabaseLatency-dev",
+    "ComparisonOperator": "GreaterThanThreshold",
+    "EvaluationPeriods": 3,
+    "MetricName": "HealthCheckLatency",
+    "Namespace": "InsuranceQuotation/Database",
+    "Period": 300,
+    "Statistic": "Average",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "Monitoring"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Threshold": 5000,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Monitoring/HighDatabaseLatencyAlarm/Resource"
+   }
+  },
+  "MonitoringRedisHealthCheckFailureAlarm6592C926": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmActions": [
+     {
+      "Ref": "LambdaLayerAlertTopic1CDBD960"
+     }
+    ],
+    "AlarmDescription": "Redis health checks are failing",
+    "AlarmName": "InsuranceQuotation-RedisHealthFailure-dev",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "Status",
+      "Value": "Error"
+     }
+    ],
+    "EvaluationPeriods": 2,
+    "MetricName": "RedisHealthCheckCount",
+    "Namespace": "InsuranceQuotation/Database",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "Monitoring"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Threshold": 3,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/Monitoring/RedisHealthCheckFailureAlarm/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31SXW/iMBD8LX03Pkofeq989CqkXi8CxGu1cbbBJbEj7xqEIv/3k50QUnS6l+zM7Mg7znomZ48/5fQBzjRRxXFS6Vy2WwZ1FHCmjxbVTLb7Ronlp9lnS5H5vNJq63ODHLUb2ljPuIO8wpt+0+ZEVmlgbc1gjuBlncXyDvwKjGe4iMzpEzDeDl4bRmdwMHRJejZnBnWo0bDolX2jXkzRWG24tw40nfQJCseeLSrvNF9enfVNiv5fYW1Kh0RBECqHTDUYKNHJdpt474+oKztwJfIo5mC47wThCpJtd/Fh+GoxFlbAkAPhsvLE6DrDN7I2xGAUBqGhlu3GdvuINQisgFgrUAeU7bCl0UXdCV2FRMtoCaKCOi9Atm9wQbdHR/367nmGrtaU2C9v1HXLVxwEPX0AETLJeSyCnuTCqyPyAggFGZLtzjY6PbMOpG/sBlHZkmT7Zssh6BUHAY0uu73LdoPE80an697gXCnrDYsVNpW9XFcwYluGsnuzCWyQrHcKU7LfyAdbxGaPrt1+SMIhjGRPbOt/uSL+47nxfGfKnD3pAl0amH5PDKJNGYSxBcov+nGaTeXjs5w+fJHWE+cN6xrlpqt/AQbc6U/DAwAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31SwW7bMAz9lt5VLU0P29VJuiJAtxlJkGtBy6yjxpYMkUoQCP73QbJjp8Gwi/ke+UQ9mprL+dMPOXuAMz2q8vhY60KGLYM6CjjTe0A1l2HfKrH8MPt8KXJf1FptfWGQY25CG+sZd1DUOOWnXEZklQbW1oziCF7WeQy/gV+B8QwXkTt9Asap8dowOoOjoHcysIwZ1KFBw2LI7Fv1YsrWasODdKSp0wcovNVsUXmn+fLqrG+T9f8m1qZySNQJQuWQqQEDFToZtokP+oj6sANXId/YHAX3lU64kmToBx8vXy1uEytgKIBwWXtidL3gC1kbYjAKO6GhkWFj+33E2AmsgVgrUAeUYdzSzaDuhK5GomWUdKKGpihBhje4oNujo2F99zxH12hK7Kc36rrlK+4EPb8DETLJLAZBz3Lh1RF5AYSCDMmws61Oz6wH6RurnahtRTK82Wo0esWdgFZX/d5l2CBx1uo07gQzpaw3LFbY1vZyXcEN2zJU/ZtNYINkvVOYnP1CPtgyFgd0rQ6XJNwJVVtfnoHVQYYV0KGw4NKpiWQ1uCb5iaDrbjp5Ytv8q3HEfzy3nu9EubMnXaJLHtMfjd61qTphbInyk76d5jP59F3OHj5J60fnDesG5aaPfwHqR5Cg9gMAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/CDKMetadata/Default"
@@ -3478,6 +3696,23 @@
   "Account": {
    "Description": "AWS Account ID",
    "Value": "450683699755"
+  },
+  "DashboardUrl": {
+   "Description": "CloudWatch Dashboard URL with comprehensive system monitoring, health checks, and automated alerting",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#dashboards:name=",
+      {
+       "Ref": "MonitoringInsuranceQuotationDashboard36379380"
+      }
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "InsuranceQuotation-DashboardUrl-dev"
+   }
   }
  },
  "Parameters": {

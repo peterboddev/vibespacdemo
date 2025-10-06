@@ -24,7 +24,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-deploy-role-450683699755-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::450683699755:role/cdk-hnb659fds-cfn-exec-role-450683699755-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/d0479e5bf6d0708a010541d7195758e7752d28bf7243045560e3a65f0a15ff3f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-450683699755-us-east-1/c6f5914cc82abc324c494aa9fca9b02ba2f545b5399d579e35d8cf99bd3699b2.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -711,6 +711,30 @@
             "data": "ServerlessAppLambdaRoleArn09A8F06E"
           }
         ],
+        "/InsuranceQuotation-dev/Monitoring/InsuranceQuotationDashboard/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringInsuranceQuotationDashboard36379380"
+          }
+        ],
+        "/InsuranceQuotation-dev/Monitoring/DatabaseHealthCheckFailureAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringDatabaseHealthCheckFailureAlarm2AF83898"
+          }
+        ],
+        "/InsuranceQuotation-dev/Monitoring/HighDatabaseLatencyAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringHighDatabaseLatencyAlarm9C889DE3"
+          }
+        ],
+        "/InsuranceQuotation-dev/Monitoring/RedisHealthCheckFailureAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MonitoringRedisHealthCheckFailureAlarm6592C926"
+          }
+        ],
         "/InsuranceQuotation-dev/Environment": [
           {
             "type": "aws:cdk:logicalId",
@@ -727,6 +751,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "Account"
+          }
+        ],
+        "/InsuranceQuotation-dev/DashboardUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DashboardUrl"
           }
         ],
         "/InsuranceQuotation-dev/CDKMetadata/Default": [
