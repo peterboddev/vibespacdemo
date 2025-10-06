@@ -2952,7 +2952,7 @@
       }
      }
     },
-    "Handler": "handler.handler",
+    "Handler": "health/handler.handler",
     "Layers": [
      {
       "Ref": "LambdaLayerSharedDependenciesLayer64C69A98"
@@ -3044,7 +3044,7 @@
       }
      }
     },
-    "Handler": "create.handler",
+    "Handler": "quotes/create.handler",
     "Layers": [
      {
       "Ref": "LambdaLayerSharedDependenciesLayer64C69A98"
@@ -3136,7 +3136,7 @@
       }
      }
     },
-    "Handler": "get.handler",
+    "Handler": "quotes/get.handler",
     "Layers": [
      {
       "Ref": "LambdaLayerSharedDependenciesLayer64C69A98"

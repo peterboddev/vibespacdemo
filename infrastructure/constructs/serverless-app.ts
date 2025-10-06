@@ -261,24 +261,24 @@ export class ServerlessApp extends Construct {
     const lambdaFunctions = [
       {
         name: 'health',
-        path: 'src/lambda/health',
-        handler: 'handler.handler',
+        path: 'src/lambda',
+        handler: 'health/handler.handler',
         method: 'GET',
         apiPath: '/api/v1/health',
         description: 'Health check endpoint'
       },
       {
         name: 'quotes-create',
-        path: 'src/lambda/quotes',
-        handler: 'create.handler',
+        path: 'src/lambda',
+        handler: 'quotes/create.handler',
         method: 'POST',
         apiPath: '/api/v1/quotes',
         description: 'Create insurance quote'
       },
       {
         name: 'quotes-get',
-        path: 'src/lambda/quotes',
-        handler: 'get.handler',
+        path: 'src/lambda',
+        handler: 'quotes/get.handler',
         method: 'GET',
         apiPath: '/api/v1/quotes/{id}',
         description: 'Get insurance quote by ID'
