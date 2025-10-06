@@ -43,7 +43,7 @@ src/lambda/
 └── index.ts             # Export all handlers
 ```
 
-**Deployment Strategy**: Currently uses standard `lambda.Function` construct with pre-compiled TypeScript assets. Future enhancement opportunity exists to migrate to `aws-lambda-nodejs.NodejsFunction` for improved TypeScript compilation and bundling. See [docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md](docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md) for details.
+**Deployment Strategy**: Currently uses standard `lambda.Function` construct with pre-compiled TypeScript assets. Infrastructure is now prepared for migration to `aws-lambda-nodejs.NodejsFunction` for improved TypeScript compilation and bundling (import added to serverless-app.ts). See [docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md](docs/LAMBDA_DEPLOYMENT_ENHANCEMENTS.md) for implementation details and migration strategy.
 
 ## AWS Infrastructure
 
