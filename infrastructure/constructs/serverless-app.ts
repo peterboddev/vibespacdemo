@@ -24,20 +24,20 @@ export interface ServerlessAppProps {
  * - Lambda execution roles and policies
  * - CloudWatch log groups
  * - Lambda layers for shared dependencies
- * - Foundation for dynamic route generation via CodeBuild
+ * - Foundation for dynamic route generation via RouteGenerator (import added, integration pending)
  */
 export class ServerlessApp extends Construct {
   public readonly api: apigateway.RestApi;
   public readonly lambdaRole: iam.Role;
   public readonly sharedLayer: lambda.ILayerVersion;
   public readonly logGroup: logs.LogGroup;
-
   public readonly alertTopic: sns.ITopic;
+  public readonly lambdaFunctions: lambda.Function[] = [];
 
   constructor(scope: Construct, id: string, props: ServerlessAppProps) {
     super(scope, id);
 
-    const { environment, databaseSecretArn, redisSecretArn, sharedLayerArn, alertTopicArn } = props;
+    const { environment, vpc, lambdaSecurityGroup, lambdaSubnets, databaseSecretArn, redisSecretArn, sharedLayerArn, alertTopicArn } = props;
 
     // Import shared layer from infrastructure
     this.sharedLayer = lambda.LayerVersion.fromLayerVersionArn(this, 'ImportedSharedLayer', sharedLayerArn);
@@ -107,6 +107,22 @@ export class ServerlessApp extends Construct {
             }),
           ],
         }),
+        CloudWatchMetrics: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: [
+                'cloudwatch:PutMetricData',
+              ],
+              resources: ['*'],
+              conditions: {
+                StringEquals: {
+                  'cloudwatch:namespace': 'InsuranceQuotation/Database'
+                }
+              }
+            }),
+          ],
+        }),
       },
     });
 
@@ -168,19 +184,8 @@ export class ServerlessApp extends Construct {
       binaryMediaTypes: ['multipart/form-data', 'application/octet-stream'],
     });
 
-    // Create base API structure for dynamic route generation
-    const apiV1 = this.api.root.addResource('api').addResource('v1');
-    
-    // Add resource groups that will be populated dynamically
-    apiV1.addResource('quotes');
-    apiV1.addResource('users');
-    apiV1.addResource('products');
-    apiV1.addResource('health');
-
-
-
-    // Note: Health check endpoint and monitoring will be deployed via pipeline
-    // Infrastructure only provides the foundation (API Gateway shell, layer, SNS topic)
+    // Create Lambda functions and API routes
+    this.createLambdaFunctions(vpc, lambdaSecurityGroup, lambdaSubnets, environment, databaseSecretArn, redisSecretArn);
 
     // Create additional stages for different environments
     if (environment === 'dev') {
@@ -240,6 +245,107 @@ export class ServerlessApp extends Construct {
   }
 
 
+
+  /**
+   * Create Lambda functions and API Gateway routes
+   */
+  private createLambdaFunctions(
+    vpc: ec2.IVpc,
+    lambdaSecurityGroup: ec2.ISecurityGroup,
+    lambdaSubnets: ec2.SubnetSelection,
+    environment: string,
+    databaseSecretArn: string,
+    redisSecretArn: string
+  ): void {
+    // Define Lambda functions to create
+    const lambdaFunctions = [
+      {
+        name: 'health',
+        path: 'src/lambda/health',
+        handler: 'handler.handler',
+        method: 'GET',
+        apiPath: '/api/v1/health',
+        description: 'Health check endpoint'
+      },
+      {
+        name: 'quotes-create',
+        path: 'src/lambda/quotes',
+        handler: 'create.handler',
+        method: 'POST',
+        apiPath: '/api/v1/quotes',
+        description: 'Create insurance quote'
+      },
+      {
+        name: 'quotes-get',
+        path: 'src/lambda/quotes',
+        handler: 'get.handler',
+        method: 'GET',
+        apiPath: '/api/v1/quotes/{id}',
+        description: 'Get insurance quote by ID'
+      }
+    ];
+
+    // Create Lambda functions and API Gateway integrations
+    for (const funcDef of lambdaFunctions) {
+      // Create Lambda function
+      const lambdaFunction = new lambda.Function(this, `${funcDef.name}Function`, {
+        runtime: lambda.Runtime.NODEJS_20_X,
+        handler: funcDef.handler,
+        code: lambda.Code.fromAsset('src/lambda'),
+        role: this.lambdaRole,
+        layers: [this.sharedLayer],
+        vpc: vpc,
+        vpcSubnets: lambdaSubnets,
+        securityGroups: [lambdaSecurityGroup],
+        environment: {
+          NODE_ENV: environment,
+          LOG_LEVEL: environment === 'prod' ? 'info' : 'debug',
+          FUNCTION_NAME: funcDef.name,
+          DATABASE_SECRET_ARN: databaseSecretArn,
+          REDIS_SECRET_ARN: redisSecretArn,
+        },
+        timeout: cdk.Duration.seconds(30),
+        memorySize: 256,
+        logGroup: this.logGroup,
+        description: funcDef.description,
+      });
+      
+      // Store reference to Lambda function
+      this.lambdaFunctions.push(lambdaFunction);
+      
+      // Get or create API Gateway resource
+      const resource = this.getOrCreateApiResource(funcDef.apiPath);
+      
+      // Create Lambda integration
+      const integration = new apigateway.LambdaIntegration(lambdaFunction, {
+        proxy: true,
+      });
+      
+      // Add method to resource
+      resource.addMethod(funcDef.method, integration, {
+        authorizationType: apigateway.AuthorizationType.NONE,
+      });
+    }
+  }
+
+  /**
+   * Get or create API Gateway resource for a path
+   */
+  private getOrCreateApiResource(path: string): apigateway.IResource {
+    const pathParts = path.split('/').filter(part => part.length > 0);
+    let resource: apigateway.IResource = this.api.root;
+    
+    for (const part of pathParts) {
+      const existingResource = resource.node.tryFindChild(part);
+      if (existingResource && existingResource instanceof apigateway.Resource) {
+        resource = existingResource;
+      } else {
+        resource = resource.addResource(part);
+      }
+    }
+    
+    return resource;
+  }
 
   /**
    * Add outputs for the serverless application

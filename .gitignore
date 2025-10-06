@@ -12,6 +12,9 @@ build/
 cdk.out/
 *.d.ts.map
 
+# Temporary deployment files
+temp/
+
 # Documentation (generated/temporary docs)
 docs/
 

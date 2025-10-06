@@ -2,7 +2,8 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda
 import { createSuccessResponse } from '../shared/response';
 import { withErrorHandler, withCors } from '../shared/middleware';
 import { redisManager } from '../../database/redis';
-import { healthCheck as databaseHealthCheck } from '../../database/connection';
+import { detailedHealthCheck as databaseDetailedHealthCheck } from '../../database/connection';
+import { RedisMetrics } from '../shared/metrics';
 
 /**
  * Health check endpoint for the Insurance Quotation API
@@ -29,29 +30,24 @@ const healthCheckHandler = async (
     console.warn('Redis initialization failed during health check:', error);
   }
   
-  // Check Redis health
+  // Check Redis health with metrics
+  const redisStartTime = Date.now();
   const redisHealth = await redisManager.healthCheck();
+  const redisLatency = Date.now() - redisStartTime;
   
-  // Check Database health
-  const dbStartTime = Date.now();
-  let databaseHealth: { status: string; latency?: number; error?: string };
+  // Record Redis health check metrics
+  await RedisMetrics.recordHealthCheck(redisLatency, redisHealth.status === 'healthy');
   
-  try {
-    const isDbHealthy = await databaseHealthCheck();
-    const dbLatency = Date.now() - dbStartTime;
-    
-    databaseHealth = {
-      status: isDbHealthy ? 'healthy' : 'unhealthy',
-      latency: dbLatency
-    };
-  } catch (error) {
-    const dbLatency = Date.now() - dbStartTime;
-    databaseHealth = {
-      status: 'unhealthy',
-      latency: dbLatency,
-      error: error instanceof Error ? error.message : 'Unknown database error'
-    };
-  }
+  // Check Database health with detailed read/write test
+  const databaseHealthResult = await databaseDetailedHealthCheck();
+  
+  const databaseHealth = {
+    status: databaseHealthResult.healthy ? 'healthy' : 'unhealthy',
+    latency: databaseHealthResult.totalLatency,
+    operations: databaseHealthResult.operations,
+    operationLatencies: databaseHealthResult.operationLatencies,
+    ...(databaseHealthResult.error && { error: databaseHealthResult.error })
+  };
   
   // Determine overall status
   const allHealthy = redisHealth.status === 'healthy' && databaseHealth.status === 'healthy';

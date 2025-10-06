@@ -6,6 +6,7 @@ import { Database } from '../constructs/database';
 import { Redis } from '../constructs/redis';
 import { LambdaLayer } from '../constructs/lambda-layer';
 import { ServerlessApp } from '../constructs/serverless-app';
+import { Monitoring } from '../constructs/monitoring';
 
 export interface InsuranceQuotationStackProps extends cdk.StackProps {
   environment: string;
@@ -17,6 +18,7 @@ export class InsuranceQuotationStack extends cdk.Stack {
   public readonly redis: Redis;
   public readonly lambdaLayer: LambdaLayer;
   public readonly serverlessApp: ServerlessApp;
+  public readonly monitoring: Monitoring;
 
   constructor(scope: Construct, id: string, props: InsuranceQuotationStackProps) {
     super(scope, id, props);
@@ -67,6 +69,16 @@ export class InsuranceQuotationStack extends cdk.Stack {
       alertTopicArn: this.lambdaLayer.alertTopic.topicArn,
     });
 
+    // Create monitoring dashboard and alarms
+    this.monitoring = new Monitoring(this, 'Monitoring', {
+      environment,
+      lambdaFunctions: this.serverlessApp.lambdaFunctions,
+      apiGatewayId: this.serverlessApp.api.restApiId,
+    });
+
+    // Create CloudWatch alarms
+    this.monitoring.createAlarms(this.lambdaLayer.alertTopic.topicArn);
+
     // Add outputs
     this.networking.addOutputs();
     this.database.addOutputs();
@@ -88,6 +100,12 @@ export class InsuranceQuotationStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'Account', {
       value: this.account,
       description: 'AWS Account ID',
+    });
+
+    new cdk.CfnOutput(this, 'DashboardUrl', {
+      value: `https://${this.region}.console.aws.amazon.com/cloudwatch/home?region=${this.region}#dashboards:name=${this.monitoring.dashboard.dashboardName}`,
+      description: 'CloudWatch Dashboard URL with comprehensive system monitoring, health checks, and automated alerting',
+      exportName: `InsuranceQuotation-DashboardUrl-${environment}`,
     });
   }
 }

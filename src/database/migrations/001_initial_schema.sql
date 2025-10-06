@@ -1,5 +1,6 @@
 -- Initial database schema for Insurance Quotation System
 -- This migration creates the core tables needed for the application
+-- Note: The health_check table is created automatically by the health check system
 
 -- Create extension for UUID generation
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

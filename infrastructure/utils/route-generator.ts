@@ -39,7 +39,7 @@ export class RouteGenerator {
   private functions: LambdaFunctionMetadata[] = [];
 
   constructor(lambdaDir: string = 'src/lambda') {
-    this.lambdaDir = lambdaDir;
+    this.lambdaDir = path.resolve(lambdaDir);
   }
 
   /**
@@ -59,10 +59,10 @@ export class RouteGenerator {
     lambdaConfig: {
       role: iam.Role;
       layers: lambda.LayerVersion[];
-      vpc?: ec2.IVpc;
-      securityGroups?: ec2.ISecurityGroup[];
-      subnets?: ec2.SubnetSelection;
-      environment?: { [key: string]: string };
+      vpc: ec2.IVpc;
+      securityGroups: ec2.ISecurityGroup[];
+      subnets: ec2.SubnetSelection;
+      environment: { [key: string]: string };
     }
   ): void {
     for (const func of this.functions) {
@@ -100,6 +100,7 @@ export class RouteGenerator {
    */
   private scanDirectory(dir: string): void {
     if (!fs.existsSync(dir)) {
+      console.warn(`Directory not found: ${dir}`);
       return;
     }
 
@@ -130,7 +131,7 @@ export class RouteGenerator {
       
       this.functions.push({
         functionName,
-        filePath,
+        filePath: path.dirname(filePath), // Use directory path for CDK asset bundling
         handlerName,
         routes,
         dependencies: this.extractDependencies(content),

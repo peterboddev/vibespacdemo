@@ -32,9 +32,8 @@ phases:
       # Lambda layer building is now handled automatically by CDK during deployment
       - echo "Lambda layer will be built automatically by CDK..."
       
-      # Skip route generation (has CDK dependency issues in build environment)
-      - echo "Skipping route generation - CDK dependencies not available in build context"
-      - mkdir -p infrastructure/generated || true
+      # Route generation is now handled by CDK during synthesis
+      - echo "Route generation will be handled by CDK during synthesis..."
       
       # Compile TypeScript with build config
       - echo "Compiling TypeScript..."
@@ -101,7 +100,7 @@ phases:
             HEALTH_URL="${API_URL}api/v1/health"
             echo "Health check URL: $HEALTH_URL"
             
-            # Run health check validation with retries
+            # Run enhanced health check validation with retries (includes database read/write testing)
             node scripts/health-check-validator.js "$HEALTH_URL" --max-retries 5 --retry-delay 10000 --timeout 30000
             
             if [ $? -eq 0 ]; then

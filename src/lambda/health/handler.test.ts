@@ -10,7 +10,7 @@ jest.mock('../../database/redis', () => ({
   },
 }));
 
-// Mock the database connection
+// Mock the database connection (enhanced health check with read/write testing)
 jest.mock('../../database/connection', () => ({
   healthCheck: jest.fn(),
 }));

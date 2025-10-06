@@ -2201,7 +2201,7 @@
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Account"
    }
   },
-  "ServerlessAppInsuranceQuotationApiDeployment2D016444c32a0a2b49bb14a48f728284d1fa4719": {
+  "ServerlessAppInsuranceQuotationApiDeployment2D0164440b88a7b60e1c3fa5370ece52fec22b61": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Insurance Quotation API - dev",
@@ -2212,16 +2212,17 @@
    "DependsOn": [
     "ServerlessAppInsuranceQuotationApiapiOPTIONS545C1EB7",
     "ServerlessAppInsuranceQuotationApiapiA508EA3A",
+    "ServerlessAppInsuranceQuotationApiapiv1healthGET9B435BB9",
     "ServerlessAppInsuranceQuotationApiapiv1healthOPTIONSD87663C4",
     "ServerlessAppInsuranceQuotationApiapiv1health354FBB05",
     "ServerlessAppInsuranceQuotationApiapiv1OPTIONS1BB008FC",
-    "ServerlessAppInsuranceQuotationApiapiv1productsOPTIONS7723A89F",
-    "ServerlessAppInsuranceQuotationApiapiv1productsE8C886DC",
+    "ServerlessAppInsuranceQuotationApiapiv1quotesidGET23765BB2",
+    "ServerlessAppInsuranceQuotationApiapiv1quotesidOPTIONS2E3212ED",
+    "ServerlessAppInsuranceQuotationApiapiv1quotesidF2A2D623",
     "ServerlessAppInsuranceQuotationApiapiv1quotesOPTIONSE5D91E35",
+    "ServerlessAppInsuranceQuotationApiapiv1quotesPOSTEB51702C",
     "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E",
     "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7",
-    "ServerlessAppInsuranceQuotationApiapiv1usersOPTIONS251C229C",
-    "ServerlessAppInsuranceQuotationApiapiv1usersC559A852",
     "ServerlessAppInsuranceQuotationApiOPTIONSB4BC19BF"
    ],
    "Metadata": {
@@ -2233,7 +2234,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "ServerlessAppInsuranceQuotationApiDeployment2D016444c32a0a2b49bb14a48f728284d1fa4719"
+     "Ref": "ServerlessAppInsuranceQuotationApiDeployment2D0164440b88a7b60e1c3fa5370ece52fec22b61"
     },
     "MethodSettings": [
      {
@@ -2447,186 +2448,6 @@
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/OPTIONS/Resource"
    }
   },
-  "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E": {
-   "Type": "AWS::ApiGateway::Resource",
-   "Properties": {
-    "ParentId": {
-     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
-    },
-    "PathPart": "quotes",
-    "RestApiId": {
-     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/Resource"
-   }
-  },
-  "ServerlessAppInsuranceQuotationApiapiv1quotesOPTIONSE5D91E35": {
-   "Type": "AWS::ApiGateway::Method",
-   "Properties": {
-    "ApiKeyRequired": false,
-    "AuthorizationType": "NONE",
-    "HttpMethod": "OPTIONS",
-    "Integration": {
-     "IntegrationResponses": [
-      {
-       "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-        "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
-        "method.response.header.Access-Control-Allow-Credentials": "'true'"
-       },
-       "StatusCode": "204"
-      }
-     ],
-     "RequestTemplates": {
-      "application/json": "{ statusCode: 200 }"
-     },
-     "Type": "MOCK"
-    },
-    "MethodResponses": [
-     {
-      "ResponseParameters": {
-       "method.response.header.Access-Control-Allow-Headers": true,
-       "method.response.header.Access-Control-Allow-Origin": true,
-       "method.response.header.Access-Control-Allow-Methods": true,
-       "method.response.header.Access-Control-Allow-Credentials": true
-      },
-      "StatusCode": "204"
-     }
-    ],
-    "ResourceId": {
-     "Ref": "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E"
-    },
-    "RestApiId": {
-     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/OPTIONS/Resource"
-   }
-  },
-  "ServerlessAppInsuranceQuotationApiapiv1usersC559A852": {
-   "Type": "AWS::ApiGateway::Resource",
-   "Properties": {
-    "ParentId": {
-     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
-    },
-    "PathPart": "users",
-    "RestApiId": {
-     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/users/Resource"
-   }
-  },
-  "ServerlessAppInsuranceQuotationApiapiv1usersOPTIONS251C229C": {
-   "Type": "AWS::ApiGateway::Method",
-   "Properties": {
-    "ApiKeyRequired": false,
-    "AuthorizationType": "NONE",
-    "HttpMethod": "OPTIONS",
-    "Integration": {
-     "IntegrationResponses": [
-      {
-       "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-        "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
-        "method.response.header.Access-Control-Allow-Credentials": "'true'"
-       },
-       "StatusCode": "204"
-      }
-     ],
-     "RequestTemplates": {
-      "application/json": "{ statusCode: 200 }"
-     },
-     "Type": "MOCK"
-    },
-    "MethodResponses": [
-     {
-      "ResponseParameters": {
-       "method.response.header.Access-Control-Allow-Headers": true,
-       "method.response.header.Access-Control-Allow-Origin": true,
-       "method.response.header.Access-Control-Allow-Methods": true,
-       "method.response.header.Access-Control-Allow-Credentials": true
-      },
-      "StatusCode": "204"
-     }
-    ],
-    "ResourceId": {
-     "Ref": "ServerlessAppInsuranceQuotationApiapiv1usersC559A852"
-    },
-    "RestApiId": {
-     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/users/OPTIONS/Resource"
-   }
-  },
-  "ServerlessAppInsuranceQuotationApiapiv1productsE8C886DC": {
-   "Type": "AWS::ApiGateway::Resource",
-   "Properties": {
-    "ParentId": {
-     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
-    },
-    "PathPart": "products",
-    "RestApiId": {
-     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/products/Resource"
-   }
-  },
-  "ServerlessAppInsuranceQuotationApiapiv1productsOPTIONS7723A89F": {
-   "Type": "AWS::ApiGateway::Method",
-   "Properties": {
-    "ApiKeyRequired": false,
-    "AuthorizationType": "NONE",
-    "HttpMethod": "OPTIONS",
-    "Integration": {
-     "IntegrationResponses": [
-      {
-       "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-        "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
-        "method.response.header.Access-Control-Allow-Credentials": "'true'"
-       },
-       "StatusCode": "204"
-      }
-     ],
-     "RequestTemplates": {
-      "application/json": "{ statusCode: 200 }"
-     },
-     "Type": "MOCK"
-    },
-    "MethodResponses": [
-     {
-      "ResponseParameters": {
-       "method.response.header.Access-Control-Allow-Headers": true,
-       "method.response.header.Access-Control-Allow-Origin": true,
-       "method.response.header.Access-Control-Allow-Methods": true,
-       "method.response.header.Access-Control-Allow-Credentials": true
-      },
-      "StatusCode": "204"
-     }
-    ],
-    "ResourceId": {
-     "Ref": "ServerlessAppInsuranceQuotationApiapiv1productsE8C886DC"
-    },
-    "RestApiId": {
-     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/products/OPTIONS/Resource"
-   }
-  },
   "ServerlessAppInsuranceQuotationApiapiv1health354FBB05": {
    "Type": "AWS::ApiGateway::Resource",
    "Properties": {
@@ -2687,11 +2508,692 @@
     "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/OPTIONS/Resource"
    }
   },
+  "ServerlessAppInsuranceQuotationApiapiv1healthGETApiPermissionInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1health4183666A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ServerlessApphealthFunction77B4F61F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:450683699755:",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+       },
+       "/",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApiDeploymentStagedevBF9545D5"
+       },
+       "/GET/api/v1/health"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/ApiPermission.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.health"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1healthGETApiPermissionTestInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1health8D852ABB": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ServerlessApphealthFunction77B4F61F",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:450683699755:",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+       },
+       "/test-invoke-stage/GET/api/v1/health"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/ApiPermission.Test.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.health"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1healthGET9B435BB9": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ServerlessApphealthFunction77B4F61F",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1health354FBB05"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/health/GET/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv19C0D5AE7"
+    },
+    "PathPart": "quotes",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesOPTIONSE5D91E35": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesPOSTApiPermissionInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1POSTapiv1quotes0C891D58": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ServerlessAppquotescreateFunctionED9F43BD",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:450683699755:",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+       },
+       "/",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApiDeploymentStagedevBF9545D5"
+       },
+       "/POST/api/v1/quotes"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/POST/ApiPermission.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.POST..api.v1.quotes"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesPOSTApiPermissionTestInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1POSTapiv1quotes745DE7DC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ServerlessAppquotescreateFunctionED9F43BD",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:450683699755:",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+       },
+       "/test-invoke-stage/POST/api/v1/quotes"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/POST/ApiPermission.Test.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.POST..api.v1.quotes"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesPOSTEB51702C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ServerlessAppquotescreateFunctionED9F43BD",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/POST/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesidF2A2D623": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1quotes8A55235E"
+    },
+    "PathPart": "{id}",
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/{id}/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesidOPTIONS2E3212ED": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+        "method.response.header.Access-Control-Allow-Credentials": "'true'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true,
+       "method.response.header.Access-Control-Allow-Credentials": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1quotesidF2A2D623"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/{id}/OPTIONS/Resource"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesidGETApiPermissionInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1quotesid2B7AF030": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ServerlessAppquotesgetFunctionB6E0E869",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:450683699755:",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+       },
+       "/",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApiDeploymentStagedevBF9545D5"
+       },
+       "/GET/api/v1/quotes/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/{id}/GET/ApiPermission.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.quotes.{id}"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesidGETApiPermissionTestInsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1GETapiv1quotesidACDF7BDD": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ServerlessAppquotesgetFunctionB6E0E869",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:450683699755:",
+       {
+        "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+       },
+       "/test-invoke-stage/GET/api/v1/quotes/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/{id}/GET/ApiPermission.Test.InsuranceQuotationdevServerlessAppInsuranceQuotationApi22D9A0E1.GET..api.v1.quotes.{id}"
+   }
+  },
+  "ServerlessAppInsuranceQuotationApiapiv1quotesidGET23765BB2": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ServerlessAppquotesgetFunctionB6E0E869",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ServerlessAppInsuranceQuotationApiapiv1quotesidF2A2D623"
+    },
+    "RestApiId": {
+     "Ref": "ServerlessAppInsuranceQuotationApi278BAD0B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/InsuranceQuotationApi/Default/api/v1/quotes/{id}/GET/Resource"
+   }
+  },
+  "ServerlessApphealthFunction77B4F61F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
+     "S3Key": "2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b.zip"
+    },
+    "Description": "Health check endpoint",
+    "Environment": {
+     "Variables": {
+      "NODE_ENV": "dev",
+      "LOG_LEVEL": "debug",
+      "FUNCTION_NAME": "health",
+      "DATABASE_SECRET_ARN": {
+       "Ref": "DatabaseDatabaseSecret487264A7"
+      },
+      "REDIS_SECRET_ARN": {
+       "Ref": "RedisRedisSecret04F920F1"
+      }
+     }
+    },
+    "Handler": "handler.handler",
+    "Layers": [
+     {
+      "Ref": "LambdaLayerSharedDependenciesLayer64C69A98"
+     }
+    ],
+    "LoggingConfig": {
+     "LogGroup": {
+      "Ref": "ServerlessAppLambdaLogGroup20642418"
+     }
+    },
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "ServerlessAppLambdaExecutionRole47A06588",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Timeout": 30,
+    "VpcConfig": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "NetworkingLambdaSecurityGroupA5120D58",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet1SubnetB2B4F737"
+      },
+      {
+       "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet2Subnet9B04F5BD"
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "NetworkingInsuranceQuotationVpcLambdaSubnet1DefaultRoute539C5955",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableAssociationCD94C904",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet2DefaultRoute3A6BA3EA",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTableAssociationE66FE6F7",
+    "ServerlessAppLambdaExecutionRole47A06588"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/healthFunction/Resource",
+    "aws:asset:path": "asset.2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ServerlessAppquotescreateFunctionED9F43BD": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
+     "S3Key": "2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b.zip"
+    },
+    "Description": "Create insurance quote",
+    "Environment": {
+     "Variables": {
+      "NODE_ENV": "dev",
+      "LOG_LEVEL": "debug",
+      "FUNCTION_NAME": "quotes-create",
+      "DATABASE_SECRET_ARN": {
+       "Ref": "DatabaseDatabaseSecret487264A7"
+      },
+      "REDIS_SECRET_ARN": {
+       "Ref": "RedisRedisSecret04F920F1"
+      }
+     }
+    },
+    "Handler": "create.handler",
+    "Layers": [
+     {
+      "Ref": "LambdaLayerSharedDependenciesLayer64C69A98"
+     }
+    ],
+    "LoggingConfig": {
+     "LogGroup": {
+      "Ref": "ServerlessAppLambdaLogGroup20642418"
+     }
+    },
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "ServerlessAppLambdaExecutionRole47A06588",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Timeout": 30,
+    "VpcConfig": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "NetworkingLambdaSecurityGroupA5120D58",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet1SubnetB2B4F737"
+      },
+      {
+       "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet2Subnet9B04F5BD"
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "NetworkingInsuranceQuotationVpcLambdaSubnet1DefaultRoute539C5955",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableAssociationCD94C904",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet2DefaultRoute3A6BA3EA",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTableAssociationE66FE6F7",
+    "ServerlessAppLambdaExecutionRole47A06588"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/quotes-createFunction/Resource",
+    "aws:asset:path": "asset.2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ServerlessAppquotesgetFunctionB6E0E869": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-450683699755-us-east-1",
+     "S3Key": "2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b.zip"
+    },
+    "Description": "Get insurance quote by ID",
+    "Environment": {
+     "Variables": {
+      "NODE_ENV": "dev",
+      "LOG_LEVEL": "debug",
+      "FUNCTION_NAME": "quotes-get",
+      "DATABASE_SECRET_ARN": {
+       "Ref": "DatabaseDatabaseSecret487264A7"
+      },
+      "REDIS_SECRET_ARN": {
+       "Ref": "RedisRedisSecret04F920F1"
+      }
+     }
+    },
+    "Handler": "get.handler",
+    "Layers": [
+     {
+      "Ref": "LambdaLayerSharedDependenciesLayer64C69A98"
+     }
+    ],
+    "LoggingConfig": {
+     "LogGroup": {
+      "Ref": "ServerlessAppLambdaLogGroup20642418"
+     }
+    },
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "ServerlessAppLambdaExecutionRole47A06588",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "Component",
+      "Value": "ServerlessApp"
+     },
+     {
+      "Key": "Environment",
+      "Value": "dev"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InsuranceQuotation"
+     }
+    ],
+    "Timeout": 30,
+    "VpcConfig": {
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "NetworkingLambdaSecurityGroupA5120D58",
+        "GroupId"
+       ]
+      }
+     ],
+     "SubnetIds": [
+      {
+       "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet1SubnetB2B4F737"
+      },
+      {
+       "Ref": "NetworkingInsuranceQuotationVpcLambdaSubnet2Subnet9B04F5BD"
+      }
+     ]
+    }
+   },
+   "DependsOn": [
+    "NetworkingInsuranceQuotationVpcLambdaSubnet1DefaultRoute539C5955",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet1RouteTableAssociationCD94C904",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet2DefaultRoute3A6BA3EA",
+    "NetworkingInsuranceQuotationVpcLambdaSubnet2RouteTableAssociationE66FE6F7",
+    "ServerlessAppLambdaExecutionRole47A06588"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InsuranceQuotation-dev/ServerlessApp/quotes-getFunction/Resource",
+    "aws:asset:path": "asset.2eaf6d3ab9489cce44dbf5e14c28de5b69a598c0b0e8fb59156204231472c10b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
   "ServerlessAppTestStageF73AA1C7": {
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "ServerlessAppInsuranceQuotationApiDeployment2D016444c32a0a2b49bb14a48f728284d1fa4719"
+     "Ref": "ServerlessAppInsuranceQuotationApiDeployment2D0164440b88a7b60e1c3fa5370ece52fec22b61"
     },
     "MethodSettings": [
      {
@@ -2735,7 +3237,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31STW/bMAz9Lb0rWpoetms+iiJA2wVJkGtBy6yjxpYMkUoQCPrvg2TH8YphF/G9xweRFDWTs8dfcvoAF5qo8jSpdSHDjkGdBFzoI6CayXBolVh+msNmKTa+qLXa+cIgJ+2OttYz7qGo8a7ftTmRVRpYWzOYE3heb1J4B34BxgtcxcbpMzDeL14bRmdwMHSd9GzODOrYoGHRK4dWPZuytdpwbx1ovukTFI49O1Teab6+OOvb3Pp/hbWpHBJFQagcMjVgoEInwy7z3p9QF/bgKuRRm4PheyYKV5IM3eBD8dViLKyAoQDCZe2J0XWGv8jaEINRGIWGRoat7faRYhRYA7FWoI4ow7Cl0aDujK5GomWyRFFDU5Qgwytc0R3QUb++MY+Cnj6ACJnkPAVBT3Lh1Ql5AYSCDMmwt63Of6gD+UzZKGpbkQyvthq6uOEooNVVt1QZtkg8b3We5Q7nSllvWKywre319r4jtmOoug+ZwRbJeqcwd/aGfLRlSvbolu2LZBzjSPbEtvmXK+HfnlvP30wbZ8+6RJcL5udJjWhTRWFsifKLfpxnU/n4U04fvkjrifOGdYNy28U/Q+Ag6KADAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31SXW/iMBD8LX03Pkofeq989CqkXi8CxGu1cbbBJbEj7xqEIv/3k50QUnS6l+zM7Mg7znomZ48/5fQBzjRRxXFS6Vy2WwZ1FHCmjxbVTLb7Ronlp9lnS5H5vNJq63ODHLUb2ljPuIO8wpt+0+ZEVmlgbc1gjuBlncXyDvwKjGe4iMzpEzDeDl4bRmdwMHRJejZnBnWo0bDolX2jXkzRWG24tw40nfQJCseeLSrvNF9enfVNiv5fYW1Kh0RBECqHTDUYKNHJdpt474+oKztwJfIo5mC47wThCpJtd/Fh+GoxFlbAkAPhsvLE6DrDN7I2xGAUBqGhlu3GdvuINQisgFgrUAeU7bCl0UXdCV2FRMtoCaKCOi9Atm9wQbdHR/367nmGrtaU2C9v1HXLVxwEPX0AETLJeSyCnuTCqyPyAggFGZLtzjY6PbMOpG/sBlHZkmT7Zssh6BUHAY0uu73LdoPE80an697gXCnrDYsVNpW9XFcwYluGsnuzCWyQrHcKU7LfyAdbxGaPrt1+SMIhjGRPbOt/uSL+47nxfGfKnD3pAl0amH5PDKJNGYSxBcov+nGaTeXjs5w+fJHWE+cN6xrlpqt/AQbc6U/DAwAA"
    },
    "Metadata": {
     "aws:cdk:path": "InsuranceQuotation-dev/CDKMetadata/Default"

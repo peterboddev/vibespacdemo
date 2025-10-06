@@ -2,6 +2,16 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda
 import { createSuccessResponse, createErrorResponse } from '../shared/response';
 import { withErrorHandler, withCors } from '../shared/middleware';
 
+/**
+ * Get insurance quote by ID endpoint
+ * 
+ * @route GET /api/v1/quotes/{id}
+ * @auth none
+ * @description Retrieves an insurance quote by its ID
+ * @timeout 30
+ * @memory 256
+ */
+
 const getQuoteHandler = async (
   event: APIGatewayProxyEvent,
   context: Context

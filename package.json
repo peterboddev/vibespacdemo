@@ -25,6 +25,7 @@
     "cdk:synth-and-deploy": "npm run cdk:synth && npm run cdk:deploy -- --require-approval never",
     "generate-routes": "ts-node scripts/generate-routes.ts",
     "deploy-with-routes": "npm run generate-routes && npm run cdk:synth-and-deploy",
+    "deploy:lambdas": "ts-node scripts/deploy-lambda-functions.ts",
     "cicd:bootstrap": "cdk bootstrap --app \"npx ts-node infrastructure/cicd-app.ts\"",
     "cicd:synth": "cdk synth --app \"npx ts-node infrastructure/cicd-app.ts\"",
     "cicd:deploy": "cdk deploy --app \"npx ts-node infrastructure/cicd-app.ts\" --require-approval never",

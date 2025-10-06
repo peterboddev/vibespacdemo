@@ -5,6 +5,16 @@ import { validateQuoteRequest } from '../shared/validation';
 import { QuoteCalculator } from '../shared/quote-calculator';
 import { QuoteRequest } from '../shared/types';
 
+/**
+ * Create insurance quote endpoint
+ * 
+ * @route POST /api/v1/quotes
+ * @auth none
+ * @description Creates a new insurance quote based on provided parameters
+ * @timeout 30
+ * @memory 256
+ */
+
 const createQuoteHandler = async (
   event: APIGatewayProxyEvent,
   context: Context

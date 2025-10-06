@@ -92,6 +92,7 @@ The AWS infrastructure includes:
 - **API Gateway + Lambda**: Serverless compute with comprehensive security and CORS configuration
 - **Lambda Layers**: Shared dependencies with automated CDK Docker bundling for consistent deployment
 - **Secrets Manager**: Secure credential storage for database and cache connections
+- **CloudWatch Monitoring**: Comprehensive dashboard with automated alerting, health check tracking, and performance metrics
 - **CloudWatch Logs**: Environment-specific log retention and monitoring
 
 ### CI/CD Pipeline Components
@@ -136,6 +137,9 @@ npm run cdk:deploy
 
 # Synthesize and automatically deploy on success (recommended for development)
 npm run cdk:synth-and-deploy
+
+# Deploy Lambda functions manually (alternative approach)
+npm run deploy:lambdas
 
 # Destroy the stack (use with caution)
 npm run cdk:destroy
@@ -385,10 +389,11 @@ Fix linting issues:
 npm run lint:fix
 ```
 
-### Route Generation (Currently Disabled)
+### Route Generation and Lambda Deployment
 
-The project includes scripts for dynamic route generation from Lambda function annotations:
+The project includes multiple approaches for deploying Lambda functions and API routes:
 
+#### Automatic Route Generation (Currently Disabled)
 ```bash
 # Generate routes configuration (currently disabled in CI/CD)
 npm run generate-routes
@@ -397,7 +402,30 @@ npm run generate-routes
 npm run deploy-with-routes
 ```
 
-**Note**: Route generation is currently disabled in the CI/CD pipeline for build stability. The system uses default route configuration. See [docs/DYNAMIC_ROUTES.md](docs/DYNAMIC_ROUTES.md) for details on re-enabling this feature.
+#### Manual Lambda Deployment
+For situations where automatic route generation is not working, use the manual deployment script:
+
+```bash
+# Deploy Lambda functions manually to existing API Gateway
+npm run deploy:lambdas
+
+# Or run directly with environment variables
+TARGET_ENV=dev AWS_REGION=us-east-1 npm run deploy:lambdas
+```
+
+The manual deployment script (`scripts/deploy-lambda-functions.ts`) provides:
+- **Direct Lambda Function Deployment**: Creates or updates Lambda functions outside of CDK
+- **API Gateway Integration**: Automatically creates API Gateway resources, methods, and integrations
+- **Stack Output Integration**: Retrieves necessary ARNs and IDs from existing CloudFormation stack
+- **Comprehensive Error Handling**: Handles existing resources and permission conflicts gracefully
+- **Environment Support**: Configurable for different environments (dev, test, prod)
+
+**Supported Endpoints**:
+- `GET /api/v1/health` - Health check endpoint
+- `POST /api/v1/quotes` - Create insurance quote
+- `GET /api/v1/quotes/{id}` - Get insurance quote by ID
+
+**Note**: Route generation is currently disabled in the CI/CD pipeline for build stability. However, the `RouteGenerator` import has been added to the `ServerlessApp` construct, indicating preparation for dynamic route generation integration. The manual deployment script provides an alternative when CDK-based deployment encounters issues. See [docs/DYNAMIC_ROUTES.md](docs/DYNAMIC_ROUTES.md) for details on re-enabling automatic route generation.
 
 ## Data Models
 
@@ -451,9 +479,17 @@ The application includes comprehensive TypeScript interfaces for all core entiti
 - Automatic connection pooling and error handling
 - Health check integration for monitoring
 
+### CloudWatch Metrics (src/shared/metrics.ts)
+- `DatabaseMetrics` - Database operation latency, health checks, and connection pool metrics
+- `RedisMetrics` - Redis operation latency and health check metrics
+- `publishMetric` - Single metric publishing to CloudWatch
+- `publishMetrics` - Batch metric publishing for efficiency
+- Automatic error handling (metrics failures don't break application flow)
+
 All models are exported from `src/models/index.ts` for easy importing throughout the application.
 Lambda-specific types are available from `src/lambda/shared/types.ts` and include comprehensive interfaces for quote requests, personal information, coverage details, and response formatting.
 Redis utilities are available from `src/database/redis.ts`.
+CloudWatch metrics utilities are available from `src/shared/metrics.ts` for performance monitoring and observability.
 
 ## 🎯 Current Status: **Ready for Deployment**
 
@@ -475,7 +511,11 @@ The API is implemented as AWS Lambda functions behind API Gateway.
 ### Available Endpoints
 
 #### Health Check
-- `GET /api/v1/health` - Service status and metadata with database and Redis connectivity checks
+- `GET /api/v1/health` - Service status and metadata with comprehensive database and Redis connectivity checks
+  - **Database Health**: Performs read/write operations with data integrity verification
+  - **Redis Health**: Tests connection latency and availability
+  - **CloudWatch Metrics**: Automated performance and health metrics collection
+  - **Automatic Cleanup**: Removes old health check test data automatically
 
 #### Quote Management ✅ **FULLY IMPLEMENTED**
 - `POST /api/v1/quotes` - **Create new insurance quote with premium calculation**
@@ -634,10 +674,14 @@ This project includes comprehensive documentation organized by category. For a c
 - [docs/IMPLEMENTATION_COMPLETE.md](docs/IMPLEMENTATION_COMPLETE.md) - Completed features
 - [docs/QUOTE_API_IMPLEMENTATION.md](docs/QUOTE_API_IMPLEMENTATION.md) - Quote API details
 - [docs/TESTING_RESULTS.md](docs/TESTING_RESULTS.md) - Test results and coverage
+- [docs/HEALTH_CHECK_ENHANCEMENT.md](docs/HEALTH_CHECK_ENHANCEMENT.md) - Enhanced database health monitoring
 
 #### 🔧 **Build & Configuration**
 - [docs/BUILD_FIX_SUMMARY.md](docs/BUILD_FIX_SUMMARY.md) - Build system improvements
 - [docs/DOCKER_REMOVAL_SUMMARY.md](docs/DOCKER_REMOVAL_SUMMARY.md) - Simplified deployment approach
+
+#### 📊 **Monitoring & Observability**
+- [docs/CLOUDWATCH_METRICS_INTEGRATION.md](docs/CLOUDWATCH_METRICS_INTEGRATION.md) - Comprehensive CloudWatch dashboard, metrics, and automated alerting
 
 For the complete documentation index with all available files, visit **[docs/README.md](docs/README.md)**.
 
@@ -651,6 +695,9 @@ For the complete documentation index with all available files, visit **[docs/REA
 - **Standardized API responses**: Consistent success/error response format with CORS support
 - **Complete test coverage**: 6/6 test cases passing with 100% endpoint coverage
 - **CI/CD pipeline**: Automated build, test, and deployment workflow
+- **Manual deployment option**: Alternative Lambda deployment script for direct function management
+- **CloudWatch monitoring dashboard**: Comprehensive real-time monitoring with automated alerting
+- **Health check system**: Enhanced database and Redis connectivity monitoring with metrics collection
 
 ### 🔄 **Planned Features**
 - User authentication and authorization
